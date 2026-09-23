@@ -10,23 +10,25 @@ const { class: className } = Astro.props;
 const quests = hotspots.filter((h) => !h.optional);
 ---
 
-<RetroPanel title="Quest Log" class:list={["quest-log", className]}>
-  <ol class="quest-list">
-    {
-      quests.map((q) => (
-        <li data-section={q.id}>
-          <a href={q.href}>{q.label}</a>
-          <span class="quest-state" data-state>
-            Open
-          </span>
-        </li>
-      ))
-    }
-  </ol>
-  <p class="quest-count">
-    <span id="quest-count">–</span>/{quests.length} sections visited
-  </p>
-</RetroPanel>
+<div class:list={["quest-log", className]}>
+  <RetroPanel title="Quest Log">
+    <ol class="quest-list">
+      {
+        quests.map((q) => (
+          <li data-section={q.id}>
+            <a href={q.href}>{q.label}</a>
+            <span class="quest-state" data-state>
+              Open
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="quest-count">
+      <span id="quest-count">–</span>/{quests.length} sections visited
+    </p>
+  </RetroPanel>
+</div>
 
 <script>
   import { getVisited, type QuestSection } from "@/utils/progress";
