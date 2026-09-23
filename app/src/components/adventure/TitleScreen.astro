@@ -7,43 +7,116 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
   class="title-screen"
   aria-labelledby="title-screen-heading"
 >
-  <div class="ts-inner">
-    <PixelLabel tone="accent">Rendi · Software Developer</PixelLabel>
-    <p id="title-screen-heading" class="ts-title">
-      Rendi's Portfolio Adventure
-    </p>
-    <p class="ts-tagline">Same Human. New Adventures.</p>
-
-    <div class="ts-menu" id="ts-menu">
-      <button type="button" id="ts-new" data-cue>New Game</button>
-      <button type="button" id="ts-continue" data-cue>Continue</button>
-      <p class="ts-hint" id="ts-continue-hint" hidden>No saved adventure yet</p>
-      <button type="button" id="ts-explore">Explore Directly</button>
-      <details class="ts-options">
-        <summary>Options</summary>
-        <div class="ts-options-panel">
-          <label>
-            <input type="checkbox" id="ts-opt-sound" />
-            Sound
-          </label>
-          <label>
-            <input type="checkbox" id="ts-opt-motion" />
-            Reduced effects
-          </label>
-        </div>
-      </details>
-    </div>
-
-    <div class="ts-confirm" id="ts-confirm" hidden>
-      <p>Start a new adventure? This clears saved quest progress.</p>
-      <div class="ts-confirm-actions">
-        <button type="button" id="ts-confirm-yes" data-cue> Start over </button>
-        <button type="button" id="ts-confirm-back">Back</button>
-      </div>
-    </div>
-
-    <button type="button" class="ts-skip" id="ts-skip">Skip intro →</button>
+  <div class="ts-backdrop" aria-hidden="true">
+    <img src="/assets/backgrounds/bedroom-full.jpg" alt="" />
   </div>
+
+  <div class="ts-window">
+    <div class="ts-titlebar">
+      <img
+        class="ts-icon"
+        src="/assets/props/avatar-placeholder.png"
+        alt=""
+        width="18"
+        height="18"
+        aria-hidden="true"
+      />
+      <span class="ts-titlebar-text">Rendi's Portfolio Adventure</span>
+      <span class="ts-controls" aria-hidden="true">
+        <i>_</i>
+        <i>&#9634;</i>
+      </span>
+      <button
+        type="button"
+        class="ts-close"
+        id="ts-close"
+        aria-label="Skip intro"
+      >
+        &#10005;
+      </button>
+    </div>
+
+    <div class="ts-body">
+      <span class="ts-corner tl" aria-hidden="true"></span>
+      <span class="ts-corner tr" aria-hidden="true"></span>
+      <span class="ts-corner bl" aria-hidden="true"></span>
+      <span class="ts-corner br" aria-hidden="true"></span>
+
+      <span class="ts-spark s1" aria-hidden="true">✦</span>
+      <span class="ts-spark s2" aria-hidden="true">✦</span>
+      <span class="ts-spark s3" aria-hidden="true">✧</span>
+
+      <PixelLabel tone="accent">Rendi · Software Developer</PixelLabel>
+      <p id="title-screen-heading" class="ts-title">
+        Rendi's Portfolio Adventure
+      </p>
+      <p class="ts-tagline">Same Human. New Adventures.</p>
+      <p class="ts-divider" aria-hidden="true"><i>✦</i></p>
+
+      <div class="ts-menu" id="ts-menu">
+        <button type="button" id="ts-new" data-cue>New Game</button>
+        <button type="button" id="ts-continue" data-cue>Continue</button>
+        <p class="ts-hint" id="ts-continue-hint" hidden>
+          No saved adventure yet
+        </p>
+        <button type="button" id="ts-explore">Explore Directly</button>
+        <details class="ts-options">
+          <summary>Options</summary>
+          <div class="ts-options-panel">
+            <label>
+              <input type="checkbox" id="ts-opt-sound" />
+              Sound
+            </label>
+            <label>
+              <input type="checkbox" id="ts-opt-motion" />
+              Reduced effects
+            </label>
+          </div>
+        </details>
+      </div>
+
+      <div class="ts-confirm" id="ts-confirm" hidden>
+        <p>Start a new adventure? This clears saved quest progress.</p>
+        <div class="ts-confirm-actions">
+          <button type="button" id="ts-confirm-yes" data-cue>
+            Start over
+          </button>
+          <button type="button" id="ts-confirm-back">Back</button>
+        </div>
+      </div>
+
+      <p class="ts-footer" aria-hidden="true">
+        —— GOOD CODE · BRIGHTER DAYS · SAME HUMAN ——
+      </p>
+
+      <img
+        class="ts-prop prop-notebook"
+        src="/assets/props/notebook.png"
+        alt=""
+        width="72"
+        height="72"
+        aria-hidden="true"
+      />
+      <img
+        class="ts-prop prop-books"
+        src="/assets/props/books.png"
+        alt=""
+        width="88"
+        height="88"
+        aria-hidden="true"
+      />
+      <img
+        class="ts-prop prop-mug"
+        src="/assets/props/mug.png"
+        alt=""
+        width="48"
+        height="48"
+        aria-hidden="true"
+      />
+    </div>
+  </div>
+
+  <button type="button" class="ts-skip" id="ts-skip">Skip intro →</button>
 </dialog>
 
 <script>
@@ -63,6 +136,7 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
       "ts-explore",
     ) as HTMLButtonElement;
     const btnSkip = document.getElementById("ts-skip") as HTMLButtonElement;
+    const btnClose = document.getElementById("ts-close") as HTMLButtonElement;
     const confirmWrap = document.getElementById("ts-confirm") as HTMLElement;
     const menu = document.getElementById("ts-menu") as HTMLElement;
     const confirmYes = document.getElementById(
@@ -129,6 +203,7 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     });
     btnExplore.addEventListener("click", () => dismiss(false));
     btnSkip.addEventListener("click", () => dismiss(false));
+    btnClose.addEventListener("click", () => dismiss(false));
 
     confirmYes.addEventListener("click", () => {
       storage.remove(STORAGE_KEYS.visitedSections);
@@ -173,10 +248,40 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
   }
 
   .title-screen::backdrop {
-    background: rgb(5 8 18 / 0.6);
+    background: rgb(5 8 18 / 0.45);
   }
 
-  .title-screen[open] .ts-inner {
+  .title-screen[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ts-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .ts-backdrop img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+    filter: brightness(0.55) saturate(0.9) blur(1px);
+  }
+
+  .ts-backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 50% 40%,
+      transparent 30%,
+      rgb(5 8 18 / 0.55) 100%
+    );
+  }
+
+  .title-screen[open] .ts-window {
     animation: crt-on 0.5s var(--ease-out) both;
   }
 
@@ -195,52 +300,139 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     }
   }
 
-  .ts-inner {
+  .ts-window {
+    position: relative;
+    width: min(760px, calc(100% - var(--space-8)));
+    margin: auto;
+    border: 1px solid var(--border-dark);
+    background: var(--bg-deep);
+    box-shadow:
+      var(--shadow-raised),
+      0 12px 40px rgb(0 0 0 / 0.6);
+  }
+
+  .ts-titlebar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 3px var(--space-1) 3px var(--space-1);
+    background: linear-gradient(90deg, var(--primary), var(--secondary) 160%);
+    color: var(--text);
+    font-family: var(--ui-font);
+    font-size: 0.8rem;
+    font-weight: bold;
+    user-select: none;
+  }
+
+  .ts-icon {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    object-fit: cover;
+    object-position: top;
+    image-rendering: pixelated;
+    background: var(--window);
+    border: 1px solid var(--border-dark);
+  }
+
+  .ts-titlebar-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ts-controls {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: auto;
+  }
+
+  .ts-controls i,
+  .ts-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 15px;
+    font-style: normal;
+    font-size: 0.62rem;
+    line-height: 1;
+    background: var(--window);
+    color: var(--text-dark);
+    border: none;
+    box-shadow:
+      inset -1px -1px 0 var(--border-dark),
+      inset 1px 1px 0 var(--border-light);
+  }
+
+  .ts-close {
+    margin-left: 2px;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .ts-close:hover {
+    background: var(--danger);
+    color: var(--text);
+  }
+
+  .ts-close:active {
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .ts-body {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: var(--space-4);
-    width: 100%;
-    height: 100%;
-    padding: var(--space-6);
+    padding: var(--space-8) var(--space-6) var(--space-4);
     text-align: center;
     background:
       repeating-linear-gradient(
         to bottom,
         transparent 0 3px,
-        rgb(0 0 0 / 0.08) 3px 4px
+        rgb(0 0 0 / 0.1) 3px 4px
       ),
-      radial-gradient(ellipse at 50% 30%, #1b2b4d 0%, var(--bg-deep) 70%);
+      radial-gradient(ellipse at 50% 20%, #1b2b4d 0%, var(--bg-deep) 75%);
+    overflow: hidden;
   }
 
-  .ts-inner > * {
+  .ts-body > * {
     animation: ts-in 0.5s var(--ease-out) both;
   }
 
-  .ts-inner > *:nth-child(1) {
+  .ts-corner,
+  .ts-prop {
+    animation: none;
+  }
+
+  .ts-body > *:nth-child(8) {
     animation-delay: 0.05s;
   }
 
-  .ts-inner > *:nth-child(2) {
+  .ts-body > *:nth-child(9) {
     animation-delay: 0.12s;
   }
 
-  .ts-inner > *:nth-child(3) {
+  .ts-body > *:nth-child(10) {
     animation-delay: 0.18s;
   }
 
-  .ts-inner > *:nth-child(4) {
+  .ts-body > *:nth-child(11) {
     animation-delay: 0.24s;
   }
 
-  .ts-inner > *:nth-child(5) {
+  .ts-body > *:nth-child(12) {
     animation-delay: 0.3s;
   }
 
-  .ts-inner > *:nth-child(6) {
+  .ts-body > *:nth-child(13) {
     animation-delay: 0.36s;
+  }
+
+  .ts-body > *:nth-child(14) {
+    animation-delay: 0.4s;
   }
 
   @keyframes ts-in {
@@ -254,22 +446,116 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     }
   }
 
+  .ts-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 0 solid var(--accent);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .ts-corner.tl {
+    top: var(--space-2);
+    left: var(--space-2);
+    border-top-width: 2px;
+    border-left-width: 2px;
+  }
+
+  .ts-corner.tr {
+    top: var(--space-2);
+    right: var(--space-2);
+    border-top-width: 2px;
+    border-right-width: 2px;
+  }
+
+  .ts-corner.bl {
+    bottom: var(--space-2);
+    left: var(--space-2);
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+  }
+
+  .ts-corner.br {
+    right: var(--space-2);
+    bottom: var(--space-2);
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+  }
+
+  .ts-spark {
+    position: absolute;
+    color: var(--accent);
+    font-size: 0.9rem;
+    opacity: 0.85;
+    pointer-events: none;
+    animation: spark-twinkle 2.4s ease-in-out infinite;
+  }
+
+  .ts-spark.s1 {
+    top: 18%;
+    left: 12%;
+  }
+
+  .ts-spark.s2 {
+    top: 30%;
+    right: 14%;
+    animation-delay: 0.9s;
+  }
+
+  .ts-spark.s3 {
+    top: 12%;
+    right: 30%;
+    font-size: 0.7rem;
+    animation-delay: 1.6s;
+  }
+
+  @keyframes spark-twinkle {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(0.85);
+    }
+    50% {
+      opacity: 0.95;
+      transform: scale(1.1);
+    }
+  }
+
   .ts-title {
     font-family: var(--mono-font);
-    font-size: clamp(1.6rem, 5vw, 3rem);
+    font-size: clamp(1.5rem, 4.6vw, 2.7rem);
     font-weight: bold;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     line-height: 1.15;
     color: var(--accent);
-    text-shadow: 0 0 12px rgb(255 209 102 / 0.35);
+    text-shadow:
+      0 0 14px rgb(255 209 102 / 0.35),
+      3px 3px 0 rgb(0 0 0 / 0.55);
   }
 
   .ts-tagline {
     font-family: var(--mono-font);
-    font-size: 0.95rem;
-    letter-spacing: 0.12em;
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     opacity: 0.9;
+  }
+
+  .ts-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: min(340px, 80%);
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  .ts-divider::before,
+  .ts-divider::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid rgb(255 209 102 / 0.55);
   }
 
   .ts-menu {
@@ -277,18 +563,18 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-1);
-    margin-top: var(--space-6);
-    min-width: 240px;
+    margin-top: var(--space-2);
+    min-width: min(280px, 100%);
   }
 
   .ts-menu > button,
   .ts-confirm button {
     padding: var(--space-2) var(--space-4);
     font-family: var(--mono-font);
-    font-size: 1rem;
-    letter-spacing: 0.1em;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    text-align: left;
+    text-align: center;
     color: var(--text);
     background: none;
     border: none;
@@ -305,23 +591,27 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
 
   .ts-menu > button:not(:disabled):hover,
   .ts-menu > button:not(:disabled):focus-visible,
+  .ts-menu > button:not(:disabled):focus,
   .ts-confirm button:hover,
   .ts-confirm button:focus-visible {
     color: var(--accent);
     outline: none;
+    box-shadow:
+      inset 0 0 0 1px var(--accent),
+      0 0 12px rgb(255 209 102 / 0.18);
   }
 
   .ts-menu > button:not(:disabled):hover::before,
   .ts-menu > button:not(:disabled):focus-visible::before,
+  .ts-menu > button:not(:disabled):focus::before,
   .ts-confirm button:hover::before,
   .ts-confirm button:focus-visible::before {
     opacity: 1;
   }
 
-  .ts-menu > button:focus-visible,
-  .ts-confirm button:focus-visible,
   .ts-skip:focus-visible,
-  .ts-options summary:focus-visible {
+  .ts-options summary:focus-visible,
+  .ts-close:focus-visible {
     outline: var(--focus);
     outline-offset: 2px;
   }
@@ -333,24 +623,23 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
 
   .ts-hint {
     margin: calc(-1 * var(--space-1)) 0 var(--space-1);
-    padding-left: var(--space-8);
     font-family: var(--mono-font);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     opacity: 0.7;
-    text-align: left;
+    text-align: center;
   }
 
   .ts-options {
-    text-align: left;
+    text-align: center;
   }
 
   .ts-options summary {
     padding: var(--space-2) var(--space-4);
     font-family: var(--mono-font);
-    font-size: 1rem;
-    letter-spacing: 0.1em;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
     list-style: none;
@@ -373,7 +662,10 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
   .ts-options-panel {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-2);
+    width: fit-content;
+    margin: 0 auto;
     padding: var(--space-2) var(--space-4) var(--space-3);
     font-family: var(--ui-font);
     font-size: 0.85rem;
@@ -389,19 +681,59 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
   }
 
   .ts-confirm {
-    margin-top: var(--space-6);
+    margin-top: var(--space-4);
     font-family: var(--ui-font);
     font-size: 0.95rem;
   }
 
   .ts-confirm-actions {
     display: flex;
+    justify-content: center;
     gap: var(--space-2);
     margin-top: var(--space-3);
   }
 
-  .ts-skip {
+  .ts-footer {
+    margin-top: var(--space-2);
+    font-family: var(--mono-font);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    white-space: nowrap;
+  }
+
+  .ts-prop {
     position: absolute;
+    image-rendering: pixelated;
+    opacity: 0.95;
+    pointer-events: none;
+  }
+
+  .prop-notebook {
+    left: 4%;
+    bottom: 6%;
+    width: 72px;
+    height: auto;
+    transform: rotate(-6deg);
+  }
+
+  .prop-books {
+    right: 3%;
+    bottom: 4%;
+    width: 88px;
+    height: auto;
+  }
+
+  .prop-mug {
+    right: 15%;
+    bottom: 16%;
+    width: 44px;
+    height: auto;
+  }
+
+  .ts-skip {
+    position: fixed;
     bottom: var(--space-6);
     right: var(--space-6);
     padding: var(--space-2) var(--space-3);
@@ -409,10 +741,10 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     font-size: 0.8rem;
     letter-spacing: 0.08em;
     color: var(--text);
-    background: none;
-    border: none;
+    background: rgb(15 23 42 / 0.75);
+    border: 1px solid var(--border-dark);
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   .ts-skip:hover {
@@ -420,11 +752,19 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     opacity: 1;
   }
 
-  @media (max-height: 420px) {
+  @media (max-width: 640px), (max-height: 560px) {
+    .ts-prop {
+      display: none;
+    }
+
+    .ts-body {
+      padding: var(--space-6) var(--space-4) var(--space-3);
+    }
+
     .ts-skip {
       position: static;
       align-self: flex-end;
-      margin-top: var(--space-3);
+      margin: auto var(--space-4) var(--space-4);
     }
   }
 

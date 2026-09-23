@@ -1,5 +1,4 @@
 ---
-import RetroPanel from "@/components/ui/RetroPanel.astro";
 import { hotspots } from "@/data/hotspots";
 
 interface Props {
@@ -8,127 +7,194 @@ interface Props {
 
 const { class: className } = Astro.props;
 const quests = hotspots.filter((h) => !h.optional);
+const total = quests.length + 2;
 ---
 
-<div class:list={["quest-log", className]}>
-  <RetroPanel title="Quest Log">
-    <ol class="quest-list">
-      {
-        quests.map((q) => (
-          <li data-section={q.id}>
-            <a href={q.href}>{q.label}</a>
-            <span class="quest-state" data-state>
-              Open
-            </span>
-          </li>
-        ))
-      }
-    </ol>
-    <p class="quest-count">
-      <span id="quest-count">–</span>/{quests.length} sections visited
-    </p>
-  </RetroPanel>
-</div>
+<aside class:list={["quest-log", className]} aria-labelledby="quest-log-title">
+  <div class="ql-titlebar">
+    <img
+      src="/assets/icons/system/quest.png"
+      alt=""
+      width="16"
+      height="16"
+      aria-hidden="true"
+    />
+    <h2 id="quest-log-title">Quest Log</h2>
+  </div>
+  <ol class="quest-list">
+    <li data-quest="explore">
+      <span class="quest-check" aria-hidden="true"></span>
+      <span class="quest-label">Explore the room</span>
+    </li>
+    {
+      quests.map((q) => (
+        <li data-section={q.id}>
+          <span class="quest-check" aria-hidden="true" />
+          <a class="quest-label" href={q.href}>
+            {q.quest ?? q.label}
+          </a>
+        </li>
+      ))
+    }
+    <li data-quest="eggs">
+      <span class="quest-check" aria-hidden="true"></span>
+      <span class="quest-label">Find the easter eggs</span>
+    </li>
+  </ol>
+  <p class="quest-count">
+    <span id="quest-count">–</span>/{total} quests complete
+  </p>
+</aside>
 
 <script>
   import { getVisited, type QuestSection } from "@/utils/progress";
+  import { storage, STORAGE_KEYS } from "@/utils/storage";
 
   const visited = new Set<QuestSection>(getVisited());
-  document.querySelectorAll(".quest-log li[data-section]").forEach((li) => {
+  const log = document.querySelector(".quest-log");
+  let done = visited.size;
+
+  if (
+    storage.get(STORAGE_KEYS.introSeen) === "1" ||
+    visited.size > 0
+  ) {
+    log
+      ?.querySelector('[data-quest="explore"]')
+      ?.setAttribute("data-visited", "true");
+    done += 1;
+  }
+  if (storage.get(STORAGE_KEYS.eggsFound) === "1") {
+    log
+      ?.querySelector('[data-quest="eggs"]')
+      ?.setAttribute("data-visited", "true");
+    done += 1;
+  }
+
+  log?.querySelectorAll("li[data-section]").forEach((li) => {
     const id = li.getAttribute("data-section") as QuestSection | null;
-    const state = li.querySelector("[data-state]");
-    if (id && visited.has(id)) {
-      li.setAttribute("data-visited", "true");
-      if (state) state.textContent = "Done";
-    }
+    if (id && visited.has(id)) li.setAttribute("data-visited", "true");
   });
+
   const count = document.getElementById("quest-count");
-  if (count) count.textContent = String(visited.size);
+  if (count) count.textContent = String(done);
 </script>
 
 <style>
   .quest-log {
-    margin: var(--space-4) auto 0;
-    max-width: min(100%, calc((100vh - 14rem) * 16 / 9));
-    max-width: min(100%, calc((100dvh - 14rem) * 16 / 9));
+    width: 240px;
+    max-width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    box-shadow:
+      var(--shadow-raised),
+      var(--shadow-panel);
+  }
+
+  .ql-titlebar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 3px var(--space-2);
+    background: linear-gradient(90deg, var(--primary), var(--secondary) 160%);
+    color: var(--text);
+  }
+
+  .ql-titlebar img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  .ql-titlebar h2 {
+    font-family: var(--ui-font);
+    font-size: 0.78rem;
+    font-weight: bold;
+    letter-spacing: 0.04em;
   }
 
   .quest-list {
     margin: 0;
-    padding: 0;
+    padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2);
     list-style: none;
-    font-family: var(--mono-font);
-    font-size: 0.8rem;
+    font-family: var(--ui-font);
+    font-size: 0.78rem;
   }
 
   .quest-list li {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-2) var(--space-1);
+    gap: var(--space-2);
+    padding: 3px 0;
   }
 
-  .quest-list li + li {
-    border-top: 1px dashed var(--border-dark);
-  }
-
-  .quest-list a {
-    color: var(--text);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-  }
-
-  .quest-list a::before {
-    content: "▸" / "";
-    color: var(--accent);
-    margin-right: var(--space-2);
-    opacity: 0;
-  }
-
-  .quest-list a:hover,
-  .quest-list a:focus-visible {
-    color: var(--accent);
-  }
-
-  .quest-list a:hover::before,
-  .quest-list a:focus-visible::before {
-    opacity: 1;
-  }
-
-  .quest-state {
-    flex-shrink: 0;
-    min-width: 5.5ch;
-    padding: 1px var(--space-2);
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-align: center;
-    color: var(--text);
-    opacity: 0.7;
+  .quest-check {
+    flex: none;
+    width: 13px;
+    height: 13px;
+    margin-left: 2px;
+    background: var(--window);
     border: 1px solid var(--border-dark);
     box-shadow: var(--shadow-sunken);
   }
 
-  .quest-list li[data-visited="true"] .quest-state {
+  .quest-list li[data-visited] .quest-check::after {
+    content: "✓" / "";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    font-weight: bold;
+    line-height: 1;
     color: var(--text-dark);
-    background: var(--success);
-    opacity: 1;
-    box-shadow: var(--shadow-raised);
   }
 
-  .quest-list li[data-visited="true"] a {
-    opacity: 0.85;
+  .quest-label {
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  a.quest-label {
+    text-decoration: none;
+  }
+
+  a.quest-label:hover,
+  a.quest-label:focus-visible {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .quest-list li[data-visited] .quest-label {
+    opacity: 0.8;
   }
 
   .quest-count {
-    margin-top: var(--space-3);
-    padding-top: var(--space-2);
+    padding: var(--space-1) var(--space-3) var(--space-2);
     border-top: 1px solid var(--border-dark);
     font-family: var(--mono-font);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     opacity: 0.85;
+  }
+
+  @media (min-width: 641px) and (min-height: 541px) {
+    .quest-log {
+      position: absolute;
+      top: calc(var(--chrome-h, 44px) + var(--space-2));
+      left: var(--space-2);
+      width: 240px;
+      z-index: var(--z-overlay);
+    }
+  }
+
+  @media (max-width: 640px), (max-height: 540px) {
+    .quest-log {
+      width: min(100% - var(--space-6), 320px);
+      margin: var(--space-4) auto;
+    }
   }
 </style>

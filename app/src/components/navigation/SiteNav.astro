@@ -1,12 +1,17 @@
 ---
 import { NAV_LINKS } from "@/data/site";
 
+interface Props {
+  embedded?: boolean;
+}
+
+const { embedded = false } = Astro.props;
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const isCurrent = (href: string) =>
   pathname === href || pathname.startsWith(`${href}/`);
 ---
 
-<nav class="site-nav" aria-label="Main navigation">
+<nav class:list={["site-nav", embedded && "embedded"]} aria-label="Main navigation">
   <ul>
     {
       NAV_LINKS.map(({ href, label, icon }) => (
@@ -50,6 +55,18 @@ const isCurrent = (href: string) =>
     background: var(--surface);
     border-top: 1px solid var(--border-dark);
     box-shadow: 0 -1px 0 var(--border-light) inset;
+  }
+
+  .site-nav.embedded {
+    position: static;
+    background: transparent;
+    border-top: none;
+    box-shadow: none;
+  }
+
+  .site-nav.embedded ul {
+    padding: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .site-nav ul {

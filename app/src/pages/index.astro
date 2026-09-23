@@ -3,19 +3,15 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import TitleScreen from "@/components/adventure/TitleScreen.astro";
 import RoomScene from "@/components/adventure/RoomScene.astro";
 import QuestLog from "@/components/adventure/QuestLog.astro";
+import AdventureBar from "@/components/adventure/AdventureBar.astro";
 import { SITE } from "@/data/site";
 ---
 
-<BaseLayout title={SITE.name}>
+<BaseLayout title={SITE.name} chrome="adventure">
   <TitleScreen />
-  <div class="content-page">
-    <h1>{SITE.name}</h1>
-    <p>{SITE.tagline}</p>
-    <p>
-      Welcome to my little corner of the internet. Click around, explore, and
-      discover my journey.
-    </p>
-  </div>
-  <RoomScene />
-  <QuestLog />
+  <h1 class="sr-only">{SITE.name}</h1>
+  <RoomScene cover>
+    <QuestLog slot="overlay" />
+  </RoomScene>
+  <AdventureBar slot="nav" />
 </BaseLayout>

@@ -3,6 +3,7 @@ export const STORAGE_KEYS = {
   visitedSections: "portfolio:visitedSections",
   soundEnabled: "portfolio:soundEnabled",
   reducedEffects: "portfolio:reducedEffects",
+  eggsFound: "portfolio:eggsFound",
 } as const;
 
 export const storage = {

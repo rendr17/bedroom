@@ -6,9 +6,15 @@ import SiteNav from "@/components/navigation/SiteNav.astro";
 interface Props {
   title: string;
   description?: string;
+  chrome?: "default" | "adventure";
 }
 
-const { title, description = SITE.description } = Astro.props;
+const {
+  title,
+  description = SITE.description,
+  chrome = "default",
+} = Astro.props;
+const adventure = chrome === "adventure";
 ---
 
 <!doctype html>
@@ -30,24 +36,54 @@ const { title, description = SITE.description } = Astro.props;
       }
     </script>
   </head>
-  <body>
+  <body class:list={[adventure && "is-adventure"]}>
     <a class="skip-link" href="#main">Skip to main content</a>
-    <header>
-      <p class="site-title"><a href="/">{SITE.name}</a></p>
-      <SiteNav />
+    <header class="top-chrome">
+      <a class="chrome-window chrome-app" href="/">
+        <img
+          class="chrome-icon"
+          src="/assets/props/avatar-placeholder.png"
+          alt=""
+          width="18"
+          height="18"
+          aria-hidden="true"
+        />
+        <span class="chrome-title">{SITE.name}</span>
+        <span class="chrome-controls" aria-hidden="true">
+          <i>_</i>
+          <i>&#9634;</i>
+          <i>&#10005;</i>
+        </span>
+      </a>
+      <p class="chrome-window chrome-menu">
+        <span class="chrome-motto">Explore • Create • Build • Grow</span>
+        <span class="signal" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </span>
+      </p>
     </header>
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <footer>
-      <p>{SITE.tagline}</p>
-    </footer>
+    <slot name="nav"><SiteNav /></slot>
+    {
+      !adventure && (
+        <footer>
+          <p>{SITE.tagline}</p>
+        </footer>
+      )
+    }
     <script>
       import { markVisited, sectionFromPath } from "@/utils/progress";
+      import { storage, STORAGE_KEYS } from "@/utils/storage";
       import { playCue } from "@/utils/audio";
 
       const section = sectionFromPath(location.pathname);
       let successPending = Boolean(section && markVisited(section));
+
+      if (location.pathname.replace(/\/+$/, "") === "/extras") {
+        storage.set(STORAGE_KEYS.eggsFound, "1");
+      }
 
       document.addEventListener("click", (event) => {
         const target = event.target instanceof Element ? event.target : null;
@@ -63,3 +99,123 @@ const { title, description = SITE.description } = Astro.props;
     </script>
   </body>
 </html>
+
+<style>
+  .top-chrome {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-2) 0;
+  }
+
+  .chrome-window {
+    border: 1px solid var(--border-dark);
+    box-shadow:
+      var(--shadow-raised),
+      var(--shadow-panel);
+  }
+
+  .chrome-app {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    max-width: min(430px, 72vw);
+    padding: 3px var(--space-2) 3px var(--space-1);
+    background: linear-gradient(90deg, var(--primary), var(--secondary) 160%);
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--ui-font);
+    font-size: 0.8rem;
+    font-weight: bold;
+    user-select: none;
+  }
+
+  .chrome-icon {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    object-fit: cover;
+    object-position: top;
+    image-rendering: pixelated;
+    background: var(--window);
+    border: 1px solid var(--border-dark);
+  }
+
+  .chrome-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chrome-controls {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: var(--space-2);
+  }
+
+  .chrome-controls i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 14px;
+    font-style: normal;
+    font-size: 0.6rem;
+    line-height: 1;
+    background: var(--window);
+    color: var(--text-dark);
+    box-shadow:
+      inset -1px -1px 0 var(--border-dark),
+      inset 1px 1px 0 var(--border-light);
+  }
+
+  .chrome-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    background: var(--surface);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .signal {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+  }
+
+  .signal i {
+    display: block;
+    width: 3px;
+    background: var(--success);
+  }
+
+  .signal i:nth-child(1) {
+    height: 4px;
+  }
+
+  .signal i:nth-child(2) {
+    height: 7px;
+  }
+
+  .signal i:nth-child(3) {
+    height: 10px;
+  }
+
+  .signal i:nth-child(4) {
+    height: 12px;
+  }
+
+  @media (max-width: 720px) {
+    .chrome-menu {
+      display: none;
+    }
+  }
+</style>

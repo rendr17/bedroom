@@ -4,30 +4,33 @@ import RetroDialog from "@/components/ui/RetroDialog.astro";
 
 interface Props {
   class?: string;
+  cover?: boolean;
 }
 
-const { class: className } = Astro.props;
+const { class: className, cover = false } = Astro.props;
 const primaryHotspots = hotspots.filter((h) => !h.optional);
 const extraHotspots = hotspots.filter((h) => h.optional);
 ---
 
-<figure class:list={["room-scene", className]}>
-  <div class="room-stage">
+<figure class:list={["room-scene", className, cover && "cover"]}>
+  <div class="room-bg">
     <img
-      src="/assets/backgrounds/bedroom-night.png"
-      alt="Pixel-art bedroom at night: a bed with a sleeping cat, a wooden desk holding a CRT monitor and a digital clock, a potted plant, a bookshelf, posters and a corkboard on the wall, and a window overlooking a city skyline."
-      width="1600"
-      height="900"
+      src="/assets/backgrounds/bedroom-full.jpg"
+      alt="Pixel-art bedroom at night: a bed with a sleeping cat, a wooden desk holding a CRT monitor showing a retro desktop, a keyboard, mug and notebook, a bookshelf, posters on the wall, and a window overlooking a city skyline."
+      width="1024"
+      height="768"
       fetchpriority="high"
     />
+  </div>
+  <div class="room-overlay">
     <nav class="room-hotspots" aria-label="Room">
       <ul>
         {
           primaryHotspots.map((h) => (
             <li
-              style={`--hx:${h.desktop.x}%;--hy:${h.desktop.y}%;--o:${h.mobileOrder}`}
+              style={`--hx:${h.desktop.x};--hy:${h.desktop.y};--o:${h.mobileOrder}`}
             >
-              <a href={h.href} class="hotspot" data-section={h.id}>
+              <a href={h.href} class="hotspot pin" data-section={h.id}>
                 <img
                   class="hotspot-marker"
                   src="/assets/icons/system/hotspot.png"
@@ -44,9 +47,9 @@ const extraHotspots = hotspots.filter((h) => h.optional);
         {
           extraHotspots.map((h) => (
             <li
-              style={`--hx:${h.desktop.x}%;--hy:${h.desktop.y}%;--o:${h.mobileOrder}`}
+              style={`--hx:${h.desktop.x};--hy:${h.desktop.y};--o:${h.mobileOrder}`}
             >
-              <a href={h.href} class="hotspot" data-section={h.id}>
+              <a href={h.href} class="hotspot pin" data-section={h.id}>
                 <img
                   class="hotspot-marker marker-prop"
                   src={h.icon ?? "/assets/icons/system/hotspot.png"}
@@ -65,9 +68,9 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     <div class="room-eggs">
       <button
         type="button"
-        class="hotspot egg"
+        class="hotspot pin egg"
         id="egg-cat"
-        style="--hx:15%;--hy:63%;--o:7"
+        style="--hx:7;--hy:62;--o:7"
         aria-label="Pet the cat"
       >
         <img
@@ -82,9 +85,9 @@ const extraHotspots = hotspots.filter((h) => h.optional);
       </button>
       <button
         type="button"
-        class="hotspot egg"
+        class="hotspot pin egg"
         id="egg-floppy"
-        style="--hx:74%;--hy:76%;--o:8"
+        style="--hx:92;--hy:80;--o:8"
         aria-label="Read the floppy disk"
         data-cue
       >
@@ -98,10 +101,16 @@ const extraHotspots = hotspots.filter((h) => h.optional);
         />
         <span class="hotspot-label">Read the floppy</span>
       </button>
-      <span class="cat-bubble" id="cat-bubble" aria-hidden="true"></span>
+      <span
+        class="cat-bubble pin"
+        id="cat-bubble"
+        style="--hx:11;--hy:53"
+        aria-hidden="true"
+      ></span>
     </div>
+    <slot name="overlay" />
   </div>
-  <figcaption class="room-hint">
+  <figcaption class="room-hint sr-only">
     Click a <b>!</b> marker in the room to explore — or use the navigation below.
   </figcaption>
 </figure>
@@ -124,9 +133,10 @@ const extraHotspots = hotspots.filter((h) => h.optional);
 
 <style>
   .room-scene {
+    position: relative;
     margin: var(--space-6) auto 0;
-    max-width: min(100%, calc((100vh - 14rem) * 16 / 9));
-    max-width: min(100%, calc((100dvh - 14rem) * 16 / 9));
+    max-width: min(100%, calc((100vh - 14rem) * 1024 / 630));
+    max-width: min(100%, calc((100dvh - 14rem) * 1024 / 630));
     padding: var(--space-2);
     background: var(--surface);
     border: 2px solid var(--border-dark);
@@ -159,17 +169,22 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     color: var(--accent);
   }
 
-  .room-stage {
+  .room-bg {
     position: relative;
   }
 
-  .room-stage > img {
+  .room-bg img {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1024 / 768;
     object-fit: contain;
     image-rendering: pixelated;
     background: var(--bg-deep);
     display: block;
+  }
+
+  .room-overlay {
+    position: absolute;
+    inset: 0;
   }
 
   .room-hotspots {
@@ -184,36 +199,42 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     list-style: none;
   }
 
-  .hotspot {
+  .pin {
     position: absolute;
-    left: var(--hx);
-    top: var(--hy);
+    left: calc(var(--hx) * 1%);
+    top: calc(var(--hy) * 1%);
+  }
+
+  .hotspot {
     transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
+    gap: 6px;
+    padding: 3px var(--space-2) 3px var(--space-1);
+    min-height: 30px;
+    color: var(--text-dark);
+    background: var(--window);
+    border: 1px solid var(--border-dark);
+    box-shadow:
+      var(--shadow-raised),
+      var(--shadow-panel);
     text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-out);
   }
 
   .hotspot-marker {
-    width: 28px;
-    height: 28px;
+    flex: none;
+    width: 18px;
+    height: 18px;
     object-fit: contain;
     image-rendering: pixelated;
-    opacity: 0.7;
-    animation: marker-glow 2.6s ease-in-out infinite;
-    transition:
-      opacity var(--duration-fast) var(--ease-out),
-      transform var(--duration-fast) var(--ease-out),
-      filter var(--duration-fast) var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-out);
   }
 
   @keyframes marker-glow {
     0%,
     100% {
-      opacity: 0.7;
+      opacity: 0.55;
     }
     50% {
       opacity: 0.95;
@@ -221,17 +242,81 @@ const extraHotspots = hotspots.filter((h) => h.optional);
   }
 
   .hotspot-label {
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 8px;
     font-family: var(--mono-font);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: bold;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
+  }
+
+  .hotspot:hover,
+  .hotspot:focus-visible {
+    background: var(--accent);
+  }
+
+  .hotspot:hover .hotspot-marker,
+  .hotspot:focus-visible .hotspot-marker {
+    transform: scale(1.2);
+  }
+
+  .hotspot:active {
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .hotspot[data-visited]::after {
+    content: "✓" / "";
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    font-family: var(--mono-font);
+    font-size: 0.6rem;
+    font-weight: bold;
+    line-height: 1;
+    color: var(--text-dark);
+    background: var(--success);
+    border: 1px solid var(--border-dark);
+    padding: 1px 3px;
+  }
+
+  .room-eggs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .room-eggs .egg {
+    pointer-events: auto;
+    justify-content: center;
+    gap: 0;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    color: var(--text);
+    background: none;
+    border: none;
+    box-shadow: none;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .room-eggs .egg .hotspot-marker {
+    width: 28px;
+    height: 28px;
+    opacity: 0.55;
+    animation: marker-glow 2.6s ease-in-out infinite;
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out),
+      filter var(--duration-fast) var(--ease-out);
+  }
+
+  .room-eggs .egg .hotspot-label {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    padding: 4px 8px;
     color: var(--text-dark);
     background: var(--accent);
     border: 1px solid var(--border-dark);
@@ -243,77 +328,26 @@ const extraHotspots = hotspots.filter((h) => h.optional);
       transform var(--duration-fast) var(--ease-out);
   }
 
-  .hotspot:hover .hotspot-marker,
-  .hotspot:focus-visible .hotspot-marker {
+  .room-eggs .egg:hover .hotspot-marker,
+  .room-eggs .egg:focus-visible .hotspot-marker {
     animation-play-state: paused;
     opacity: 1;
     transform: scale(1.15);
     filter: drop-shadow(0 0 6px rgb(255 209 102 / 0.8));
   }
 
-  .hotspot:active .hotspot-marker {
-    transform: scale(0.95);
-    transition-duration: 0s;
-  }
-
-  .hotspot[data-visited]::after {
-    content: "✓" / "";
-    position: absolute;
-    right: 0;
-    bottom: 2px;
-    font-family: var(--mono-font);
-    font-size: 0.6rem;
-    font-weight: bold;
-    line-height: 1;
-    color: var(--text-dark);
-    background: var(--success);
-    border: 1px solid var(--border-dark);
-    padding: 1px 3px;
-  }
-
-  .hotspot[data-visited] .hotspot-marker {
-    opacity: 0.5;
-  }
-
-  .hotspot[data-visited]:hover .hotspot-marker,
-  .hotspot[data-visited]:focus-visible .hotspot-marker {
-    opacity: 1;
-  }
-
-  .hotspot:hover .hotspot-label,
-  .hotspot:focus-visible .hotspot-label {
+  .room-eggs .egg:hover .hotspot-label,
+  .room-eggs .egg:focus-visible .hotspot-label {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
 
-  .room-eggs {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .room-eggs .egg {
-    pointer-events: auto;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .room-eggs .hotspot-marker {
-    opacity: 0.55;
-  }
-
   .marker-prop {
     width: auto;
-    height: 34px;
+    height: 20px;
   }
 
   .cat-bubble {
-    position: absolute;
-    left: 15%;
-    top: 63%;
     transform: translate(-50%, -160%) scale(0.9);
     padding: 4px 10px;
     font-family: var(--mono-font);
@@ -337,14 +371,66 @@ const extraHotspots = hotspots.filter((h) => h.optional);
   }
 
   @media (hover: none) {
-    .hotspot:active .hotspot-label {
+    .room-eggs .egg:active .hotspot-label {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
   }
 
+  .room-scene.cover {
+    margin: 0;
+    padding: 0;
+    max-width: none;
+    width: 100%;
+    background: none;
+    border: none;
+    box-shadow: none;
+    animation: none;
+  }
+
+  .room-scene.cover .room-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .room-scene.cover .room-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: auto;
+  }
+
+  .room-scene.cover .room-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+  }
+
+  /*
+   * The cover-mode image is object-fit:cover against the viewport, so % of the
+   * overlay box ≠ % of the image once cropping kicks in. Re-map pin coords:
+   *  - viewport wider than 4:3 → image is width-fit, cropped top/bottom.
+   *    renderedH = 100vw * 768/1024 = 75vw; crop = (75vw - 100vh) / 2.
+   *    pinTop = hy% * 75vw - crop = 75vw * (hy/100 - 0.5) + 50vh.
+   *  - viewport taller than 4:3 → mirrored on the x axis with 133.333vh.
+   */
+  @media (min-width: 641px) and (min-height: 541px) and (min-aspect-ratio: 4/3) {
+    .room-scene.cover .pin {
+      top: calc(75vw * (var(--hy) / 100 - 0.5) + 50vh);
+    }
+  }
+
+  @media (min-width: 641px) and (min-height: 541px) and (max-aspect-ratio: 4/3) {
+    .room-scene.cover .pin {
+      left: calc(133.333vh * (var(--hx) / 100 - 0.5) + 50vw);
+    }
+  }
+
   @media (max-width: 640px), (orientation: landscape) and (max-height: 540px) {
-    .room-stage {
+    .room-scene.cover .room-overlay {
+      position: static;
       display: flex;
       flex-direction: column;
     }
@@ -352,6 +438,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     .room-hotspots {
       position: static;
       margin-top: var(--space-2);
+      padding: 0 var(--space-2);
     }
 
     .room-hotspots ul,
@@ -365,6 +452,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     .room-eggs {
       position: static;
       margin-top: var(--space-2);
+      padding: 0 var(--space-2);
     }
 
     .room-hotspots li,
@@ -372,49 +460,46 @@ const extraHotspots = hotspots.filter((h) => h.optional);
       order: var(--o);
     }
 
-    .hotspot {
+    .hotspot,
+    .room-eggs .egg {
       position: relative;
+      left: auto;
+      top: auto;
       transform: none;
       width: auto;
       height: auto;
       gap: var(--space-2);
       padding: var(--space-2) var(--space-3);
       min-height: 44px;
-      color: var(--text);
-      background: var(--bg-deep);
+      color: var(--text-dark);
+      background: var(--window);
       border: 1px solid var(--border-dark);
       box-shadow: var(--shadow-raised);
+      cursor: pointer;
     }
 
-    .hotspot:active {
+    .hotspot:active,
+    .room-eggs .egg:active {
       box-shadow: var(--shadow-sunken);
     }
 
-    .hotspot-marker {
+    .hotspot-marker,
+    .room-eggs .egg .hotspot-marker {
       width: 20px;
       height: 20px;
       opacity: 1;
+      animation: none;
     }
 
-    .hotspot-label {
+    .room-eggs .egg .hotspot-label {
       position: static;
-      transform: none;
       padding: 0;
-      color: var(--text);
+      color: inherit;
       background: none;
       border: none;
       opacity: 1;
-      pointer-events: auto;
-    }
-
-    .hotspot:hover .hotspot-marker,
-    .hotspot:focus-visible .hotspot-marker {
       transform: none;
-    }
-
-    .hotspot:hover .hotspot-label,
-    .hotspot:focus-visible .hotspot-label {
-      color: var(--accent);
+      pointer-events: auto;
     }
 
     .cat-bubble {
@@ -435,6 +520,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
 <script>
   import { playCue } from "@/utils/audio";
   import { getVisited, type QuestSection } from "@/utils/progress";
+  import { storage, STORAGE_KEYS } from "@/utils/storage";
 
   const visited = new Set<QuestSection>(getVisited());
   document
@@ -462,6 +548,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
   let bubbleTimer: number | undefined;
 
   catBtn?.addEventListener("click", () => {
+    storage.set(STORAGE_KEYS.eggsFound, "1");
     const line = catLines[catIndex++ % catLines.length];
     if (catBubble) {
       catBubble.textContent = line;
@@ -477,6 +564,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
 
   if (readmeDialog instanceof HTMLDialogElement) {
     floppyBtn?.addEventListener("click", () => {
+      storage.set(STORAGE_KEYS.eggsFound, "1");
       playCue("open");
       readmeDialog.showModal();
     });

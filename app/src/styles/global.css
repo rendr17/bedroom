@@ -89,28 +89,34 @@ a {
   color: var(--secondary);
 }
 
-header {
-  padding: var(--space-4) var(--space-6);
-  border-bottom: 1px solid var(--border-dark);
-}
-
-.site-title {
-  font-family: var(--ui-font);
-  font-weight: bold;
-}
-
-.site-title a {
-  color: var(--text);
-  text-decoration: none;
-}
-
 #main {
   padding: var(--space-6);
+}
+
+body.is-adventure {
+  --chrome-h: 44px;
+  --bar-h: 84px;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body.is-adventure #main {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 @media (max-width: 640px) {
   #main {
     padding: var(--space-4) var(--space-3);
+  }
+
+  body.is-adventure #main {
+    padding: 0;
   }
 }
 
