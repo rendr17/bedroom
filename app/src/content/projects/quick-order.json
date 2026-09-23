@@ -16,5 +16,6 @@
   ],
   "technology": ["Vue", "Laravel API", "Relational database", "Responsive web"],
   "impact": ["Simplifies order capture and cashier verification flow"],
-  "accent": "orange"
+  "accent": "orange",
+  "fileExt": "inv"
 }

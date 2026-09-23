@@ -21,5 +21,6 @@
     "Game-state logic"
   ],
   "impact": ["Creative project combining logistics context and game design"],
-  "accent": "purple"
+  "accent": "purple",
+  "fileExt": "exe"
 }

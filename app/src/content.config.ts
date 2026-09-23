@@ -30,6 +30,7 @@ const projects = defineCollection({
       .array(z.object({ label: z.string(), href: z.string() }))
       .default([]),
     accent: z.string().optional(),
+    fileExt: z.string().default("txt"),
   }),
 });
 

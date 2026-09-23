@@ -21,5 +21,6 @@
     "API/data pipelines"
   ],
   "impact": ["Designed as a reusable open maritime-data project"],
-  "accent": "cyan"
+  "accent": "cyan",
+  "fileExt": "md"
 }

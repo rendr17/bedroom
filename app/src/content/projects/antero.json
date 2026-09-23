@@ -25,5 +25,6 @@
     "Supports high-volume logistics operations",
     "Consolidates operational workflows into a shared system"
   ],
-  "accent": "blue"
+  "accent": "blue",
+  "fileExt": "txt"
 }

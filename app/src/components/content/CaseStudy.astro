@@ -36,4 +36,11 @@ const { fileName, accent = "blue", class: className } = Astro.props;
   .case-study :global(.window-title) {
     letter-spacing: 0.08em;
   }
+
+  .case-study :global(.window-title)::before {
+    content: "■" / "";
+    margin-right: var(--space-2);
+    font-size: 0.55rem;
+    color: var(--case-accent);
+  }
 </style>

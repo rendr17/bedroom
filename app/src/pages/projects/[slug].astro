@@ -40,7 +40,10 @@ const project = entry.data;
 
   <p class="project-subtitle">{project.subtitle}</p>
 
-  <CaseStudy fileName={`${entry.id.toUpperCase()}.TXT`} accent={project.accent}>
+  <CaseStudy
+    fileName={`${entry.id.toUpperCase()}.${project.fileExt.toUpperCase()}`}
+    accent={project.accent}
+  >
     <dl class="case-meta">
       <div>
         <dt>Category</dt>
