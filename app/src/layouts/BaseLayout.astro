@@ -32,5 +32,10 @@ const { title, description = SITE.description } = Astro.props;
     <footer>
       <p>{SITE.tagline}</p>
     </footer>
+    <script>
+      import { markVisited, sectionFromPath } from "@/utils/progress";
+      const section = sectionFromPath(location.pathname);
+      if (section) markVisited(section);
+    </script>
   </body>
 </html>

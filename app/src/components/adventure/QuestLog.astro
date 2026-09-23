@@ -1,0 +1,132 @@
+---
+import RetroPanel from "@/components/ui/RetroPanel.astro";
+import { hotspots } from "@/data/hotspots";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const quests = hotspots.filter((h) => !h.optional);
+---
+
+<RetroPanel title="Quest Log" class:list={["quest-log", className]}>
+  <ol class="quest-list">
+    {
+      quests.map((q) => (
+        <li data-section={q.id}>
+          <a href={q.href}>{q.label}</a>
+          <span class="quest-state" data-state>
+            Open
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="quest-count">
+    <span id="quest-count">0</span>/{quests.length} sections visited
+  </p>
+</RetroPanel>
+
+<script>
+  import { getVisited, type QuestSection } from "@/utils/progress";
+
+  const visited = new Set<QuestSection>(getVisited());
+  document.querySelectorAll(".quest-log li[data-section]").forEach((li) => {
+    const id = li.getAttribute("data-section") as QuestSection | null;
+    const state = li.querySelector("[data-state]");
+    if (id && visited.has(id)) {
+      li.setAttribute("data-visited", "true");
+      if (state) state.textContent = "Done";
+    }
+  });
+  const count = document.getElementById("quest-count");
+  if (count) count.textContent = String(visited.size);
+</script>
+
+<style>
+  .quest-log {
+    margin: var(--space-4) auto 0;
+    max-width: min(100%, calc((100vh - 14rem) * 16 / 9));
+    max-width: min(100%, calc((100dvh - 14rem) * 16 / 9));
+  }
+
+  .quest-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+  }
+
+  .quest-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-1);
+  }
+
+  .quest-list li + li {
+    border-top: 1px dashed var(--border-dark);
+  }
+
+  .quest-list a {
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+
+  .quest-list a::before {
+    content: "▸" / "";
+    color: var(--accent);
+    margin-right: var(--space-2);
+    opacity: 0;
+  }
+
+  .quest-list a:hover,
+  .quest-list a:focus-visible {
+    color: var(--accent);
+  }
+
+  .quest-list a:hover::before,
+  .quest-list a:focus-visible::before {
+    opacity: 1;
+  }
+
+  .quest-state {
+    flex-shrink: 0;
+    min-width: 5.5ch;
+    padding: 1px var(--space-2);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--text);
+    opacity: 0.7;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .quest-list li[data-visited="true"] .quest-state {
+    color: var(--text-dark);
+    background: var(--success);
+    opacity: 1;
+    box-shadow: var(--shadow-raised);
+  }
+
+  .quest-list li[data-visited="true"] a {
+    opacity: 0.85;
+  }
+
+  .quest-count {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--border-dark);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+</style>
