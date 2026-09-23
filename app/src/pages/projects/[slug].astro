@@ -1,21 +1,29 @@
 ---
-import { getCollection } from "astro:content";
 import ContentLayout from "@/layouts/ContentLayout.astro";
+import CaseStudy from "@/components/content/CaseStudy.astro";
+import CaseSection from "@/components/content/CaseSection.astro";
+import { getSortedProjects } from "@/utils/content";
 import type { CollectionEntry } from "astro:content";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects.map((entry) => ({
+  const sorted = await getSortedProjects();
+  return sorted.map((entry, index) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: {
+      entry,
+      prev: sorted[index - 1],
+      next: sorted[index + 1],
+    },
   }));
 }
 
 interface Props {
   entry: CollectionEntry<"projects">;
+  prev?: CollectionEntry<"projects">;
+  next?: CollectionEntry<"projects">;
 }
 
-const { entry } = Astro.props;
+const { entry, prev, next } = Astro.props;
 const project = entry.data;
 ---
 
@@ -23,84 +31,338 @@ const project = entry.data;
   title={project.title}
   description={`${project.title} — ${project.subtitle}. A project by Rendi.`}
 >
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/projects">Projects</a></li>
+      <li aria-current="page">{project.title}</li>
+    </ol>
+  </nav>
+
   <p class="project-subtitle">{project.subtitle}</p>
-  <p class="project-meta">
-    {project.category} · {project.status} · Role: {project.role}
-    {project.year && ` · ${project.year}`}
-  </p>
-  <p>{project.shortDescription}</p>
 
-  {
-    project.problem && (
-      <>
-        <h2>Problem</h2>
-        <p>{project.problem}</p>
-      </>
-    )
-  }
+  <CaseStudy fileName={`${entry.id.toUpperCase()}.TXT`} accent={project.accent}>
+    <dl class="case-meta">
+      <div>
+        <dt>Category</dt>
+        <dd>{project.category}</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd>{project.status}</dd>
+      </div>
+      <div>
+        <dt>Role</dt>
+        <dd>{project.role}</dd>
+      </div>
+      {
+        project.year && (
+          <div>
+            <dt>Year</dt>
+            <dd>{project.year}</dd>
+          </div>
+        )
+      }
+    </dl>
 
-  {
-    project.solution && (
-      <>
-        <h2>Solution</h2>
-        <p>{project.solution}</p>
-      </>
-    )
-  }
+    <CaseSection title="Overview">
+      <p>{project.longDescription ?? project.shortDescription}</p>
+    </CaseSection>
 
-  {
-    project.features.length > 0 && (
-      <>
-        <h2>Features</h2>
-        <ul>
-          {project.features.map((feature) => (
-            <li>{feature}</li>
-          ))}
-        </ul>
-      </>
-    )
-  }
+    {
+      project.problem && (
+        <CaseSection title="Problem">
+          <p>{project.problem}</p>
+        </CaseSection>
+      )
+    }
 
-  {
-    project.technology.length > 0 && (
-      <>
-        <h2>Technology</h2>
-        <ul>
-          {project.technology.map((tech) => (
-            <li>{tech}</li>
-          ))}
-        </ul>
-      </>
-    )
-  }
+    {
+      project.solution && (
+        <CaseSection title="Solution">
+          <p>{project.solution}</p>
+        </CaseSection>
+      )
+    }
 
-  {
-    project.impact.length > 0 && (
-      <>
-        <h2>Impact</h2>
-        <ul>
-          {project.impact.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-      </>
-    )
-  }
+    {
+      project.responsibilities.length > 0 && (
+        <CaseSection title="Responsibilities">
+          <ul class="check-list">
+            {project.responsibilities.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </CaseSection>
+      )
+    }
 
-  {
-    project.links.length > 0 && (
-      <>
-        <h2>Links</h2>
-        <ul>
-          {project.links.map((link) => (
-            <li>
-              <a href={link.href}>{link.label}</a>
-            </li>
-          ))}
-        </ul>
-      </>
-    )
-  }
+    {
+      project.features.length > 0 && (
+        <CaseSection title="Key Features">
+          <ul class="check-list">
+            {project.features.map((feature) => (
+              <li>{feature}</li>
+            ))}
+          </ul>
+        </CaseSection>
+      )
+    }
 
-  <p><a href="/projects">← Back to all projects</a></p>
+    {
+      project.technology.length > 0 && (
+        <CaseSection title="Technology">
+          <ul class="spec-chips">
+            {project.technology.map((tech) => (
+              <li>{tech}</li>
+            ))}
+          </ul>
+        </CaseSection>
+      )
+    }
+
+    {
+      project.impact.length > 0 && (
+        <CaseSection title="Impact">
+          <div class="impact-block">
+            <ul>
+              {project.impact.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </CaseSection>
+      )
+    }
+
+    {
+      project.screenshots.length > 0 && (
+        <CaseSection title="Screenshots">
+          <ul class="case-screens">
+            {project.screenshots.map((shot) => (
+              <li>
+                <img src={shot.src} alt={shot.alt} loading="lazy" />
+              </li>
+            ))}
+          </ul>
+        </CaseSection>
+      )
+    }
+
+    {
+      project.links.length > 0 && (
+        <CaseSection title="Links">
+          <ul class="case-links">
+            {project.links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </CaseSection>
+      )
+    }
+  </CaseStudy>
+
+  <nav class="case-nav" aria-label="More projects">
+    <span>
+      {prev && <a href={`/projects/${prev.id}`}>« {prev.data.title}</a>}
+    </span>
+    <a href="/projects">All projects</a>
+    <span>
+      {next && <a href={`/projects/${next.id}`}>{next.data.title} »</a>}
+    </span>
+  </nav>
 </ContentLayout>
+
+<style>
+  .breadcrumb {
+    margin-bottom: var(--space-3);
+  }
+
+  .breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .breadcrumb li + li::before {
+    content: "/" / "";
+    margin-right: var(--space-2);
+    opacity: 0.5;
+  }
+
+  .breadcrumb a {
+    color: var(--secondary);
+  }
+
+  .breadcrumb li[aria-current] {
+    color: var(--accent);
+  }
+
+  .project-subtitle {
+    margin-top: calc(var(--space-3) * -1);
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--secondary);
+  }
+
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-2) var(--space-4);
+    margin: 0 0 var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--border-dark);
+  }
+
+  .case-meta div {
+    min-width: 0;
+  }
+
+  .case-meta dt {
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(21 21 21 / 0.55);
+  }
+
+  .case-meta dd {
+    margin: 1px 0 0;
+    font-family: var(--ui-font);
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: var(--text-dark);
+  }
+
+  .check-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .check-list li {
+    padding: 2px 0;
+    color: rgb(21 21 21 / 0.88);
+  }
+
+  .check-list li::before {
+    content: ">" / "";
+    margin-right: var(--space-2);
+    font-family: var(--mono-font);
+    font-weight: bold;
+    color: var(--case-accent, var(--primary));
+  }
+
+  .spec-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .spec-chips li {
+    padding: 2px var(--space-2);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--text-dark);
+    background: #fffef5;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .impact-block {
+    padding: var(--space-2) var(--space-3);
+    border-left: 3px solid var(--case-accent, var(--primary));
+    background: rgb(30 74 148 / 0.08);
+  }
+
+  .impact-block ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .impact-block li {
+    padding: 2px 0;
+    font-weight: bold;
+    color: var(--text-dark);
+  }
+
+  .impact-block li::before {
+    content: "▸" / "";
+    margin-right: var(--space-2);
+    color: var(--case-accent, var(--primary));
+  }
+
+  .case-screens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .case-screens img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border-dark);
+    image-rendering: pixelated;
+  }
+
+  .case-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .case-links li::before {
+    content: ">" / "";
+    margin-right: var(--space-2);
+    font-family: var(--mono-font);
+    font-weight: bold;
+    color: var(--case-accent, var(--primary));
+  }
+
+  .case-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-nav > span {
+    flex: 1;
+  }
+
+  .case-nav > span:last-child {
+    text-align: right;
+  }
+
+  .case-nav a {
+    color: var(--secondary);
+  }
+
+  .case-nav a:hover,
+  .case-nav a:focus-visible {
+    color: var(--accent);
+  }
+</style>

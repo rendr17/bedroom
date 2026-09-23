@@ -1,0 +1,39 @@
+---
+import RetroWindow from "@/components/ui/RetroWindow.astro";
+
+interface Props {
+  fileName: string;
+  accent?: string;
+  class?: string;
+}
+
+const { fileName, accent = "blue", class: className } = Astro.props;
+---
+
+<div class:list={["case-study", className]} data-accent={accent}>
+  <RetroWindow title={fileName} controls={false}>
+    <slot />
+  </RetroWindow>
+</div>
+
+<style>
+  .case-study {
+    --case-accent: #4a90e2;
+  }
+
+  .case-study[data-accent="cyan"] {
+    --case-accent: #22b8cf;
+  }
+
+  .case-study[data-accent="orange"] {
+    --case-accent: #e58a3a;
+  }
+
+  .case-study[data-accent="purple"] {
+    --case-accent: #8a5aa0;
+  }
+
+  .case-study :global(.window-title) {
+    letter-spacing: 0.08em;
+  }
+</style>
