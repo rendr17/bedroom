@@ -1,0 +1,24 @@
+{
+  "slug": "quick-order",
+  "title": "Quick Order",
+  "subtitle": "Pay-First Dine-In Ordering",
+  "status": "Prototype / Product project",
+  "role": "Developer",
+  "summary": "A QR-based dine-in ordering experience where customers build an order and complete payment validation with a cashier.",
+  "highlights": [
+    "Table QR flow",
+    "Menu customization",
+    "Pending payment invoice",
+    "Cashier validation workflow"
+  ],
+  "stack": [
+    "Vue",
+    "Laravel API",
+    "Relational database",
+    "Responsive web"
+  ],
+  "impact": [
+    "Simplifies order capture and cashier verification flow"
+  ],
+  "accent": "orange"
+}

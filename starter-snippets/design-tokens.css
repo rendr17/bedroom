@@ -1,0 +1,27 @@
+:root {
+  --bg-deep:#0f172a;
+  --surface:#1f2937;
+  --primary:#1e4a94;
+  --secondary:#4a90e2;
+  --accent:#ffd166;
+  --warm:#e58a3a;
+  --success:#4fbf73;
+  --danger:#e15353;
+  --text:#f4f1e8;
+  --window:#ece9d8;
+  --border-light:#fff;
+  --border-dark:#3b4553;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-6:24px;
+  --space-8:32px;
+  --focus:3px solid #ffd166;
+  --ui-font:Tahoma,Verdana,Arial,sans-serif;
+  --body-font:Verdana,Tahoma,Arial,sans-serif;
+  --mono-font:"Lucida Console","Courier New",monospace;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
+}

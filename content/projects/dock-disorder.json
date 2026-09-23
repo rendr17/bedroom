@@ -1,0 +1,24 @@
+{
+  "slug": "dock-disorder",
+  "title": "Dock & Disorder",
+  "subtitle": "Warehouse Puzzle Game",
+  "status": "Side project",
+  "role": "Designer / Developer",
+  "summary": "A warehouse-themed puzzle game concept about sorting incoming goods into the right zones before time runs out.",
+  "highlights": [
+    "Warehouse theme",
+    "Short puzzle loops",
+    "Web-first implementation path",
+    "Game-design documentation"
+  ],
+  "stack": [
+    "Web game stack",
+    "TypeScript",
+    "2D assets",
+    "Game-state logic"
+  ],
+  "impact": [
+    "Creative project combining logistics context and game design"
+  ],
+  "accent": "purple"
+}

@@ -1,0 +1,43 @@
+:root {
+  --bg-deep: #0f172a;
+  --surface: #1f2937;
+  --primary: #1e4a94;
+  --secondary: #4a90e2;
+  --accent: #ffd166;
+  --warm: #e58a3a;
+  --success: #4fbf73;
+  --danger: #e15353;
+  --text: #f4f1e8;
+  --text-dark: #151515;
+  --window: #ece9d8;
+  --border-light: #ffffff;
+  --border-dark: #3b4553;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --shadow-raised:
+    inset -1px -1px 0 var(--border-dark), inset 1px 1px 0 var(--border-light);
+  --shadow-sunken:
+    inset 1px 1px 0 var(--border-dark), inset -1px -1px 0 var(--border-light);
+  --shadow-panel: 0 2px 0 rgb(0 0 0 / 0.35);
+  --z-base: 0;
+  --z-scene: 10;
+  --z-nav: 20;
+  --z-overlay: 30;
+  --z-dialog: 40;
+  --z-tooltip: 50;
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 350ms;
+  --ease-out: ease-out;
+  --focus: 3px solid #ffd166;
+  --ui-font: Tahoma, Verdana, Arial, sans-serif;
+  --body-font: Verdana, Tahoma, Arial, sans-serif;
+  --mono-font: "Lucida Console", "Courier New", monospace;
+}
