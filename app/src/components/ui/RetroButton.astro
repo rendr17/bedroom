@@ -17,14 +17,20 @@ const {
 ---
 
 {
-  href ? (
+  href && !disabled ? (
     <a
       href={href}
       class:list={["retro-button", `variant-${variant}`, className]}
-      aria-disabled={disabled || undefined}
     >
       <slot />
     </a>
+  ) : href && disabled ? (
+    <span
+      class:list={["retro-button", `variant-${variant}`, className]}
+      aria-disabled="true"
+    >
+      <slot />
+    </span>
   ) : (
     <button
       type={type}
@@ -77,6 +83,7 @@ const {
     opacity: 0.55;
     cursor: not-allowed;
     filter: none;
+    pointer-events: none;
   }
 
   .retro-button:disabled:active,

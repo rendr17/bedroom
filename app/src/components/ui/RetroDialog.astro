@@ -67,9 +67,7 @@ const { title, open = false, class: className } = Astro.props;
     background: var(--window);
     color: var(--text-dark);
     border: none;
-    box-shadow:
-      inset -1px -1px 0 var(--border-dark),
-      inset 1px 1px 0 var(--border-light);
+    box-shadow: var(--shadow-raised);
   }
 
   .dialog-body {
