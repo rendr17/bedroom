@@ -1,19 +1,45 @@
 ---
+import { hotspots } from "@/data/hotspots";
+
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const primaryHotspots = hotspots.filter((h) => !h.optional);
 ---
 
 <figure class:list={["room-scene", className]}>
-  <img
-    src="/assets/backgrounds/bedroom-night.png"
-    alt="Pixel-art bedroom at night: a bed with a sleeping cat, a wooden desk holding a CRT monitor and a digital clock, a potted plant, a bookshelf, posters and a corkboard on the wall, and a window overlooking a city skyline."
-    width="1600"
-    height="900"
-    fetchpriority="high"
-  />
+  <div class="room-stage">
+    <img
+      src="/assets/backgrounds/bedroom-night.png"
+      alt="Pixel-art bedroom at night: a bed with a sleeping cat, a wooden desk holding a CRT monitor and a digital clock, a potted plant, a bookshelf, posters and a corkboard on the wall, and a window overlooking a city skyline."
+      width="1600"
+      height="900"
+      fetchpriority="high"
+    />
+    <nav class="room-hotspots" aria-label="Room">
+      <ul>
+        {
+          primaryHotspots.map((h) => (
+            <li
+              style={`--hx:${h.desktop.x}%;--hy:${h.desktop.y}%;--o:${h.mobileOrder}`}
+            >
+              <a href={h.href} class="hotspot">
+                <img
+                  class="hotspot-marker"
+                  src="/assets/icons/system/hotspot.png"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span class="hotspot-label">{h.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
 </figure>
 
 <style>
@@ -27,11 +53,153 @@ const { class: className } = Astro.props;
     box-shadow: var(--shadow-raised);
   }
 
+  .room-stage {
+    position: relative;
+  }
+
   .room-scene img {
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: contain;
     image-rendering: pixelated;
     background: var(--bg-deep);
+    display: block;
+  }
+
+  .room-hotspots {
+    position: absolute;
+    inset: 0;
+  }
+
+  .room-hotspots ul {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hotspot {
+    position: absolute;
+    left: var(--hx);
+    top: var(--hy);
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    text-decoration: none;
+  }
+
+  .hotspot-marker {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    opacity: 0.7;
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out),
+      filter var(--duration-fast) var(--ease-out);
+  }
+
+  .hotspot-label {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text-dark);
+    background: var(--accent);
+    border: 1px solid var(--border-dark);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .hotspot:hover .hotspot-marker,
+  .hotspot:focus-visible .hotspot-marker {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px rgb(255 209 102 / 0.8));
+  }
+
+  .hotspot:hover .hotspot-label,
+  .hotspot:focus-visible .hotspot-label {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .room-stage {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .room-hotspots {
+      position: static;
+      margin-top: var(--space-2);
+    }
+
+    .room-hotspots ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      height: auto;
+    }
+
+    .room-hotspots li {
+      order: var(--o);
+    }
+
+    .hotspot {
+      position: static;
+      transform: none;
+      width: auto;
+      height: auto;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      min-height: 44px;
+      color: var(--text);
+      background: var(--bg-deep);
+      border: 1px solid var(--border-dark);
+      box-shadow: var(--shadow-raised);
+    }
+
+    .hotspot:active {
+      box-shadow: var(--shadow-sunken);
+    }
+
+    .hotspot-marker {
+      width: 20px;
+      height: 20px;
+      opacity: 1;
+    }
+
+    .hotspot-label {
+      position: static;
+      transform: none;
+      padding: 0;
+      color: var(--text);
+      background: none;
+      border: none;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .hotspot:hover .hotspot-marker,
+    .hotspot:focus-visible .hotspot-marker {
+      transform: none;
+    }
+
+    .hotspot:hover .hotspot-label,
+    .hotspot:focus-visible .hotspot-label {
+      color: var(--accent);
+    }
   }
 </style>
