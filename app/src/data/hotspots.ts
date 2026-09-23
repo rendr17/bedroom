@@ -40,8 +40,9 @@ export const hotspots: Hotspot[] = [
     id: "extras",
     label: "Extras",
     href: "/extras",
-    desktop: { x: 14, y: 63 },
+    desktop: { x: 61, y: 89 },
     mobileOrder: 6,
     optional: true,
+    icon: "/assets/props/gamepad.png",
   },
 ];

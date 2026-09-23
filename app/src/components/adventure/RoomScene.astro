@@ -1,5 +1,6 @@
 ---
 import { hotspots } from "@/data/hotspots";
+import RetroDialog from "@/components/ui/RetroDialog.astro";
 
 interface Props {
   class?: string;
@@ -7,6 +8,7 @@ interface Props {
 
 const { class: className } = Astro.props;
 const primaryHotspots = hotspots.filter((h) => !h.optional);
+const extraHotspots = hotspots.filter((h) => h.optional);
 ---
 
 <figure class:list={["room-scene", className]}>
@@ -39,13 +41,85 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
             </li>
           ))
         }
+        {
+          extraHotspots.map((h) => (
+            <li
+              style={`--hx:${h.desktop.x}%;--hy:${h.desktop.y}%;--o:${h.mobileOrder}`}
+            >
+              <a href={h.href} class="hotspot">
+                <img
+                  class="hotspot-marker marker-prop"
+                  src={h.icon ?? "/assets/icons/system/hotspot.png"}
+                  alt=""
+                  width="240"
+                  height="156"
+                  aria-hidden="true"
+                />
+                <span class="hotspot-label">{h.label}</span>
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
+    <div class="room-eggs">
+      <button
+        type="button"
+        class="hotspot egg"
+        id="egg-cat"
+        style="--hx:15%;--hy:63%;--o:7"
+        aria-label="Pet the cat"
+      >
+        <img
+          class="hotspot-marker"
+          src="/assets/icons/system/hotspot.png"
+          alt=""
+          width="115"
+          height="133"
+          aria-hidden="true"
+        />
+        <span class="hotspot-label">Pet the cat</span>
+      </button>
+      <button
+        type="button"
+        class="hotspot egg"
+        id="egg-floppy"
+        style="--hx:74%;--hy:76%;--o:8"
+        aria-label="Read the floppy disk"
+      >
+        <img
+          class="hotspot-marker marker-prop"
+          src="/assets/props/floppy.png"
+          alt=""
+          width="188"
+          height="181"
+          aria-hidden="true"
+        />
+        <span class="hotspot-label">Read the floppy</span>
+      </button>
+      <span class="cat-bubble" id="cat-bubble" aria-hidden="true"></span>
+    </div>
   </div>
   <figcaption class="room-hint">
     Click a <b>!</b> marker in the room to explore — or use the navigation below.
   </figcaption>
 </figure>
+<p class="sr-only" id="cat-live" aria-live="polite"></p>
+
+<RetroDialog id="readme-dialog" title="README.TXT">
+  <p>
+    <b>ABOUT_THIS_SITE.TXT</b> — recovered from a floppy on the desk:
+  </p>
+  <p>
+    This room is a real website: semantic HTML, Astro, and TypeScript. No
+    framework runtime in the browser, and quest progress is saved in
+    localStorage only.
+  </p>
+  <p>
+    The posters are real. The cat is asleep. You have found one of the three
+    secrets hidden in this room — keep poking around.
+  </p>
+</RetroDialog>
 
 <style>
   .room-scene {
@@ -182,6 +256,56 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
     transform: translateX(-50%) translateY(0);
   }
 
+  .room-eggs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .room-eggs .egg {
+    pointer-events: auto;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .room-eggs .hotspot-marker {
+    opacity: 0.55;
+  }
+
+  .marker-prop {
+    width: auto;
+    height: 34px;
+  }
+
+  .cat-bubble {
+    position: absolute;
+    left: 15%;
+    top: 63%;
+    transform: translate(-50%, -160%) scale(0.9);
+    padding: 4px 10px;
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    font-weight: bold;
+    color: var(--text-dark);
+    background: var(--window);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+
+  .cat-bubble.show {
+    opacity: 1;
+    transform: translate(-50%, -160%) scale(1);
+  }
+
   @media (max-width: 640px) {
     .room-stage {
       display: flex;
@@ -193,14 +317,21 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
       margin-top: var(--space-2);
     }
 
-    .room-hotspots ul {
+    .room-hotspots ul,
+    .room-eggs {
       display: flex;
       flex-wrap: wrap;
       gap: var(--space-2);
       height: auto;
     }
 
-    .room-hotspots li {
+    .room-eggs {
+      position: static;
+      margin-top: var(--space-2);
+    }
+
+    .room-hotspots li,
+    .room-eggs .egg {
       order: var(--o);
     }
 
@@ -248,5 +379,58 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
     .hotspot:focus-visible .hotspot-label {
       color: var(--accent);
     }
+
+    .cat-bubble {
+      position: fixed;
+      top: auto;
+      bottom: calc(64px + var(--space-3));
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+    }
+
+    .cat-bubble.show {
+      transform: translateX(-50%);
+    }
   }
 </style>
+
+<script>
+  const catBtn = document.getElementById("egg-cat");
+  const catBubble = document.getElementById("cat-bubble");
+  const catLive = document.getElementById("cat-live");
+  const floppyBtn = document.getElementById("egg-floppy");
+  const readmeDialog = document.getElementById("readme-dialog");
+
+  const catLines = [
+    "mrrp~",
+    "purr…",
+    "zzZzz",
+    "…the cat pretends to sleep",
+    "*tail flick*",
+    "mew!",
+  ];
+  let catIndex = 0;
+  let bubbleTimer: number | undefined;
+
+  catBtn?.addEventListener("click", () => {
+    const line = catLines[catIndex++ % catLines.length];
+    if (catBubble) {
+      catBubble.textContent = line;
+      catBubble.classList.add("show");
+      window.clearTimeout(bubbleTimer);
+      bubbleTimer = window.setTimeout(
+        () => catBubble.classList.remove("show"),
+        2400,
+      );
+    }
+    if (catLive) catLive.textContent = `Cat: ${line}`;
+  });
+
+  if (readmeDialog instanceof HTMLDialogElement) {
+    floppyBtn?.addEventListener("click", () => readmeDialog.showModal());
+    readmeDialog.addEventListener("click", (event) => {
+      if (event.target === readmeDialog) readmeDialog.close();
+    });
+  }
+</script>

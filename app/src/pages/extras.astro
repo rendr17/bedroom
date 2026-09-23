@@ -1,0 +1,138 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import RetroWindow from "@/components/ui/RetroWindow.astro";
+import RetroStatusBar from "@/components/ui/RetroStatusBar.astro";
+
+const posters = [
+  {
+    src: "/assets/posters/good-code.png",
+    alt: "Pixel-art poster reading “Good code, better days” with a smiley face.",
+    title: "Good Code, Better Days",
+  },
+  {
+    src: "/assets/posters/better-web.png",
+    alt: "Pixel-art poster reading “Better web for a brighter tomorrow” over a mountain lake scene.",
+    title: "Better Web",
+  },
+  {
+    src: "/assets/posters/build-repeat.png",
+    alt: "Taped note reading “Build. Learn. Improve. Repeat. — R” above a small polaroid cityscape.",
+    title: "Build · Learn · Improve · Repeat",
+  },
+  {
+    src: "/assets/posters/small-developer.png",
+    alt: "Pixel-art poster reading “A small developer with a bigger tomorrow” over a night city skyline.",
+    title: "A Small Developer",
+  },
+];
+---
+
+<ContentLayout
+  title="Extras"
+  description="Bonus extras from Rendi's portfolio room — wall posters, site notes, and secrets."
+>
+  <p>
+    You found the extras cabinet — the gamepad on the floor was not just
+    decoration. Bonus art and site notes live here.
+  </p>
+
+  <RetroWindow title="EXTRAS.EXE" controls={false}>
+    <section class="extras-section">
+      <h2>Wall Posters</h2>
+      <p class="extras-note">
+        Full-resolution versions of the art hanging in the room.
+      </p>
+      <ul class="poster-grid">
+        {
+          posters.map((poster) => (
+            <li>
+              <figure>
+                <img src={poster.src} alt={poster.alt} loading="lazy" />
+                <figcaption>{poster.title}</figcaption>
+              </figure>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="extras-section">
+      <h2>Site Notes</h2>
+      <p class="extras-note">
+        This portfolio is a hand-built Astro site — semantic HTML, scoped CSS, a
+        sprinkle of client JS, and original pixel art. Quest progress lives in
+        your browser's localStorage; nothing leaves the machine.
+      </p>
+      <p class="extras-note">
+        Secrets in the room: the cat, the floppy disk, and the gamepad that
+        brought you here. That's all of them — probably.
+      </p>
+    </section>
+
+    <div class="extras-status">
+      <RetroStatusBar items={["4 POSTERS", "3 SECRETS", "READY"]} />
+    </div>
+  </RetroWindow>
+</ContentLayout>
+
+<style>
+  .extras-section + .extras-section {
+    margin-top: var(--space-4);
+  }
+
+  .extras-section h2 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--mono-font);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  .extras-note {
+    margin: 0 0 var(--space-3);
+    font-size: 0.85rem;
+    color: rgb(21 21 21 / 0.85);
+  }
+
+  .poster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .poster-grid figure {
+    margin: 0;
+  }
+
+  .poster-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .poster-grid figcaption {
+    margin-top: var(--space-1);
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+    color: rgb(21 21 21 / 0.6);
+  }
+
+  .extras-status {
+    margin-top: var(--space-4);
+  }
+
+  .extras-status :global(.status-cell) {
+    color: var(--text-dark);
+    background: var(--window);
+  }
+</style>

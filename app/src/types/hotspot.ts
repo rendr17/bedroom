@@ -8,4 +8,5 @@ export interface Hotspot {
   desktop: { x: number; y: number };
   mobileOrder: number;
   optional?: boolean;
+  icon?: string;
 }
