@@ -18,6 +18,25 @@ const isCurrent = (href: string) =>
         </li>
       ))
     }
+    <li>
+      <button
+        type="button"
+        id="sound-toggle"
+        class="sound-toggle"
+        aria-pressed="false"
+        data-cue
+        hidden
+      >
+        <img
+          src="/assets/icons/system/muted.png"
+          alt=""
+          width="20"
+          height="20"
+          aria-hidden="true"
+        />
+        <span class="sr-only">Sound</span>
+      </button>
+    </li>
   </ul>
 </nav>
 
@@ -90,4 +109,70 @@ const isCurrent = (href: string) =>
     border-color: var(--border-dark);
     box-shadow: var(--shadow-sunken);
   }
+
+  .sound-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--space-1) var(--space-2);
+    font: inherit;
+    color: var(--text);
+    background: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .sound-toggle:hover {
+    color: var(--accent);
+    background: var(--bg-deep);
+    border-color: var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .sound-toggle[aria-pressed="true"] {
+    color: var(--accent);
+    background: var(--bg-deep);
+    border-color: var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .sound-toggle img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
 </style>
+
+<script>
+  import { isSoundEnabled, setSoundEnabled, playCue } from "@/utils/audio";
+
+  const toggle = document.getElementById(
+    "sound-toggle",
+  ) as HTMLButtonElement | null;
+  const icon = toggle?.querySelector("img");
+
+  const render = () => {
+    const on = isSoundEnabled();
+    toggle?.setAttribute("aria-pressed", String(on));
+    if (icon) {
+      icon.src = on
+        ? "/assets/icons/system/sound.png"
+        : "/assets/icons/system/muted.png";
+    }
+  };
+
+  toggle?.removeAttribute("hidden");
+  render();
+  toggle?.addEventListener("click", () => {
+    setSoundEnabled(!isSoundEnabled());
+    render();
+    playCue("click");
+  });
+</script>

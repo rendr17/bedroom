@@ -86,6 +86,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
         id="egg-floppy"
         style="--hx:74%;--hy:76%;--o:8"
         aria-label="Read the floppy disk"
+        data-cue
       >
         <img
           class="hotspot-marker marker-prop"
@@ -396,6 +397,8 @@ const extraHotspots = hotspots.filter((h) => h.optional);
 </style>
 
 <script>
+  import { playCue } from "@/utils/audio";
+
   const catBtn = document.getElementById("egg-cat");
   const catBubble = document.getElementById("cat-bubble");
   const catLive = document.getElementById("cat-live");
@@ -428,7 +431,10 @@ const extraHotspots = hotspots.filter((h) => h.optional);
   });
 
   if (readmeDialog instanceof HTMLDialogElement) {
-    floppyBtn?.addEventListener("click", () => readmeDialog.showModal());
+    floppyBtn?.addEventListener("click", () => {
+      playCue("open");
+      readmeDialog.showModal();
+    });
     readmeDialog.addEventListener("click", (event) => {
       if (event.target === readmeDialog) readmeDialog.close();
     });

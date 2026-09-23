@@ -44,8 +44,22 @@ const { title, description = SITE.description } = Astro.props;
     </footer>
     <script>
       import { markVisited, sectionFromPath } from "@/utils/progress";
+      import { playCue } from "@/utils/audio";
+
       const section = sectionFromPath(location.pathname);
-      if (section) markVisited(section);
+      let successPending = Boolean(section && markVisited(section));
+
+      document.addEventListener("click", (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const interactive = target?.closest("a[href], button");
+        if (!interactive || interactive.hasAttribute("data-cue")) return;
+        if (successPending) {
+          successPending = false;
+          playCue("success");
+          return;
+        }
+        playCue("click");
+      });
     </script>
   </body>
 </html>

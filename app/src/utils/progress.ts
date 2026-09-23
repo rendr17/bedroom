@@ -33,10 +33,10 @@ export function getVisited(): QuestSection[] {
   }
 }
 
-export function markVisited(id: QuestSection): void {
+export function markVisited(id: QuestSection): boolean {
   const visited = getVisited();
-  if (!visited.includes(id)) {
-    visited.push(id);
-    storage.set(STORAGE_KEYS.visitedSections, JSON.stringify(visited));
-  }
+  if (visited.includes(id)) return false;
+  visited.push(id);
+  storage.set(STORAGE_KEYS.visitedSections, JSON.stringify(visited));
+  return true;
 }

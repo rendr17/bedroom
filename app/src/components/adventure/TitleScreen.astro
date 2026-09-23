@@ -15,8 +15,8 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     <p class="ts-tagline">Same Human. New Adventures.</p>
 
     <div class="ts-menu" id="ts-menu">
-      <button type="button" id="ts-new">New Game</button>
-      <button type="button" id="ts-continue">Continue</button>
+      <button type="button" id="ts-new" data-cue>New Game</button>
+      <button type="button" id="ts-continue" data-cue>Continue</button>
       <p class="ts-hint" id="ts-continue-hint" hidden>No saved adventure yet</p>
       <button type="button" id="ts-explore">Explore Directly</button>
       <details class="ts-options">
@@ -37,7 +37,7 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     <div class="ts-confirm" id="ts-confirm" hidden>
       <p>Start a new adventure? This clears saved quest progress.</p>
       <div class="ts-confirm-actions">
-        <button type="button" id="ts-confirm-yes">Start over</button>
+        <button type="button" id="ts-confirm-yes" data-cue> Start over </button>
         <button type="button" id="ts-confirm-back">Back</button>
       </div>
     </div>
@@ -48,6 +48,7 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
 
 <script>
   import { storage, STORAGE_KEYS } from "@/utils/storage";
+  import { playCue } from "@/utils/audio";
 
   const dlg = document.getElementById(
     "title-screen",
@@ -113,19 +114,25 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
 
     btnNew.addEventListener("click", () => {
       if (hasProgress) {
+        playCue("open");
         menu.hidden = true;
         confirmWrap.hidden = false;
         confirmYes.focus();
       } else {
+        playCue("startup");
         dismiss(true);
       }
     });
-    btnContinue.addEventListener("click", () => dismiss(true));
+    btnContinue.addEventListener("click", () => {
+      playCue("startup");
+      dismiss(true);
+    });
     btnExplore.addEventListener("click", () => dismiss(false));
     btnSkip.addEventListener("click", () => dismiss(false));
 
     confirmYes.addEventListener("click", () => {
       storage.remove(STORAGE_KEYS.visitedSections);
+      playCue("startup");
       dismiss(true);
     });
     confirmBack.addEventListener("click", () => {
