@@ -1,11 +1,3 @@
-export interface ExperienceEntry {
-  role: string;
-  organization: string;
-  period: string;
-  location?: string;
-  summary?: string;
-  responsibilities: string[];
-  highlights: string[];
-}
+import type { ExperienceEntry } from "@/types/content";
 
 export const experience: ExperienceEntry[] = [];

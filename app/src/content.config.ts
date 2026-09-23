@@ -2,7 +2,10 @@ import { defineCollection, z } from "astro:content";
 import { file, glob } from "astro/loaders";
 
 const projects = defineCollection({
-  loader: glob({ pattern: "*.json", base: "./src/content/projects" }),
+  loader: glob({
+    pattern: ["*.json", "!_*.json"],
+    base: "./src/content/projects",
+  }),
   schema: z.object({
     title: z.string(),
     subtitle: z.string(),

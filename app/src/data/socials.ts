@@ -1,8 +1,4 @@
-export interface SocialLink {
-  kind: "email" | "github" | "linkedin" | "cv";
-  label: string;
-  href: string | null;
-}
+import type { SocialLink } from "@/types/content";
 
 export const socials: SocialLink[] = [
   { kind: "email", label: "Email", href: null },

@@ -1,12 +1,4 @@
-export interface Profile {
-  name: string;
-  role: string;
-  tagline: string;
-  bio: string;
-  focus: string[];
-  interests: string[];
-  currentFocus: string;
-}
+import type { Profile } from "@/types/content";
 
 export const profile: Profile = {
   name: "Rendi",
