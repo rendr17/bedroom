@@ -1,5 +1,7 @@
 ---
 import ContentLayout from "@/layouts/ContentLayout.astro";
+import RetroWindow from "@/components/ui/RetroWindow.astro";
+import RetroStatusBar from "@/components/ui/RetroStatusBar.astro";
 import { getSortedProjects } from "@/utils/content";
 
 const projects = await getSortedProjects();
@@ -10,19 +12,224 @@ const projects = await getSortedProjects();
   description="Selected projects by Rendi — case studies covering problem, role, solution, technology, and impact."
 >
   <p>
-    Selected work — each entry links to a case study covering the problem, my
+    Selected work — each folder opens a case study covering the problem, my
     role, the solution, and what it changed.
   </p>
-  <ul class="project-list">
+
+  <RetroWindow title="PROJECTS.EXE" controls={false}>
+    <p class="explorer-path" aria-hidden="true">
+      C:\RENDI\PROJECTS<span class="explorer-cursor">&#9616;</span>
+    </p>
+
     {
-      projects.map((project) => (
-        <li>
-          <a href={`/projects/${project.id}`}>{project.data.title}</a>
-          <span class="project-meta">
-            {project.data.subtitle} · {project.data.status}
-          </span>
-        </li>
-      ))
+      projects.length === 0 ? (
+        <p class="project-meta">0 objects — folder is empty.</p>
+      ) : (
+        <ul class="explorer-list">
+          {projects.map((project) => (
+            <li>
+              <a
+                href={`/projects/${project.id}`}
+                class="explorer-row"
+                data-accent={project.data.accent ?? "blue"}
+              >
+                <img
+                  src="/assets/props/folder.png"
+                  alt=""
+                  width={227}
+                  height={210}
+                  class="explorer-icon"
+                  aria-hidden="true"
+                />
+                <span class="explorer-text">
+                  <span class="explorer-name">
+                    {project.data.title}
+                    {project.data.featured && (
+                      <span class="explorer-tag">Featured</span>
+                    )}
+                  </span>
+                  <span class="explorer-meta">
+                    {project.data.subtitle} · {project.data.status}
+                  </span>
+                </span>
+                <span class="explorer-arrow" aria-hidden="true">
+                  &gt;
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
     }
-  </ul>
+
+    <div class="explorer-status">
+      <RetroStatusBar
+        items={[
+          `${projects.length} OBJECT${projects.length === 1 ? "" : "S"}`,
+          "C:\\RENDI\\PROJECTS",
+          "READY",
+        ]}
+      />
+    </div>
+  </RetroWindow>
 </ContentLayout>
+
+<style>
+  .explorer-path {
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--primary);
+    background: #fffef5;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .explorer-cursor {
+    margin-left: 2px;
+    animation: cursor-blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes cursor-blink {
+    0%,
+    55% {
+      opacity: 1;
+    }
+    56%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .explorer-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .explorer-list li + li {
+    margin-top: var(--space-1);
+  }
+
+  .explorer-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    color: var(--text-dark);
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-left: 3px solid transparent;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .explorer-row[data-accent="blue"] {
+    --row-accent: #4a90e2;
+  }
+
+  .explorer-row[data-accent="cyan"] {
+    --row-accent: #22b8cf;
+  }
+
+  .explorer-row[data-accent="orange"] {
+    --row-accent: #e58a3a;
+  }
+
+  .explorer-row[data-accent="purple"] {
+    --row-accent: #8a5aa0;
+  }
+
+  .explorer-row:hover,
+  .explorer-row:focus-visible {
+    background: rgb(30 74 148 / 0.12);
+    border-color: var(--primary);
+    border-left-color: var(--row-accent, var(--primary));
+    outline: none;
+  }
+
+  .explorer-row:focus-visible {
+    outline: var(--focus);
+    outline-offset: -2px;
+  }
+
+  .explorer-row:active {
+    background: rgb(30 74 148 / 0.2);
+  }
+
+  .explorer-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 37px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  .explorer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .explorer-name {
+    font-family: var(--ui-font);
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text-dark);
+  }
+
+  .explorer-tag {
+    margin-left: var(--space-2);
+    padding: 0 var(--space-1);
+    font-family: var(--mono-font);
+    font-size: 0.6rem;
+    font-weight: normal;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: var(--row-accent, var(--primary));
+    vertical-align: 1px;
+  }
+
+  .explorer-meta {
+    font-family: var(--mono-font);
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+    color: rgb(21 21 21 / 0.72);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .explorer-arrow {
+    margin-left: auto;
+    font-family: var(--mono-font);
+    font-weight: bold;
+    color: var(--row-accent, var(--primary));
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+
+  .explorer-row:hover .explorer-arrow,
+  .explorer-row:focus-visible .explorer-arrow {
+    opacity: 1;
+    transform: none;
+  }
+
+  .explorer-status :global(.status-cell) {
+    color: var(--text-dark);
+    background: var(--window);
+  }
+
+  @media (max-width: 480px) {
+    .explorer-meta {
+      white-space: normal;
+    }
+  }
+</style>
