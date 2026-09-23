@@ -232,22 +232,22 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
 
   .ts-menu > button::before,
   .ts-confirm button::before {
-    content: "▸";
+    content: "▸" / "";
     color: var(--accent);
     margin-right: var(--space-2);
     opacity: 0;
   }
 
-  .ts-menu > button:hover,
-  .ts-menu > button:focus-visible,
+  .ts-menu > button:not(:disabled):hover,
+  .ts-menu > button:not(:disabled):focus-visible,
   .ts-confirm button:hover,
   .ts-confirm button:focus-visible {
     color: var(--accent);
     outline: none;
   }
 
-  .ts-menu > button:hover::before,
-  .ts-menu > button:focus-visible::before,
+  .ts-menu > button:not(:disabled):hover::before,
+  .ts-menu > button:not(:disabled):focus-visible::before,
   .ts-confirm button:hover::before,
   .ts-confirm button:focus-visible::before {
     opacity: 1;
@@ -264,12 +264,6 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
   .ts-menu > button:disabled {
     opacity: 0.45;
     cursor: default;
-  }
-
-  .ts-menu > button:disabled:hover,
-  .ts-menu > button:disabled::before {
-    color: var(--text);
-    opacity: 0.45;
   }
 
   .ts-hint {
@@ -298,13 +292,13 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
   }
 
   .ts-options summary::before {
-    content: "+";
+    content: "+" / "";
     color: var(--accent);
     margin-right: var(--space-2);
   }
 
   .ts-options[open] summary::before {
-    content: "–";
+    content: "–" / "";
   }
 
   .ts-options summary:hover {
@@ -359,6 +353,14 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
   .ts-skip:hover {
     color: var(--accent);
     opacity: 1;
+  }
+
+  @media (max-height: 420px) {
+    .ts-skip {
+      position: static;
+      align-self: flex-end;
+      margin-top: var(--space-3);
+    }
   }
 
   .title-screen.closing {
