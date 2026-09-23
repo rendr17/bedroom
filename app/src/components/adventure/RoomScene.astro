@@ -336,7 +336,14 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     transform: translate(-50%, -160%) scale(1);
   }
 
-  @media (max-width: 640px) {
+  @media (hover: none) {
+    .hotspot:active .hotspot-label {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  @media (max-width: 640px), (orientation: landscape) and (max-height: 540px) {
     .room-stage {
       display: flex;
       flex-direction: column;

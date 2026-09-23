@@ -73,6 +73,12 @@ const { title, controls = true, class: className } = Astro.props;
     padding: var(--space-3) var(--space-4);
   }
 
+  @media (max-width: 640px) {
+    .window-body {
+      padding: var(--space-2) var(--space-3);
+    }
+  }
+
   .window-body > * + * {
     margin-top: var(--space-3);
   }
