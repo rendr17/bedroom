@@ -1,9 +1,11 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import TitleScreen from "@/components/adventure/TitleScreen.astro";
 import { SITE } from "@/data/site";
 ---
 
 <BaseLayout title={SITE.name}>
+  <TitleScreen />
   <h1>{SITE.name}</h1>
   <p>{SITE.tagline}</p>
   <p>

@@ -26,7 +26,7 @@ const { title, description = SITE.description } = Astro.props;
       <p class="site-title"><a href="/">{SITE.name}</a></p>
       <SiteNav />
     </header>
-    <main id="main">
+    <main id="main" tabindex="-1">
       <slot />
     </main>
     <footer>

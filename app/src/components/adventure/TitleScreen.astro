@@ -1,0 +1,389 @@
+---
+import PixelLabel from "@/components/ui/PixelLabel.astro";
+---
+
+<dialog
+  id="title-screen"
+  class="title-screen"
+  aria-labelledby="title-screen-heading"
+>
+  <div class="ts-inner">
+    <PixelLabel tone="accent">Rendi · Software Developer</PixelLabel>
+    <p id="title-screen-heading" class="ts-title">
+      Rendi's Portfolio Adventure
+    </p>
+    <p class="ts-tagline">Same Human. New Adventures.</p>
+
+    <div class="ts-menu" id="ts-menu">
+      <button type="button" id="ts-new">New Game</button>
+      <button type="button" id="ts-continue">Continue</button>
+      <p class="ts-hint" id="ts-continue-hint" hidden>No saved adventure yet</p>
+      <button type="button" id="ts-explore">Explore Directly</button>
+      <details class="ts-options">
+        <summary>Options</summary>
+        <div class="ts-options-panel">
+          <label>
+            <input type="checkbox" id="ts-opt-sound" />
+            Sound
+          </label>
+          <label>
+            <input type="checkbox" id="ts-opt-motion" />
+            Reduced effects
+          </label>
+        </div>
+      </details>
+    </div>
+
+    <div class="ts-confirm" id="ts-confirm" hidden>
+      <p>Start a new adventure? This clears saved quest progress.</p>
+      <div class="ts-confirm-actions">
+        <button type="button" id="ts-confirm-yes">Start over</button>
+        <button type="button" id="ts-confirm-back">Back</button>
+      </div>
+    </div>
+
+    <button type="button" class="ts-skip" id="ts-skip">Skip intro →</button>
+  </div>
+</dialog>
+
+<script>
+  import { storage, STORAGE_KEYS } from "@/utils/storage";
+
+  const dlg = document.getElementById(
+    "title-screen",
+  ) as HTMLDialogElement | null;
+
+  if (dlg) {
+    const btnNew = document.getElementById("ts-new") as HTMLButtonElement;
+    const btnContinue = document.getElementById(
+      "ts-continue",
+    ) as HTMLButtonElement;
+    const btnExplore = document.getElementById(
+      "ts-explore",
+    ) as HTMLButtonElement;
+    const btnSkip = document.getElementById("ts-skip") as HTMLButtonElement;
+    const confirmWrap = document.getElementById("ts-confirm") as HTMLElement;
+    const menu = document.getElementById("ts-menu") as HTMLElement;
+    const confirmYes = document.getElementById(
+      "ts-confirm-yes",
+    ) as HTMLButtonElement;
+    const confirmBack = document.getElementById(
+      "ts-confirm-back",
+    ) as HTMLButtonElement;
+    const continueHint = document.getElementById(
+      "ts-continue-hint",
+    ) as HTMLElement;
+    const optSound = document.getElementById(
+      "ts-opt-sound",
+    ) as HTMLInputElement;
+    const optMotion = document.getElementById(
+      "ts-opt-motion",
+    ) as HTMLInputElement;
+
+    const hasProgress = Boolean(
+      storage.get(STORAGE_KEYS.visitedSections) ||
+      storage.get(STORAGE_KEYS.introSeen),
+    );
+
+    const reducedNow = () =>
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      storage.get(STORAGE_KEYS.reducedEffects) === "1";
+
+    const applyReducedFlag = () => {
+      document.documentElement.dataset.reducedEffects =
+        storage.get(STORAGE_KEYS.reducedEffects) === "1" ? "true" : "false";
+    };
+
+    const dismiss = (transition: boolean) => {
+      if (transition && !reducedNow()) {
+        dlg.classList.add("closing");
+        window.setTimeout(() => dlg.close(), 650);
+      } else {
+        dlg.close();
+      }
+    };
+
+    dlg.addEventListener("close", () => {
+      storage.set(STORAGE_KEYS.introSeen, "1");
+      document.getElementById("main")?.focus();
+    });
+
+    btnContinue.disabled = !hasProgress;
+    continueHint.hidden = hasProgress;
+
+    btnNew.addEventListener("click", () => {
+      if (hasProgress) {
+        menu.hidden = true;
+        confirmWrap.hidden = false;
+        confirmYes.focus();
+      } else {
+        dismiss(true);
+      }
+    });
+    btnContinue.addEventListener("click", () => dismiss(true));
+    btnExplore.addEventListener("click", () => dismiss(false));
+    btnSkip.addEventListener("click", () => dismiss(false));
+
+    confirmYes.addEventListener("click", () => {
+      storage.remove(STORAGE_KEYS.visitedSections);
+      dismiss(true);
+    });
+    confirmBack.addEventListener("click", () => {
+      confirmWrap.hidden = true;
+      menu.hidden = false;
+      btnNew.focus();
+    });
+
+    optSound.checked = storage.get(STORAGE_KEYS.soundEnabled) === "1";
+    optMotion.checked = storage.get(STORAGE_KEYS.reducedEffects) === "1";
+    optSound.addEventListener("change", () => {
+      storage.set(STORAGE_KEYS.soundEnabled, optSound.checked ? "1" : "0");
+    });
+    optMotion.addEventListener("change", () => {
+      storage.set(STORAGE_KEYS.reducedEffects, optMotion.checked ? "1" : "0");
+      applyReducedFlag();
+    });
+
+    applyReducedFlag();
+    dlg.showModal();
+    btnNew.focus();
+  }
+</script>
+
+<style>
+  .title-screen {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  .title-screen::backdrop {
+    background: rgb(5 8 18 / 0.6);
+  }
+
+  .ts-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    width: 100%;
+    height: 100%;
+    padding: var(--space-6);
+    text-align: center;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 3px,
+        rgb(0 0 0 / 0.08) 3px 4px
+      ),
+      radial-gradient(ellipse at 50% 30%, #1b2b4d 0%, var(--bg-deep) 70%);
+  }
+
+  .ts-title {
+    font-family: var(--mono-font);
+    font-size: clamp(1.6rem, 5vw, 3rem);
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    line-height: 1.15;
+    color: var(--accent);
+    text-shadow: 0 0 12px rgb(255 209 102 / 0.35);
+  }
+
+  .ts-tagline {
+    font-family: var(--mono-font);
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .ts-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-1);
+    margin-top: var(--space-6);
+    min-width: 240px;
+  }
+
+  .ts-menu > button,
+  .ts-confirm button {
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--mono-font);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--text);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .ts-menu > button::before,
+  .ts-confirm button::before {
+    content: "▸";
+    color: var(--accent);
+    margin-right: var(--space-2);
+    opacity: 0;
+  }
+
+  .ts-menu > button:hover,
+  .ts-menu > button:focus-visible,
+  .ts-confirm button:hover,
+  .ts-confirm button:focus-visible {
+    color: var(--accent);
+    outline: none;
+  }
+
+  .ts-menu > button:hover::before,
+  .ts-menu > button:focus-visible::before,
+  .ts-confirm button:hover::before,
+  .ts-confirm button:focus-visible::before {
+    opacity: 1;
+  }
+
+  .ts-menu > button:focus-visible,
+  .ts-confirm button:focus-visible,
+  .ts-skip:focus-visible,
+  .ts-options summary:focus-visible {
+    outline: var(--focus);
+    outline-offset: 2px;
+  }
+
+  .ts-menu > button:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .ts-menu > button:disabled:hover,
+  .ts-menu > button:disabled::before {
+    color: var(--text);
+    opacity: 0.45;
+  }
+
+  .ts-hint {
+    margin: calc(-1 * var(--space-1)) 0 var(--space-1);
+    padding-left: var(--space-8);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    text-align: left;
+  }
+
+  .ts-options {
+    text-align: left;
+  }
+
+  .ts-options summary {
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--mono-font);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .ts-options summary::before {
+    content: "+";
+    color: var(--accent);
+    margin-right: var(--space-2);
+  }
+
+  .ts-options[open] summary::before {
+    content: "–";
+  }
+
+  .ts-options summary:hover {
+    color: var(--accent);
+  }
+
+  .ts-options-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4) var(--space-3);
+    font-family: var(--ui-font);
+    font-size: 0.85rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .ts-options-panel label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+  }
+
+  .ts-confirm {
+    margin-top: var(--space-6);
+    font-family: var(--ui-font);
+    font-size: 0.95rem;
+  }
+
+  .ts-confirm-actions {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .ts-skip {
+    position: absolute;
+    bottom: var(--space-6);
+    right: var(--space-6);
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .ts-skip:hover {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  .title-screen.closing {
+    animation: ts-off 0.65s ease-out forwards;
+  }
+
+  @keyframes ts-off {
+    0% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    60% {
+      opacity: 1;
+      transform: scaleY(0.03);
+    }
+    100% {
+      opacity: 0;
+      transform: scaleY(0.003);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .title-screen.closing {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>
