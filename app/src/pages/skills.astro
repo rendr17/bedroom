@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ContentLayout from "@/layouts/ContentLayout.astro";
+import RetroWindow from "@/components/ui/RetroWindow.astro";
 
 const groups = await getCollection("skills");
 ---
@@ -13,27 +14,112 @@ const groups = await getCollection("skills");
     Capabilities grouped by practical use — no percentage bars, just what I
     actually work with.
   </p>
-  {
-    groups.map((group) => (
-      <section>
-        <h2>{group.data.name}</h2>
-        {group.data.items.length > 0 ? (
-          <ul>
-            {group.data.items.map((item) => (
-              <li>
-                {item.name}
-                {item.context && (
-                  <span class="project-meta"> — {item.context}</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>
-            <em>Entries being prepared.</em>
-          </p>
-        )}
-      </section>
-    ))
-  }
+
+  <RetroWindow title="TOOLBOX.EXE" controls={false}>
+    <div class="drawer-grid">
+      {
+        groups.map((group) => (
+          <section class="drawer">
+            <h2 class="drawer-label">{group.data.name}</h2>
+            {group.data.items.length > 0 ? (
+              <ul class="tool-list">
+                {group.data.items.map((item) => (
+                  <li class="tool">
+                    <span class="tool-name">{item.name}</span>
+                    {item.context && (
+                      <span class="tool-context">{item.context}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="drawer-empty">— drawer empty, being stocked —</p>
+            )}
+          </section>
+        ))
+      }
+    </div>
+  </RetroWindow>
 </ContentLayout>
+
+<style>
+  .drawer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    gap: var(--space-3);
+  }
+
+  .drawer {
+    position: relative;
+    padding: calc(var(--space-3) + 8px) var(--space-3) var(--space-3);
+    background: #fffef5;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .drawer::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 8px;
+    background: var(--window);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .drawer-label {
+    margin: 0 0 var(--space-2);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--primary);
+    border-bottom: 1px dashed rgb(21 21 21 / 0.35);
+    padding-bottom: var(--space-2);
+  }
+
+  .tool-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tool {
+    display: flex;
+    flex-direction: column;
+    padding: 3px var(--space-2);
+    background: var(--window);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .tool-name {
+    font-family: var(--ui-font);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--text-dark);
+  }
+
+  .tool-context {
+    font-family: var(--mono-font);
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    color: rgb(21 21 21 / 0.55);
+  }
+
+  .drawer-empty {
+    margin: 0;
+    font-family: var(--mono-font);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+    color: rgb(21 21 21 / 0.45);
+  }
+</style>

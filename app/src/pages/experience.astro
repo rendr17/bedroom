@@ -1,5 +1,6 @@
 ---
 import ContentLayout from "@/layouts/ContentLayout.astro";
+import RetroWindow from "@/components/ui/RetroWindow.astro";
 import { experience } from "@/data/experience";
 ---
 
@@ -7,33 +8,152 @@ import { experience } from "@/data/experience";
   title="Experience"
   description="Rendi's professional experience — roles, responsibilities, and selected work."
 >
-  {
-    experience.length === 0 ? (
-      <p>
-        Roles, responsibilities, and selected work will be listed here in
-        chronological order. Timeline entries are being prepared — verified
-        details only, nothing placeholder presented as fact.
-      </p>
-    ) : (
-      <ol class="experience-list">
-        {experience.map((entry) => (
-          <li>
-            <h2>{entry.role}</h2>
-            <p class="project-meta">
-              {entry.organization} · {entry.period}
-              {entry.location && ` · ${entry.location}`}
-            </p>
-            {entry.summary && <p>{entry.summary}</p>}
-            {entry.responsibilities.length > 0 && (
-              <ul>
-                {entry.responsibilities.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ol>
-    )
-  }
+  <p>
+    A record of roles and responsibilities — the binder is thin for now, but
+    every entry is verified.
+  </p>
+
+  <RetroWindow title="EXPERIENCE.LOG" controls={false}>
+    {
+      experience.length === 0 ? (
+        <div class="archive-empty">
+          <p>
+            Roles, responsibilities, and selected work will be filed here in
+            chronological order. Records are being compiled — verified details
+            only, nothing placeholder presented as fact.
+          </p>
+        </div>
+      ) : (
+        <ol class="archive-list">
+          {experience.map((entry) => (
+            <li>
+              <article class="record-card">
+                <span class="record-tab">{entry.period}</span>
+                <h2>{entry.role}</h2>
+                <p class="record-org">
+                  {entry.organization}
+                  {entry.location && ` · ${entry.location}`}
+                </p>
+                {entry.summary && <p>{entry.summary}</p>}
+                {entry.responsibilities.length > 0 && (
+                  <ul class="check-list">
+                    {entry.responsibilities.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+                {entry.highlights.length > 0 && (
+                  <ul class="highlight-list">
+                    {entry.highlights.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </RetroWindow>
 </ContentLayout>
+
+<style>
+  .archive-empty {
+    padding: var(--space-3);
+    border: 1px dashed rgb(21 21 21 / 0.4);
+    background: rgb(255 254 245 / 0.5);
+  }
+
+  .archive-empty p {
+    margin: 0;
+    font-family: var(--mono-font);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: rgb(21 21 21 / 0.7);
+  }
+
+  .archive-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .archive-list li + li {
+    margin-top: var(--space-5);
+  }
+
+  .record-card {
+    position: relative;
+    padding: var(--space-3) var(--space-3) var(--space-3);
+    padding-top: calc(var(--space-3) + 10px);
+    background: #fffef5;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .record-tab {
+    position: absolute;
+    top: -10px;
+    left: var(--space-3);
+    padding: 1px var(--space-3);
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: var(--primary);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .record-card h2 {
+    margin: 0;
+    font-family: var(--ui-font);
+    font-size: 0.95rem;
+    color: var(--text-dark);
+  }
+
+  .record-org {
+    margin: 2px 0 0;
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: rgb(21 21 21 / 0.6);
+  }
+
+  .record-card > p:not(.record-org) {
+    margin: var(--space-2) 0 0;
+    font-size: 0.85rem;
+    color: rgb(21 21 21 / 0.85);
+  }
+
+  .check-list,
+  .highlight-list {
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .check-list li,
+  .highlight-list li {
+    padding: 2px 0;
+    font-size: 0.82rem;
+    color: rgb(21 21 21 / 0.85);
+  }
+
+  .check-list li::before {
+    content: ">" / "";
+    margin-right: var(--space-2);
+    font-family: var(--mono-font);
+    font-weight: bold;
+    color: var(--primary);
+  }
+
+  .highlight-list li::before {
+    content: "▸" / "";
+    margin-right: var(--space-2);
+    color: var(--success);
+    font-weight: bold;
+  }
+</style>
