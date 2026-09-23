@@ -8,7 +8,7 @@ const { title, class: className } = Astro.props;
 ---
 
 <section class:list={["retro-panel", className]}>
-  {title && <header class="panel-header">{title}</header>}
+  {title && <h2 class="panel-header">{title}</h2>}
   <div class="panel-body">
     <slot />
   </div>

@@ -33,7 +33,12 @@ figure {
   margin: 0;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
+  color-scheme: dark;
   background-color: var(--bg-deep);
   color: var(--text);
   font-family: var(--body-font);

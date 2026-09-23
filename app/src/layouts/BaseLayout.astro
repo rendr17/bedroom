@@ -19,6 +19,16 @@ const { title, description = SITE.description } = Astro.props;
     <meta name="description" content={description} />
     <link rel="icon" type="image/png" href="/assets/icons/system/quest.png" />
     <title>{title}</title>
+    <script is:inline>
+      try {
+        document.documentElement.dataset.reducedEffects =
+          localStorage.getItem("portfolio:reducedEffects") === "1"
+            ? "true"
+            : "false";
+      } catch {
+        /* storage blocked */
+      }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to main content</a>
