@@ -1,0 +1,132 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import RetroPanel from "@/components/ui/RetroPanel.astro";
+import RetroWindow from "@/components/ui/RetroWindow.astro";
+import RetroButton from "@/components/ui/RetroButton.astro";
+import RetroIconButton from "@/components/ui/RetroIconButton.astro";
+import RetroTooltip from "@/components/ui/RetroTooltip.astro";
+import RetroDialog from "@/components/ui/RetroDialog.astro";
+import RetroProgress from "@/components/ui/RetroProgress.astro";
+import RetroTabs from "@/components/ui/RetroTabs.astro";
+import RetroStatusBar from "@/components/ui/RetroStatusBar.astro";
+import PixelLabel from "@/components/ui/PixelLabel.astro";
+
+if (!import.meta.env.DEV) {
+  return Astro.redirect("/404");
+}
+---
+
+<ContentLayout
+  title="Style Guide"
+  description="Development-only showcase of retro UI primitives."
+>
+  <p class="project-meta">
+    Dev-only component showcase — redirects to /404 in production builds.
+  </p>
+
+  <RetroPanel title="PixelLabel">
+    <p>
+      <PixelLabel>Default label</PixelLabel>
+      <PixelLabel tone="accent">Accent label</PixelLabel>
+      <PixelLabel tone="muted">Muted label</PixelLabel>
+    </p>
+  </RetroPanel>
+
+  <RetroPanel title="RetroButton">
+    <p class="button-row">
+      <RetroButton>Default</RetroButton>
+      <RetroButton variant="primary">Primary</RetroButton>
+      <RetroButton variant="danger">Danger</RetroButton>
+      <RetroButton disabled>Disabled</RetroButton>
+      <RetroButton href="/projects">Link button</RetroButton>
+    </p>
+    <p class="project-meta">
+      Hover, active (sunken), and focus states are live.
+    </p>
+  </RetroPanel>
+
+  <RetroPanel title="RetroIconButton">
+    <p class="button-row">
+      <RetroIconButton src="/assets/icons/system/info.svg" label="Info" />
+      <RetroIconButton src="/assets/icons/system/quest.svg" label="Quest log" />
+      <RetroIconButton
+        src="/assets/icons/system/close.svg"
+        label="Close"
+        disabled
+      />
+    </p>
+  </RetroPanel>
+
+  <RetroPanel title="RetroPanel">
+    <p>
+      This panel uses the default raised-bevel surface with an optional
+      mono-font header strip.
+    </p>
+  </RetroPanel>
+
+  <RetroPanel title="RetroWindow">
+    <RetroWindow title="PROJECTS.EXE">
+      <p>
+        Window body uses the light <code>--window</code> surface with a navy titlebar
+        and decorative controls.
+      </p>
+      <p><a href="/projects">Open projects →</a></p>
+    </RetroWindow>
+  </RetroPanel>
+
+  <RetroPanel title="RetroTooltip">
+    <p>
+      <RetroTooltip tip="Appears after ~300ms on hover, instantly on focus.">
+        <RetroButton>Hover or focus me</RetroButton>
+      </RetroTooltip>
+    </p>
+  </RetroPanel>
+
+  <RetroPanel title="RetroDialog">
+    <RetroDialog title="README.TXT" open>
+      <p>
+        Native <code>&lt;dialog&gt;</code> element. The close controls use
+        <code>method="dialog"</code> forms — they work without JavaScript.
+      </p>
+    </RetroDialog>
+  </RetroPanel>
+
+  <RetroPanel title="RetroProgress">
+    <RetroProgress label="Quest progress" value={3} max={5} />
+    <RetroProgress label="Loading" value={65} />
+  </RetroPanel>
+
+  <RetroPanel title="RetroTabs">
+    <RetroTabs
+      name="demo"
+      tabs={[
+        { id: "one", label: "General" },
+        { id: "two", label: "Options" },
+        { id: "three", label: "About" },
+      ]}
+    >
+      <section>
+        <p>First panel — radio-input tabs, no JavaScript required.</p>
+      </section>
+      <section>
+        <p>Second panel — arrow keys move between tabs (radio group).</p>
+      </section>
+      <section>
+        <p>Third panel — panel order matches the tabs array order.</p>
+      </section>
+    </RetroTabs>
+  </RetroPanel>
+
+  <RetroPanel title="RetroStatusBar">
+    <RetroStatusBar items={["READY", "3/5 quests", "SOUND: OFF"]} />
+  </RetroPanel>
+</ContentLayout>
+
+<style>
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+  }
+</style>

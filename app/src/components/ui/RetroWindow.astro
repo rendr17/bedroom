@@ -1,0 +1,83 @@
+---
+interface Props {
+  title: string;
+  controls?: boolean;
+  class?: string;
+}
+
+const { title, controls = true, class: className } = Astro.props;
+---
+
+<section class:list={["retro-window", className]} aria-label={title}>
+  <header class="window-titlebar">
+    <span class="window-title">{title}</span>
+    {
+      controls && (
+        <span class="window-controls" aria-hidden="true">
+          <i>_</i>
+          <i>&#9634;</i>
+          <i>&#10005;</i>
+        </span>
+      )
+    }
+  </header>
+  <div class="window-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .retro-window {
+    box-shadow: var(--shadow-raised), var(--shadow-panel);
+    border: 1px solid var(--border-dark);
+    background: var(--window);
+    color: var(--text-dark);
+  }
+
+  .window-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    background: var(--primary);
+    color: var(--text);
+    font-family: var(--ui-font);
+    font-size: 0.8rem;
+    font-weight: bold;
+    user-select: none;
+  }
+
+  .window-controls {
+    display: inline-flex;
+    gap: 2px;
+  }
+
+  .window-controls i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 14px;
+    font-style: normal;
+    font-size: 0.6rem;
+    line-height: 1;
+    background: var(--window);
+    color: var(--text-dark);
+    box-shadow:
+      inset -1px -1px 0 var(--border-dark),
+      inset 1px 1px 0 var(--border-light);
+  }
+
+  .window-body {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .window-body > * + * {
+    margin-top: var(--space-3);
+  }
+
+  .window-body :global(a) {
+    color: var(--primary);
+  }
+</style>

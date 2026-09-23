@@ -1,0 +1,60 @@
+---
+interface Props {
+  src: string;
+  label: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  label,
+  type = "button",
+  disabled = false,
+  class: className,
+} = Astro.props;
+---
+
+<button
+  type={type}
+  disabled={disabled}
+  aria-label={label}
+  class:list={["retro-icon-button", className]}
+>
+  <img src={src} alt="" width="20" height="20" aria-hidden="true" />
+</button>
+
+<style>
+  .retro-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: var(--space-2);
+    cursor: pointer;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+    background: var(--surface);
+    transition: filter var(--duration-fast) var(--ease-out);
+  }
+
+  .retro-icon-button img {
+    image-rendering: pixelated;
+  }
+
+  .retro-icon-button:hover {
+    filter: brightness(1.2);
+  }
+
+  .retro-icon-button:active {
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .retro-icon-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    filter: none;
+  }
+</style>

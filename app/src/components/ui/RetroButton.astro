@@ -1,0 +1,87 @@
+---
+interface Props {
+  href?: string;
+  variant?: "default" | "primary" | "danger";
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = "default",
+  type = "button",
+  disabled = false,
+  class: className,
+} = Astro.props;
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={["retro-button", `variant-${variant}`, className]}
+      aria-disabled={disabled || undefined}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      type={type}
+      disabled={disabled}
+      class:list={["retro-button", `variant-${variant}`, className]}
+    >
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .retro-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 32px;
+    padding: var(--space-1) var(--space-4);
+    font-family: var(--ui-font);
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+    background: var(--surface);
+    color: var(--text);
+    transition: filter var(--duration-fast) var(--ease-out);
+  }
+
+  .retro-button:hover {
+    filter: brightness(1.2);
+  }
+
+  .retro-button:active {
+    box-shadow: var(--shadow-sunken);
+    transform: translateY(1px);
+  }
+
+  .variant-primary {
+    background: var(--primary);
+  }
+
+  .variant-danger {
+    background: var(--danger);
+  }
+
+  .retro-button:disabled,
+  .retro-button[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    filter: none;
+  }
+
+  .retro-button:disabled:active,
+  .retro-button[aria-disabled="true"]:active {
+    box-shadow: var(--shadow-raised);
+    transform: none;
+  }
+</style>

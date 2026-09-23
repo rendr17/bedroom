@@ -9,13 +9,79 @@ const isCurrent = (href: string) =>
 <nav class="site-nav" aria-label="Main navigation">
   <ul>
     {
-      NAV_LINKS.map(({ href, label }) => (
+      NAV_LINKS.map(({ href, label, icon }) => (
         <li>
           <a href={href} aria-current={isCurrent(href) ? "page" : undefined}>
-            {label}
+            <img src={icon} alt="" width="20" height="20" aria-hidden="true" />
+            <span>{label}</span>
           </a>
         </li>
       ))
     }
   </ul>
 </nav>
+
+<style>
+  .site-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-nav);
+    background: var(--surface);
+    border-top: 1px solid var(--border-dark);
+    box-shadow: 0 -1px 0 var(--border-light) inset;
+  }
+
+  .site-nav ul {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: var(--space-1);
+    margin: 0;
+    padding: var(--space-1) var(--space-2);
+    list-style: none;
+    font-family: var(--ui-font);
+    overflow-x: auto;
+  }
+
+  .site-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 56px;
+    min-height: 44px;
+    padding: var(--space-1) var(--space-2);
+    color: var(--text);
+    font-size: 0.68rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .site-nav img {
+    width: 20px;
+    height: 20px;
+    image-rendering: pixelated;
+  }
+
+  .site-nav a:hover {
+    color: var(--accent);
+    background: var(--bg-deep);
+    border-color: var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .site-nav a:active {
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .site-nav a[aria-current="page"] {
+    color: var(--accent);
+    background: var(--bg-deep);
+    border-color: var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+import RetroButton from "./RetroButton.astro";
+
+interface Props {
+  title: string;
+  open?: boolean;
+  class?: string;
+}
+
+const { title, open = false, class: className } = Astro.props;
+---
+
+<dialog class:list={["retro-dialog", className]} open={open}>
+  <header class="dialog-titlebar">
+    <span class="dialog-title">{title}</span>
+    <form method="dialog">
+      <button class="dialog-close" aria-label="Close dialog">&#10005;</button>
+    </form>
+  </header>
+  <div class="dialog-body">
+    <slot />
+  </div>
+  <footer class="dialog-actions">
+    <form method="dialog">
+      <RetroButton>Close</RetroButton>
+    </form>
+  </footer>
+</dialog>
+
+<style>
+  .retro-dialog {
+    padding: 0;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised), var(--shadow-panel);
+    background: var(--window);
+    color: var(--text-dark);
+    max-width: min(420px, 90vw);
+  }
+
+  .retro-dialog::backdrop {
+    background: rgb(15 23 42 / 0.7);
+  }
+
+  .dialog-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    background: var(--primary);
+    color: var(--text);
+    font-family: var(--ui-font);
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+
+  .dialog-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 16px;
+    padding: 0;
+    font-size: 0.6rem;
+    line-height: 1;
+    cursor: pointer;
+    background: var(--window);
+    color: var(--text-dark);
+    border: none;
+    box-shadow:
+      inset -1px -1px 0 var(--border-dark),
+      inset 1px 1px 0 var(--border-light);
+  }
+
+  .dialog-body {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4) var(--space-3);
+  }
+</style>

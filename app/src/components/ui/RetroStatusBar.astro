@@ -1,0 +1,35 @@
+---
+interface Props {
+  items: string[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={["retro-status-bar", className]}>
+  {items.map((item) => <span class="status-cell">{item}</span>)}
+</div>
+
+<style>
+  .retro-status-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 2px;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .status-cell {
+    flex: 1 0 auto;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    box-shadow: var(--shadow-sunken);
+    background: var(--bg-deep);
+    color: var(--text);
+    white-space: nowrap;
+  }
+</style>

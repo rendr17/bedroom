@@ -1,0 +1,41 @@
+---
+interface Props {
+  title?: string;
+  class?: string;
+}
+
+const { title, class: className } = Astro.props;
+---
+
+<section class:list={["retro-panel", className]}>
+  {title && <header class="panel-header">{title}</header>}
+  <div class="panel-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .retro-panel {
+    background: var(--surface);
+    box-shadow: var(--shadow-raised);
+    border: 1px solid var(--border-dark);
+  }
+
+  .panel-header {
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .panel-body {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .panel-body > * + * {
+    margin-top: var(--space-3);
+  }
+</style>

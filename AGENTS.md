@@ -32,6 +32,7 @@
 - Commit messages must not include "Generated with ..." tool trailers.
 - Commit messages must not include "Co-Authored-By" lines.
 - Keep commit messages focused on the change itself (subject + short body).
+- Phase scope tags only on phase implementation commits (e.g. `feat(phase-03): ...`). Use plain conventional types for everything else (e.g. `fix: ...`, `docs: ...`, `chore: ...`).
 
 ## Asset rules
 - Use bundled original SVG/WAV assets freely inside this project.

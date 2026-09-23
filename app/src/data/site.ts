@@ -8,9 +8,17 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
-  { href: "/experience", label: "Experience" },
-  { href: "/skills", label: "Skills" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About", icon: "/assets/icons/nav/about.svg" },
+  {
+    href: "/projects",
+    label: "Projects",
+    icon: "/assets/icons/nav/projects.svg",
+  },
+  {
+    href: "/experience",
+    label: "Experience",
+    icon: "/assets/icons/nav/experience.svg",
+  },
+  { href: "/skills", label: "Skills", icon: "/assets/icons/nav/skills.svg" },
+  { href: "/contact", label: "Contact", icon: "/assets/icons/nav/contact.svg" },
 ] as const;

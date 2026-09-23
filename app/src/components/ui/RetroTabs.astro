@@ -1,0 +1,140 @@
+---
+interface Props {
+  name: string;
+  tabs: { id: string; label: string }[];
+  class?: string;
+}
+
+const { name, tabs, class: className } = Astro.props;
+---
+
+<div class:list={["retro-tabs", className]}>
+  <div class="tab-list" role="group" aria-label="Tabs">
+    {
+      tabs.map((tab, index) => (
+        <>
+          <input
+            class="sr-only"
+            type="radio"
+            name={name}
+            id={`${name}-${tab.id}`}
+            checked={index === 0}
+          />
+          <label for={`${name}-${tab.id}`}>{tab.label}</label>
+        </>
+      ))
+    }
+  </div>
+  <div class="tab-panels">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .tab-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .tab-list label {
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--ui-font);
+    font-size: 0.8rem;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border-dark);
+    border-bottom: none;
+    box-shadow: inset 1px 1px 0 var(--border-light);
+    user-select: none;
+  }
+
+  .tab-list input:checked + label {
+    background: var(--window);
+    color: var(--text-dark);
+    font-weight: bold;
+    box-shadow:
+      inset 1px 1px 0 var(--border-light),
+      inset -1px 0 0 var(--border-dark);
+    transform: translateY(1px);
+  }
+
+  .tab-list input:focus-visible + label {
+    outline: var(--focus);
+    outline-offset: 1px;
+  }
+
+  .tab-panels {
+    padding: var(--space-3) var(--space-4);
+    background: var(--window);
+    color: var(--text-dark);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .tab-panels > :global(*) {
+    display: none;
+  }
+
+  .tab-panels > :global(*:nth-child(1)) {
+    display: block;
+  }
+
+  .tab-list:has(input:nth-child(3):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(1)) {
+    display: none;
+  }
+
+  .tab-list:has(input:nth-child(3):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(2)) {
+    display: block;
+  }
+
+  .tab-list:has(input:nth-child(5):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(1)),
+  .tab-list:has(input:nth-child(5):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(2)) {
+    display: none;
+  }
+
+  .tab-list:has(input:nth-child(5):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(3)) {
+    display: block;
+  }
+
+  .tab-list:has(input:nth-child(7):checked) ~ .tab-panels > :global(*) {
+    display: none;
+  }
+
+  .tab-list:has(input:nth-child(7):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(4)) {
+    display: block;
+  }
+
+  .tab-list:has(input:nth-child(9):checked) ~ .tab-panels > :global(*) {
+    display: none;
+  }
+
+  .tab-list:has(input:nth-child(9):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(5)) {
+    display: block;
+  }
+
+  .tab-list:has(input:nth-child(11):checked) ~ .tab-panels > :global(*) {
+    display: none;
+  }
+
+  .tab-list:has(input:nth-child(11):checked)
+    ~ .tab-panels
+    > :global(*:nth-child(6)) {
+    display: block;
+  }
+</style>
