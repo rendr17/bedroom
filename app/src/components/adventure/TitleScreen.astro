@@ -189,6 +189,45 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
       radial-gradient(ellipse at 50% 30%, #1b2b4d 0%, var(--bg-deep) 70%);
   }
 
+  .ts-inner > * {
+    animation: ts-in 0.5s var(--ease-out) both;
+  }
+
+  .ts-inner > *:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  .ts-inner > *:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+
+  .ts-inner > *:nth-child(3) {
+    animation-delay: 0.18s;
+  }
+
+  .ts-inner > *:nth-child(4) {
+    animation-delay: 0.24s;
+  }
+
+  .ts-inner > *:nth-child(5) {
+    animation-delay: 0.3s;
+  }
+
+  .ts-inner > *:nth-child(6) {
+    animation-delay: 0.36s;
+  }
+
+  @keyframes ts-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .ts-title {
     font-family: var(--mono-font);
     font-size: clamp(1.6rem, 5vw, 3rem);

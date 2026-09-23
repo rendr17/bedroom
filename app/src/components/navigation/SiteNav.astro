@@ -60,6 +60,10 @@ const isCurrent = (href: string) =>
     text-decoration: none;
     border: 1px solid transparent;
     white-space: nowrap;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
   }
 
   .site-nav img {

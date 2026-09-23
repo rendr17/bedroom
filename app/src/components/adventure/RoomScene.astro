@@ -40,6 +40,9 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
       </ul>
     </nav>
   </div>
+  <figcaption class="room-hint">
+    Click a <b>!</b> marker in the room to explore — or use the navigation below.
+  </figcaption>
 </figure>
 
 <style>
@@ -51,6 +54,32 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
     background: var(--surface);
     border: 2px solid var(--border-dark);
     box-shadow: var(--shadow-raised);
+    animation: room-in 0.55s var(--ease-out) both;
+  }
+
+  @keyframes room-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .room-hint {
+    padding: var(--space-2) var(--space-1) 0;
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    opacity: 0.75;
+  }
+
+  .room-hint b {
+    color: var(--accent);
   }
 
   .room-stage {
@@ -97,10 +126,21 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
     object-fit: contain;
     image-rendering: pixelated;
     opacity: 0.7;
+    animation: marker-glow 2.6s ease-in-out infinite;
     transition:
       opacity var(--duration-fast) var(--ease-out),
       transform var(--duration-fast) var(--ease-out),
       filter var(--duration-fast) var(--ease-out);
+  }
+
+  @keyframes marker-glow {
+    0%,
+    100% {
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 0.95;
+    }
   }
 
   .hotspot-label {
@@ -119,12 +159,16 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
     background: var(--accent);
     border: 1px solid var(--border-dark);
     opacity: 0;
+    transform: translateX(-50%) translateY(4px);
     pointer-events: none;
-    transition: opacity var(--duration-fast) var(--ease-out);
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
   }
 
   .hotspot:hover .hotspot-marker,
   .hotspot:focus-visible .hotspot-marker {
+    animation-play-state: paused;
     opacity: 1;
     transform: scale(1.15);
     filter: drop-shadow(0 0 6px rgb(255 209 102 / 0.8));
@@ -133,6 +177,7 @@ const primaryHotspots = hotspots.filter((h) => !h.optional);
   .hotspot:hover .hotspot-label,
   .hotspot:focus-visible .hotspot-label {
     opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 
   @media (max-width: 640px) {
