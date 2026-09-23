@@ -1,0 +1,26 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import { projects } from "@/data/projects";
+---
+
+<ContentLayout
+  title="Projects"
+  description="Selected projects by Rendi — case studies covering problem, role, solution, technology, and impact."
+>
+  <p>
+    Selected work — each entry links to a case study covering the problem, my
+    role, the solution, and what it changed.
+  </p>
+  <ul class="project-list">
+    {
+      projects.map((project) => (
+        <li>
+          <a href={`/projects/${project.slug}`}>{project.title}</a>
+          <span class="project-meta">
+            {project.subtitle} · {project.status}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</ContentLayout>

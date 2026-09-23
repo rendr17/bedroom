@@ -1,6 +1,7 @@
 ---
 import "@/styles/global.css";
 import { SITE } from "@/data/site";
+import SiteNav from "@/components/navigation/SiteNav.astro";
 
 interface Props {
   title: string;
@@ -23,6 +24,7 @@ const { title, description = SITE.description } = Astro.props;
     <a class="skip-link" href="#main">Skip to main content</a>
     <header>
       <p class="site-title"><a href="/">{SITE.name}</a></p>
+      <SiteNav />
     </header>
     <main id="main">
       <slot />

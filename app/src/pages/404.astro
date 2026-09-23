@@ -1,0 +1,15 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/data/site";
+---
+
+<BaseLayout title={`404 — ${SITE.name}`} description="Page not found.">
+  <article class="content-page">
+    <h1>404 — Empty corner</h1>
+    <p>
+      You've found a quiet corner of the room. Whatever was supposed to be here
+      isn't.
+    </p>
+    <p><a href="/">← Back to the room</a></p>
+  </article>
+</BaseLayout>

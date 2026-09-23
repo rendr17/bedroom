@@ -1,0 +1,26 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import { SITE } from "@/data/site";
+---
+
+<ContentLayout
+  title="About"
+  description={`About ${SITE.author}, a ${SITE.role.toLowerCase()} focused on practical web systems, AI integration, and internal tools.`}
+>
+  <p>
+    I'm <strong>{SITE.author}</strong>, a {SITE.role.toLowerCase()} based in Indonesia.
+    I build practical web applications, internal systems, integrations, and digital
+    products.
+  </p>
+  <h2>Focus areas</h2>
+  <ul>
+    <li>Full-stack web development</li>
+    <li>AI integration</li>
+    <li>Internal systems &amp; operations</li>
+    <li>Product experiments</li>
+  </ul>
+  <p>
+    A fuller bio — background, education highlights, and what I'm currently
+    exploring — is being prepared.
+  </p>
+</ContentLayout>

@@ -1,0 +1,31 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import { projects } from "@/data/projects";
+import type { ProjectListItem } from "@/types/project";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: ProjectListItem;
+}
+
+const { project } = Astro.props;
+---
+
+<ContentLayout
+  title={project.title}
+  description={`${project.title} — ${project.subtitle}. A project by Rendi.`}
+>
+  <p class="project-subtitle">{project.subtitle}</p>
+  <p>Status: {project.status}</p>
+  <p>
+    The full case study — problem, role, solution, features, technology, and
+    impact — is being prepared.
+  </p>
+  <p><a href="/projects">← Back to all projects</a></p>
+</ContentLayout>
