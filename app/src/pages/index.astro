@@ -1,15 +1,19 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import TitleScreen from "@/components/adventure/TitleScreen.astro";
+import RoomScene from "@/components/adventure/RoomScene.astro";
 import { SITE } from "@/data/site";
 ---
 
 <BaseLayout title={SITE.name}>
   <TitleScreen />
-  <h1>{SITE.name}</h1>
-  <p>{SITE.tagline}</p>
-  <p>
-    Welcome to my little corner of the internet. Click around, explore, and
-    discover my journey.
-  </p>
+  <div class="content-page">
+    <h1>{SITE.name}</h1>
+    <p>{SITE.tagline}</p>
+    <p>
+      Welcome to my little corner of the internet. Click around, explore, and
+      discover my journey.
+    </p>
+  </div>
+  <RoomScene />
 </BaseLayout>

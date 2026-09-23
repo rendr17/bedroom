@@ -1,0 +1,37 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<figure class:list={["room-scene", className]}>
+  <img
+    src="/assets/backgrounds/bedroom-night.svg"
+    alt="Pixel-art bedroom at night: a bed with a sleeping cat, a wooden desk holding a CRT monitor and keyboard, a desk lamp, a bookshelf, two posters, a plant, and a window overlooking a city skyline."
+    width="1920"
+    height="1080"
+    fetchpriority="high"
+  />
+</figure>
+
+<style>
+  .room-scene {
+    margin: var(--space-6) auto 0;
+    max-width: min(100%, calc((100vh - 14rem) * 16 / 9));
+    max-width: min(100%, calc((100dvh - 14rem) * 16 / 9));
+    padding: var(--space-2);
+    background: var(--surface);
+    border: 2px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .room-scene img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    image-rendering: pixelated;
+    background: var(--bg-deep);
+  }
+</style>
