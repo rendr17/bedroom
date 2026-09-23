@@ -176,6 +176,25 @@ import PixelLabel from "@/components/ui/PixelLabel.astro";
     background: rgb(5 8 18 / 0.6);
   }
 
+  .title-screen[open] .ts-inner {
+    animation: crt-on 0.5s var(--ease-out) both;
+  }
+
+  @keyframes crt-on {
+    0% {
+      transform: scaleY(0.02);
+      filter: brightness(2.6);
+    }
+    55% {
+      transform: scaleY(1.03);
+      filter: brightness(1.3);
+    }
+    100% {
+      transform: none;
+      filter: none;
+    }
+  }
+
   .ts-inner {
     position: relative;
     display: flex;

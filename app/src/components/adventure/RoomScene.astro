@@ -27,7 +27,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
             <li
               style={`--hx:${h.desktop.x}%;--hy:${h.desktop.y}%;--o:${h.mobileOrder}`}
             >
-              <a href={h.href} class="hotspot">
+              <a href={h.href} class="hotspot" data-section={h.id}>
                 <img
                   class="hotspot-marker"
                   src="/assets/icons/system/hotspot.png"
@@ -46,7 +46,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
             <li
               style={`--hx:${h.desktop.x}%;--hy:${h.desktop.y}%;--o:${h.mobileOrder}`}
             >
-              <a href={h.href} class="hotspot">
+              <a href={h.href} class="hotspot" data-section={h.id}>
                 <img
                   class="hotspot-marker marker-prop"
                   src={h.icon ?? "/assets/icons/system/hotspot.png"}
@@ -251,6 +251,35 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     filter: drop-shadow(0 0 6px rgb(255 209 102 / 0.8));
   }
 
+  .hotspot:active .hotspot-marker {
+    transform: scale(0.95);
+    transition-duration: 0s;
+  }
+
+  .hotspot[data-visited]::after {
+    content: "✓" / "";
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    font-family: var(--mono-font);
+    font-size: 0.6rem;
+    font-weight: bold;
+    line-height: 1;
+    color: var(--text-dark);
+    background: var(--success);
+    border: 1px solid var(--border-dark);
+    padding: 1px 3px;
+  }
+
+  .hotspot[data-visited] .hotspot-marker {
+    opacity: 0.5;
+  }
+
+  .hotspot[data-visited]:hover .hotspot-marker,
+  .hotspot[data-visited]:focus-visible .hotspot-marker {
+    opacity: 1;
+  }
+
   .hotspot:hover .hotspot-label,
   .hotspot:focus-visible .hotspot-label {
     opacity: 1;
@@ -337,7 +366,7 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     }
 
     .hotspot {
-      position: static;
+      position: relative;
       transform: none;
       width: auto;
       height: auto;
@@ -398,6 +427,15 @@ const extraHotspots = hotspots.filter((h) => h.optional);
 
 <script>
   import { playCue } from "@/utils/audio";
+  import { getVisited, type QuestSection } from "@/utils/progress";
+
+  const visited = new Set<QuestSection>(getVisited());
+  document
+    .querySelectorAll<HTMLElement>(".room-hotspots .hotspot[data-section]")
+    .forEach((el) => {
+      const id = el.getAttribute("data-section") as QuestSection | null;
+      if (id && visited.has(id)) el.setAttribute("data-visited", "true");
+    });
 
   const catBtn = document.getElementById("egg-cat");
   const catBubble = document.getElementById("cat-bubble");
