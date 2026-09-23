@@ -1,27 +1,262 @@
 ---
 import ContentLayout from "@/layouts/ContentLayout.astro";
+import RetroWindow from "@/components/ui/RetroWindow.astro";
+import RetroStatusBar from "@/components/ui/RetroStatusBar.astro";
+import RetroButton from "@/components/ui/RetroButton.astro";
 import { socials } from "@/data/socials";
+
+const email = socials.find((s) => s.kind === "email");
+const emailAction = email?.href
+  ? email.href.startsWith("mailto:")
+    ? email.href
+    : `mailto:${email.href}`
+  : null;
 ---
 
 <ContentLayout
   title="Contact"
   description="Get in touch with Rendi — email, GitHub, LinkedIn, and CV."
 >
-  <p>The quickest ways to reach me:</p>
-  <ul>
-    {
-      socials.map((social) => (
-        <li>
-          {social.href ? (
-            <a href={social.href}>{social.label}</a>
-          ) : (
-            <>
-              {social.label} — <em>to be published</em>
-            </>
-          )}
-        </li>
-      ))
-    }
-  </ul>
-  <p>Public contact details will appear here as direct links once confirmed.</p>
+  <div class="contact-hero">
+    <img
+      src="/assets/props/envelope.png"
+      alt=""
+      width={252}
+      height={181}
+      class="contact-envelope"
+      aria-hidden="true"
+    />
+    <p class="contact-intro">
+      The quickest ways to reach me — every channel opens directly, no puzzles
+      required. Public contact details will appear as direct links once
+      confirmed.
+    </p>
+  </div>
+
+  <RetroWindow title="MAILBOX.EXE" controls={false}>
+    <ul class="channel-list">
+      {
+        socials.map((social) => (
+          <li>
+            {social.href ? (
+              <a href={social.href} class="channel-row">
+                <span class="channel-marker" aria-hidden="true">
+                  &gt;
+                </span>
+                <span class="channel-name">{social.label}</span>
+                <span class="channel-value">{social.href}</span>
+                <span class="channel-open" aria-hidden="true">
+                  »
+                </span>
+              </a>
+            ) : (
+              <span class="channel-row channel-soon">
+                <span class="channel-marker" aria-hidden="true">
+                  &gt;
+                </span>
+                <span class="channel-name">{social.label}</span>
+                <span class="channel-tag">Soon</span>
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mailbox-status">
+      <RetroStatusBar
+        items={[`${socials.length} CHANNELS`, "C:\\RENDI\\MAILBOX", "READY"]}
+      />
+    </div>
+  </RetroWindow>
+
+  {
+    emailAction && (
+      <RetroWindow title="NEW MESSAGE" controls={false}>
+        <form
+          action={emailAction}
+          method="post"
+          enctype="text/plain"
+          class="msg-form"
+        >
+          <label>
+            <span>Your name</span>
+            <input name="name" type="text" required autocomplete="name" />
+          </label>
+          <label>
+            <span>Your email</span>
+            <input name="email" type="email" required autocomplete="email" />
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="5" required />
+          </label>
+          <RetroButton type="submit" variant="primary">
+            Open in mail app
+          </RetroButton>
+        </form>
+      </RetroWindow>
+    )
+  }
 </ContentLayout>
+
+<style>
+  .contact-hero {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .contact-envelope {
+    flex: 0 0 auto;
+    width: 140px;
+    height: auto;
+    object-fit: contain;
+    image-rendering: pixelated;
+    transform: rotate(-4deg);
+    filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.4));
+  }
+
+  .contact-intro {
+    flex: 1 1 280px;
+    margin: 0;
+  }
+
+  .channel-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .channel-list li + li {
+    margin-top: var(--space-1);
+  }
+
+  .channel-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--mono-font);
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  a.channel-row:hover,
+  a.channel-row:focus-visible {
+    background: rgb(30 74 148 / 0.12);
+    border-color: var(--primary);
+    outline: none;
+  }
+
+  a.channel-row:focus-visible {
+    outline: var(--focus);
+    outline-offset: -2px;
+  }
+
+  .channel-marker {
+    font-weight: bold;
+    color: var(--primary);
+  }
+
+  .channel-name {
+    font-weight: bold;
+    min-width: 7ch;
+  }
+
+  .channel-value {
+    font-size: 0.68rem;
+    color: rgb(21 21 21 / 0.6);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .channel-open {
+    margin-left: auto;
+    font-weight: bold;
+    color: var(--primary);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  a.channel-row:hover .channel-open,
+  a.channel-row:focus-visible .channel-open {
+    opacity: 1;
+  }
+
+  .channel-soon {
+    opacity: 0.75;
+  }
+
+  .channel-tag {
+    margin-left: auto;
+    padding: 0 var(--space-2);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: rgb(21 21 21 / 0.6);
+  }
+
+  .mailbox-status {
+    margin-top: var(--space-3);
+  }
+
+  .mailbox-status :global(.status-cell) {
+    color: var(--text-dark);
+    background: var(--window);
+  }
+
+  .msg-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .msg-form label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-family: var(--mono-font);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(21 21 21 / 0.7);
+  }
+
+  .msg-form input,
+  .msg-form textarea {
+    padding: var(--space-2);
+    font-family: var(--ui-font);
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    background: #fffef5;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-sunken);
+  }
+
+  .msg-form input:focus-visible,
+  .msg-form textarea:focus-visible {
+    outline: var(--focus);
+    outline-offset: 1px;
+  }
+
+  .msg-form :global(.retro-button) {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 480px) {
+    .contact-hero {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-3);
+    }
+  }
+</style>
