@@ -1,0 +1,45 @@
+[
+  {
+    "id": "frontend",
+    "name": "Frontend",
+    "items": [
+      { "name": "TypeScript", "context": "used in projects" },
+      { "name": "Astro", "context": "used in projects" },
+      { "name": "Vue", "context": "used in projects" },
+      { "name": "Responsive web", "context": "used in projects" }
+    ]
+  },
+  {
+    "id": "backend-database",
+    "name": "Backend & database",
+    "items": [
+      { "name": "Laravel API", "context": "used in projects" },
+      { "name": "Supabase / PostgreSQL", "context": "used in projects" },
+      { "name": "Relational databases", "context": "used in projects" }
+    ]
+  },
+  {
+    "id": "integrations-apis",
+    "name": "Integration & APIs",
+    "items": [
+      { "name": "External API integrations", "context": "used in projects" },
+      { "name": "API/data pipelines", "context": "used in projects" },
+      { "name": "Geospatial/maps", "context": "used in projects" }
+    ]
+  },
+  {
+    "id": "ai-assisted",
+    "name": "AI-assisted development",
+    "items": [{ "name": "AI integration", "context": "current focus" }]
+  },
+  {
+    "id": "dev-tooling",
+    "name": "Dev tooling",
+    "items": []
+  },
+  {
+    "id": "qa-observability",
+    "name": "QA & observability",
+    "items": []
+  }
+]

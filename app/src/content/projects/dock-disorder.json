@@ -1,0 +1,25 @@
+{
+  "title": "Dock & Disorder",
+  "subtitle": "Warehouse Puzzle Game",
+  "category": "Game / Side project",
+  "role": "Designer / Developer",
+  "status": "Side project",
+  "sortOrder": 4,
+  "shortDescription": "A warehouse-themed puzzle game concept about sorting incoming goods into the right zones before time runs out.",
+  "problem": "A creative side project exploring how logistics operations can become a game — turning warehouse sorting into short puzzle loops.",
+  "solution": "A web-first puzzle game concept where incoming goods must be sorted into the right zones before time runs out, documented through game-design notes.",
+  "features": [
+    "Warehouse theme",
+    "Short puzzle loops",
+    "Web-first implementation path",
+    "Game-design documentation"
+  ],
+  "technology": [
+    "Web game stack",
+    "TypeScript",
+    "2D assets",
+    "Game-state logic"
+  ],
+  "impact": ["Creative project combining logistics context and game design"],
+  "accent": "purple"
+}

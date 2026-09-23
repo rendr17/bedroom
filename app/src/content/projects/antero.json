@@ -1,0 +1,29 @@
+{
+  "title": "Antero Platform",
+  "subtitle": "Enterprise Logistics Operations Platform",
+  "category": "Enterprise / Internal platform",
+  "role": "Software Developer",
+  "status": "Production / Internal",
+  "featured": true,
+  "sortOrder": 1,
+  "shortDescription": "A centralized platform for logistics operations covering shipment, pickup, manifest, delivery, POD, finance visibility, and operational integrations.",
+  "problem": "Logistics operations spanning shipment, pickup, manifest, delivery, POD, and finance were spread across fragmented workflows that needed a shared system.",
+  "solution": "A centralized internal platform that consolidates operational workflows and gives the team visibility into shipment, manifest, delivery, and finance data, with integrations into external systems.",
+  "features": [
+    "Operational workflow digitization",
+    "Shipment and manifest visibility",
+    "External system integrations",
+    "Performance and data-correctness improvements"
+  ],
+  "technology": [
+    "Astro/Vue where applicable",
+    "Supabase / PostgreSQL",
+    "TypeScript",
+    "API integrations"
+  ],
+  "impact": [
+    "Supports high-volume logistics operations",
+    "Consolidates operational workflows into a shared system"
+  ],
+  "accent": "blue"
+}

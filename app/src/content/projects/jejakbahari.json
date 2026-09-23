@@ -1,0 +1,25 @@
+{
+  "title": "JejakBahari",
+  "subtitle": "Open Maritime / RoRo Tracking Project",
+  "category": "Open-source concept",
+  "role": "Creator / Developer",
+  "status": "Open-source concept",
+  "sortOrder": 2,
+  "shortDescription": "An open-source project exploring vessel, port, route, and AIS data for Indonesian RoRo tracking.",
+  "problem": "Indonesian RoRo and maritime visibility depends on scattered public data sources for vessels, ports, and routes.",
+  "solution": "An open project that researches AIS and public maritime data sources and models port and vessel data around a RoRo-first scope.",
+  "features": [
+    "RoRo-first scope",
+    "AIS/data-source research",
+    "Port and vessel data model",
+    "Open-source documentation"
+  ],
+  "technology": [
+    "Web frontend",
+    "Geospatial/maps",
+    "Public maritime data",
+    "API/data pipelines"
+  ],
+  "impact": ["Designed as a reusable open maritime-data project"],
+  "accent": "cyan"
+}

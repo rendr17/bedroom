@@ -1,5 +1,8 @@
 ---
+import { getCollection } from "astro:content";
 import ContentLayout from "@/layouts/ContentLayout.astro";
+
+const groups = await getCollection("skills");
 ---
 
 <ContentLayout
@@ -10,13 +13,27 @@ import ContentLayout from "@/layouts/ContentLayout.astro";
     Capabilities grouped by practical use — no percentage bars, just what I
     actually work with.
   </p>
-  <ul>
-    <li>Frontend</li>
-    <li>Backend &amp; database</li>
-    <li>Integration &amp; APIs</li>
-    <li>AI-assisted development</li>
-    <li>Dev tooling</li>
-    <li>QA &amp; observability</li>
-  </ul>
-  <p>Detailed skill entries are being prepared.</p>
+  {
+    groups.map((group) => (
+      <section>
+        <h2>{group.data.name}</h2>
+        {group.data.items.length > 0 ? (
+          <ul>
+            {group.data.items.map((item) => (
+              <li>
+                {item.name}
+                {item.context && (
+                  <span class="project-meta"> — {item.context}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>
+            <em>Entries being prepared.</em>
+          </p>
+        )}
+      </section>
+    ))
+  }
 </ContentLayout>

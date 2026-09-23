@@ -1,17 +1,39 @@
 ---
 import ContentLayout from "@/layouts/ContentLayout.astro";
+import { experience } from "@/data/experience";
 ---
 
 <ContentLayout
   title="Experience"
   description="Rendi's professional experience — roles, responsibilities, and selected work."
 >
-  <p>
-    Roles, responsibilities, and selected work will be listed here in
-    chronological order.
-  </p>
-  <p>
-    Timeline entries are being prepared — verified details only, nothing
-    placeholder presented as fact.
-  </p>
+  {
+    experience.length === 0 ? (
+      <p>
+        Roles, responsibilities, and selected work will be listed here in
+        chronological order. Timeline entries are being prepared — verified
+        details only, nothing placeholder presented as fact.
+      </p>
+    ) : (
+      <ol class="experience-list">
+        {experience.map((entry) => (
+          <li>
+            <h2>{entry.role}</h2>
+            <p class="project-meta">
+              {entry.organization} · {entry.period}
+              {entry.location && ` · ${entry.location}`}
+            </p>
+            {entry.summary && <p>{entry.summary}</p>}
+            {entry.responsibilities.length > 0 && (
+              <ul>
+                {entry.responsibilities.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ol>
+    )
+  }
 </ContentLayout>

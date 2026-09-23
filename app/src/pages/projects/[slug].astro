@@ -1,20 +1,22 @@
 ---
+import { getCollection } from "astro:content";
 import ContentLayout from "@/layouts/ContentLayout.astro";
-import { projects } from "@/data/projects";
-import type { ProjectListItem } from "@/types/project";
+import type { CollectionEntry } from "astro:content";
 
-export function getStaticPaths() {
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
   }));
 }
 
 interface Props {
-  project: ProjectListItem;
+  entry: CollectionEntry<"projects">;
 }
 
-const { project } = Astro.props;
+const { entry } = Astro.props;
+const project = entry.data;
 ---
 
 <ContentLayout
@@ -22,10 +24,63 @@ const { project } = Astro.props;
   description={`${project.title} — ${project.subtitle}. A project by Rendi.`}
 >
   <p class="project-subtitle">{project.subtitle}</p>
-  <p>Status: {project.status}</p>
-  <p>
-    The full case study — problem, role, solution, features, technology, and
-    impact — is being prepared.
+  <p class="project-meta">
+    {project.category} · {project.status} · Role: {project.role}
+    {project.year && ` · ${project.year}`}
   </p>
+  <p>{project.shortDescription}</p>
+
+  {project.problem && <h2>Problem</h2>}
+  {project.problem && <p>{project.problem}</p>}
+
+  {project.solution && <h2>Solution</h2>}
+  {project.solution && <p>{project.solution}</p>}
+
+  {
+    project.features.length > 0 && (
+      <h2>Features</h2>
+      <ul>
+        {project.features.map((feature) => (
+          <li>{feature}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    project.technology.length > 0 && (
+      <h2>Technology</h2>
+      <ul>
+        {project.technology.map((tech) => (
+          <li>{tech}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    project.impact.length > 0 && (
+      <h2>Impact</h2>
+      <ul>
+        {project.impact.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    project.links.length > 0 && (
+      <h2>Links</h2>
+      <ul>
+        {project.links.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
   <p><a href="/projects">← Back to all projects</a></p>
 </ContentLayout>

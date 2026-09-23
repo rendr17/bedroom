@@ -1,6 +1,8 @@
 ---
 import ContentLayout from "@/layouts/ContentLayout.astro";
-import { projects } from "@/data/projects";
+import { getSortedProjects } from "@/utils/content";
+
+const projects = await getSortedProjects();
 ---
 
 <ContentLayout
@@ -15,9 +17,9 @@ import { projects } from "@/data/projects";
     {
       projects.map((project) => (
         <li>
-          <a href={`/projects/${project.slug}`}>{project.title}</a>
+          <a href={`/projects/${project.id}`}>{project.data.title}</a>
           <span class="project-meta">
-            {project.subtitle} · {project.status}
+            {project.data.subtitle} · {project.data.status}
           </span>
         </li>
       ))
