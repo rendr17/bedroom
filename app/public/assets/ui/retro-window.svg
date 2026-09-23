@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" shape-rendering="crispEdges"><rect width="640" height="420" fill="#ece9d8" stroke="#273247" stroke-width="6"/>
-<rect x="6" y="6" width="628" height="42" fill="#1e4a94"/>
-<text x="22" y="34" font-family="Tahoma,Verdana,sans-serif" font-size="20" fill="#fff">Portfolio Window</text>
-<rect x="587" y="13" width="32" height="28" fill="#e15353" stroke="#fff" stroke-width="2"/>
-<path d="M595 19 L611 35 M611 19 L595 35" stroke="#fff" stroke-width="3"/>
-<rect x="24" y="72" width="592" height="300" fill="#fff" stroke="#9ca3af" stroke-width="2"/>
-<text x="48" y="120" font-family="Verdana,sans-serif" font-size="20" fill="#151515">Content goes here.</text>
-<text x="22" y="402" font-family="Tahoma,sans-serif" font-size="16" fill="#151515">Ready</text></svg>

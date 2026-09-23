@@ -16,259 +16,155 @@
     "bytes": 22976
   },
   {
-    "path": "assets/backgrounds/bedroom-day.png",
-    "bytes": 37948
-  },
-  {
-    "path": "assets/backgrounds/bedroom-day.svg",
-    "bytes": 5070
-  },
-  {
     "path": "assets/backgrounds/bedroom-night.png",
-    "bytes": 36010
-  },
-  {
-    "path": "assets/backgrounds/bedroom-night.svg",
-    "bytes": 5070
-  },
-  {
-    "path": "assets/concept/reference_asset_board.png",
-    "bytes": 2179059
-  },
-  {
-    "path": "assets/concept/reference_handoff_board.png",
-    "bytes": 2121924
-  },
-  {
-    "path": "assets/concept/reference_user_selected.png",
-    "bytes": 3313658
-  },
-  {
-    "path": "assets/concept/reference_variant.png",
-    "bytes": 2223602
+    "bytes": 1060647
   },
   {
     "path": "assets/icons/nav/about.png",
-    "bytes": 393
-  },
-  {
-    "path": "assets/icons/nav/about.svg",
-    "bytes": 350
+    "bytes": 69905
   },
   {
     "path": "assets/icons/nav/contact.png",
-    "bytes": 442
-  },
-  {
-    "path": "assets/icons/nav/contact.svg",
-    "bytes": 288
+    "bytes": 50861
   },
   {
     "path": "assets/icons/nav/experience.png",
-    "bytes": 298
-  },
-  {
-    "path": "assets/icons/nav/experience.svg",
-    "bytes": 357
+    "bytes": 61643
   },
   {
     "path": "assets/icons/nav/extras.png",
-    "bytes": 426
-  },
-  {
-    "path": "assets/icons/nav/extras.svg",
-    "bytes": 425
+    "bytes": 45431
   },
   {
     "path": "assets/icons/nav/projects.png",
-    "bytes": 308
-  },
-  {
-    "path": "assets/icons/nav/projects.svg",
-    "bytes": 361
+    "bytes": 42225
   },
   {
     "path": "assets/icons/nav/skills.png",
-    "bytes": 490
-  },
-  {
-    "path": "assets/icons/nav/skills.svg",
-    "bytes": 330
+    "bytes": 63549
   },
   {
     "path": "assets/icons/system/arrow.png",
-    "bytes": 308
-  },
-  {
-    "path": "assets/icons/system/arrow.svg",
-    "bytes": 207
+    "bytes": 18159
   },
   {
     "path": "assets/icons/system/close.png",
-    "bytes": 387
-  },
-  {
-    "path": "assets/icons/system/close.svg",
-    "bytes": 281
+    "bytes": 16422
   },
   {
     "path": "assets/icons/system/hotspot.png",
-    "bytes": 467
-  },
-  {
-    "path": "assets/icons/system/hotspot.svg",
-    "bytes": 329
+    "bytes": 22339
   },
   {
     "path": "assets/icons/system/info.png",
-    "bytes": 434
-  },
-  {
-    "path": "assets/icons/system/info.svg",
-    "bytes": 305
+    "bytes": 22943
   },
   {
     "path": "assets/icons/system/muted.png",
-    "bytes": 426
-  },
-  {
-    "path": "assets/icons/system/muted.svg",
-    "bytes": 250
+    "bytes": 32635
   },
   {
     "path": "assets/icons/system/quest.png",
-    "bytes": 384
-  },
-  {
-    "path": "assets/icons/system/quest.svg",
-    "bytes": 310
+    "bytes": 32598
   },
   {
     "path": "assets/icons/system/sound.png",
-    "bytes": 416
-  },
-  {
-    "path": "assets/icons/system/sound.svg",
-    "bytes": 274
+    "bytes": 37560
   },
   {
     "path": "assets/icons/system/warning.png",
-    "bytes": 554
-  },
-  {
-    "path": "assets/icons/system/warning.svg",
-    "bytes": 311
+    "bytes": 18995
   },
   {
     "path": "assets/posters/better-web.png",
-    "bytes": 5191
-  },
-  {
-    "path": "assets/posters/better-web.svg",
-    "bytes": 431
+    "bytes": 226139
   },
   {
     "path": "assets/posters/build-repeat.png",
-    "bytes": 5260
-  },
-  {
-    "path": "assets/posters/build-repeat.svg",
-    "bytes": 423
+    "bytes": 91868
   },
   {
     "path": "assets/posters/good-code.png",
-    "bytes": 5225
-  },
-  {
-    "path": "assets/posters/good-code.svg",
-    "bytes": 421
+    "bytes": 146452
   },
   {
     "path": "assets/posters/small-developer.png",
-    "bytes": 5329
-  },
-  {
-    "path": "assets/posters/small-developer.svg",
-    "bytes": 438
+    "bytes": 220732
   },
   {
     "path": "assets/props/avatar-placeholder.README.txt",
-    "bytes": 134
+    "bytes": 133
   },
   {
     "path": "assets/props/avatar-placeholder.png",
-    "bytes": 626
+    "bytes": 147555
   },
   {
     "path": "assets/props/books.png",
-    "bytes": 273
-  },
-  {
-    "path": "assets/props/books.svg",
-    "bytes": 350
+    "bytes": 117260
   },
   {
     "path": "assets/props/envelope.png",
-    "bytes": 442
-  },
-  {
-    "path": "assets/props/envelope.svg",
-    "bytes": 288
+    "bytes": 50861
   },
   {
     "path": "assets/props/floppy.png",
-    "bytes": 339
-  },
-  {
-    "path": "assets/props/floppy.svg",
-    "bytes": 386
+    "bytes": 35458
   },
   {
     "path": "assets/props/folder.png",
-    "bytes": 308
-  },
-  {
-    "path": "assets/props/folder.svg",
-    "bytes": 361
+    "bytes": 43992
   },
   {
     "path": "assets/props/gamepad.png",
-    "bytes": 426
-  },
-  {
-    "path": "assets/props/gamepad.svg",
-    "bytes": 425
+    "bytes": 45431
   },
   {
     "path": "assets/props/gear.png",
-    "bytes": 615
-  },
-  {
-    "path": "assets/props/gear.svg",
-    "bytes": 388
+    "bytes": 63549
   },
   {
     "path": "assets/props/mug.png",
-    "bytes": 836
-  },
-  {
-    "path": "assets/props/mug.svg",
-    "bytes": 413
+    "bytes": 97408
   },
   {
     "path": "assets/props/notebook.png",
-    "bytes": 345
+    "bytes": 134073
   },
   {
-    "path": "assets/props/notebook.svg",
-    "bytes": 396
+    "path": "assets/sheets/01-room-assets.png",
+    "bytes": 1330870
+  },
+  {
+    "path": "assets/sheets/02-ui-kit.png",
+    "bytes": 1460600
+  },
+  {
+    "path": "assets/sheets/03-icon-sprite-sheet.png",
+    "bytes": 1092898
+  },
+  {
+    "path": "assets/sheets/04-desk-essentials.png",
+    "bytes": 1324714
+  },
+  {
+    "path": "assets/sheets/05-room-props.png",
+    "bytes": 2030148
+  },
+  {
+    "path": "assets/sheets/06-decor-sticker-sheet.png",
+    "bytes": 1772023
+  },
+  {
+    "path": "assets/sheets/07-character-and-game-ui.png",
+    "bytes": 1269594
+  },
+  {
+    "path": "assets/sheets/README.txt",
+    "bytes": 1053
   },
   {
     "path": "assets/ui/retro-window.png",
-    "bytes": 8517
-  },
-  {
-    "path": "assets/ui/retro-window.svg",
-    "bytes": 839
+    "bytes": 94842
   }
 ]

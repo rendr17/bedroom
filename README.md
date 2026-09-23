@@ -9,7 +9,7 @@ A development-ready handoff for **Rendi's Portfolio Adventure**, an interactive 
 ## Package contents
 
 - `docs/` — PRD, UX, technical, content, motion, accessibility, performance, testing, deployment, analytics, security, and phase plan.
-- `assets/` — original SVG/PNG/WAV assets plus concept references.
+- `assets/` — pixel-art asset pack: composite sprite sheets in `assets/sheets/`, exported PNGs organized by category, and original WAV UI cues.
 - `content/` — structured project/content examples ready to move into Astro Content Collections.
 - `starter-snippets/` — design tokens, hotspot data, content types, route plan, and implementation notes.
 - `checklists/` — per-phase definition of done and launch checks.
@@ -34,7 +34,7 @@ Follow `docs/19_DEVELOPMENT_PHASES.md`. Do not jump directly to easter eggs or a
 
 ## Visual references
 
-The selected concept is in `assets/concept/reference_user_selected.png`. Production code should use modular assets rather than flattening the entire interface into one background image.
+The production art source is the pixel-asset pack in `assets/sheets/` — seven composite sheets (room modules, UI kit, icons, desk props, room props, decor, character/game UI). Crop and export the pieces you need with `tools/extract_sprites.py`; `tools/build_assets.py` rebuilds the current exported set. Production code should use modular assets rather than flattening the interface into one background image.
 
 ## Fonts
 

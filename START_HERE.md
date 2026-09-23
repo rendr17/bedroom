@@ -17,7 +17,8 @@ Scaffold Astro in `app/` if you want to keep this handoff package at repository 
 Do not implement the interactive room first. Build the semantic content routes, then add the room as an enhancement. This preserves accessibility, SEO, maintainability, and direct-link behavior.
 
 ## 4. Asset usage
-- Primary reference: `assets/concept/reference_user_selected.png`
+- Source art: `assets/sheets/` — seven composite sprite sheets (see `assets/sheets/README.txt`)
+- Crop/export pieces as needed: `python tools/extract_sprites.py <sheet> <outdir>` finds sprites automatically; `tools/build_assets.py` rebuilds the current exports
 - Modular backgrounds: `assets/backgrounds/`
 - Navigation icons: `assets/icons/nav/`
 - Props: `assets/props/`

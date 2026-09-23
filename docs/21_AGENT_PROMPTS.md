@@ -23,7 +23,7 @@ After implementation:
 ```
 
 ## Special instruction for visual phases
-Use `assets/concept/reference_user_selected.png` only as art direction. Use modular production assets from `assets/`; do not flatten the whole site into a screenshot background with fake HTML hotspots.
+Use the composite sheets in `assets/sheets/` as the single art source. Export modular pieces from them (see `tools/extract_sprites.py`); do not flatten the whole site into a screenshot background with fake HTML hotspots.
 
 ## Special instruction for content
 Do not invent private employer/client metrics or confidential details. Keep placeholders clearly marked when final public wording has not been approved.
