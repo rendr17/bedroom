@@ -1,6 +1,6 @@
 ---
 interface Props {
-  tone?: "default" | "accent" | "muted";
+  tone?: "default" | "accent" | "muted" | "ink";
   class?: string;
 }
 
@@ -28,5 +28,10 @@ const { tone = "default", class: className } = Astro.props;
   .tone-muted {
     color: var(--text);
     opacity: 0.85;
+  }
+
+  .tone-ink {
+    color: var(--text-dark);
+    opacity: 0.8;
   }
 </style>

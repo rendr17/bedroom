@@ -1,0 +1,44 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: string;
+  class?: string;
+}
+
+const { src, alt, width, height, caption, class: className } = Astro.props;
+---
+
+<figure class:list={["photo-frame", className]}>
+  <img src={src} alt={alt} width={width} height={height} />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .photo-frame {
+    padding: var(--space-2) var(--space-2) 0;
+    background: var(--window);
+    border: 2px solid var(--border-dark);
+    box-shadow: var(--shadow-raised), var(--shadow-panel);
+  }
+
+  .photo-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    border: 1px solid var(--border-dark);
+  }
+
+  .photo-frame figcaption {
+    padding: var(--space-2) var(--space-1);
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--text-dark);
+  }
+</style>

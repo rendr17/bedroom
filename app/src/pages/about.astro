@@ -1,5 +1,7 @@
 ---
 import ContentLayout from "@/layouts/ContentLayout.astro";
+import PhotoFrame from "@/components/content/PhotoFrame.astro";
+import PixelLabel from "@/components/ui/PixelLabel.astro";
 import { profile } from "@/data/profile";
 ---
 
@@ -7,19 +9,122 @@ import { profile } from "@/data/profile";
   title="About"
   description={`About ${profile.name}, a ${profile.role.toLowerCase()} focused on practical web systems, AI integration, and internal tools.`}
 >
-  <p>
-    I'm <strong>{profile.name}</strong>, a {profile.role.toLowerCase()}.
-    {profile.bio}
-  </p>
-  <h2>Focus areas</h2>
-  <ul>
-    {profile.focus.map((item) => <li>{item}</li>)}
-  </ul>
-  <h2>Things I like building</h2>
-  <ul>
-    {profile.interests.map((item) => <li>{item}</li>)}
-  </ul>
-  <p>
-    Currently exploring: <strong>{profile.currentFocus}</strong>.
-  </p>
+  <div class="about-hero">
+    <PhotoFrame
+      src="/assets/props/avatar-placeholder.png"
+      alt="Pixel-art portrait placeholder of Rendi — messy dark hair, blue hoodie"
+      width={325}
+      height={388}
+      caption="PORTRAIT.BMP"
+      class="about-photo"
+    />
+    <section class="notebook-card">
+      <PixelLabel tone="ink">README.TXT</PixelLabel>
+      <p>
+        I'm <strong>{profile.name}</strong>, a {profile.role.toLowerCase()}.
+        {profile.bio}
+      </p>
+      <p>
+        Currently exploring: <strong>{profile.currentFocus}</strong>.
+      </p>
+    </section>
+  </div>
+
+  <div class="about-grid">
+    <section class="notebook-card">
+      <h2>Focus areas</h2>
+      <ul>
+        {profile.focus.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+    <section class="notebook-card">
+      <h2>Things I like building</h2>
+      <ul>
+        {profile.interests.map((item) => <li>{item}</li>)}
+      </ul>
+      <img
+        class="notebook-prop"
+        src="/assets/props/notebook.png"
+        alt=""
+        width={332}
+        height={298}
+        loading="lazy"
+        aria-hidden="true"
+      />
+    </section>
+  </div>
 </ContentLayout>
+
+<style>
+  .about-hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    align-items: flex-start;
+  }
+
+  .about-photo {
+    flex: 0 1 180px;
+    min-width: 140px;
+    max-width: 200px;
+    transform: rotate(-1.5deg);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: var(--space-4);
+  }
+
+  .notebook-card {
+    flex: 1 1 300px;
+    padding: var(--space-4);
+    padding-left: calc(var(--space-6) + var(--space-3));
+    color: var(--text-dark);
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0 calc(var(--space-6) + 2px),
+        rgb(225 83 83 / 0.45) calc(var(--space-6) + 2px)
+          calc(var(--space-6) + 3px),
+        transparent calc(var(--space-6) + 3px)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 calc(1.6em - 1px),
+        rgb(74 144 226 / 0.2) calc(1.6em - 1px) 1.6em
+      ),
+      var(--window);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised), var(--shadow-panel);
+  }
+
+  .notebook-card > * + * {
+    margin-top: var(--space-3);
+  }
+
+  .notebook-card h2 {
+    color: var(--primary);
+  }
+
+  .notebook-card ul {
+    padding-left: var(--space-4);
+  }
+
+  .notebook-card li + li {
+    margin-top: var(--space-2);
+  }
+
+  .notebook-card :global(a) {
+    color: var(--primary);
+  }
+
+  .notebook-prop {
+    display: block;
+    width: 96px;
+    height: auto;
+    margin-left: auto;
+    image-rendering: pixelated;
+    transform: rotate(4deg);
+  }
+</style>
