@@ -1,0 +1,70 @@
+{
+  "title": "Retro Bedroom Portfolio",
+  "subtitle": "This Very Site",
+  "category": "Portfolio / Interactive site",
+  "role": "Designer / Developer",
+  "status": "Live — you're looking at it",
+  "featured": false,
+  "sortOrder": 5,
+  "year": "2026",
+  "shortDescription": "The site you are on — an interactive portfolio styled as a 2000s bedroom PC, built content-first with Astro.",
+  "longDescription": "This portfolio is itself a project: an interactive room scene inspired by 2000–2005 bedroom PCs, point-and-click games, CRT displays, and pixel icons. The rule is portfolio first, game-like second — every piece of content is semantic HTML reachable by direct URL, and the adventure layer never gates access. It is built with Astro content collections, a documented design system, and a phase-by-phase spec-driven process.",
+  "problem": "Developer portfolios blur together — the challenge was being memorable and expressive without sacrificing accessibility, performance, or direct access to content.",
+  "solution": "A content-first architecture: projects, experience, and skills are structured content rendered as semantic HTML on direct routes, with the retro bedroom scene layered on top as enhancement rather than a gate.",
+  "responsibilities": [
+    "Wrote the full spec — PRD, design system, interaction and motion specs, accessibility, performance budgets",
+    "Built the Astro site — content collections, layouts, and a hand-rolled retro UI component kit",
+    "Designed and produced the pixel-art asset pack and original WAV cues",
+    "Held the accessibility line — keyboard access, reduced motion, audio off by default"
+  ],
+  "features": [
+    "Interactive bedroom scene with hotspots and a quest log",
+    "File-explorer project browser with per-project case studies",
+    "Direct-route URLs for all content — no puzzle required",
+    "Original pixel-art assets and WAV UI cues",
+    "Reduced-motion and keyboard-first support"
+  ],
+  "technology": [
+    "Astro",
+    "TypeScript",
+    "Content Collections (Zod)",
+    "Scoped CSS",
+    "Static output",
+    "Pixel-art asset pipeline"
+  ],
+  "decisions": [
+    {
+      "title": "Portfolio first, game-like second",
+      "rationale": "A visitor must reach every project and the contact page without solving a puzzle — the room is enhancement, not a gate."
+    },
+    {
+      "title": "Content collections as source of truth",
+      "rationale": "Projects are typed JSON documents rendered through a schema, so case studies stay consistent."
+    },
+    {
+      "title": "No heavy framework",
+      "rationale": "Static Astro output keeps the site fast; the retro UI is hand-rolled instead of pulled from a component library."
+    }
+  ],
+  "impact": [
+    "Doubles as a living demo of spec-driven design and front-end craft"
+  ],
+  "links": [
+    {
+      "label": "GitHub repository",
+      "href": "https://github.com/rendr17/bedroom"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/backgrounds/bedroom-full.jpg",
+      "alt": "The interactive pixel-art bedroom scene that anchors this portfolio — desk, CRT monitor, posters, and props acting as navigation hotspots."
+    },
+    {
+      "src": "/assets/backgrounds/bedroom-night.png",
+      "alt": "Night variant of the bedroom scene composed from the original sprite sheets."
+    }
+  ],
+  "accent": "orange",
+  "fileExt": "htm"
+}

@@ -8,3 +8,9 @@ Thumbs.db
 /package-lock.json
 
 tools/_extracted*/
+
+# Project meta/docs (kept local, not tracked)
+START_HERE.md
+AGENTS.md
+FILE_INDEX.md
+docs/

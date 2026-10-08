@@ -5,7 +5,8 @@ export interface Profile {
   bio: string;
   focus: string[];
   interests: string[];
-  currentFocus: string;
+  now: string;
+  next: string;
 }
 
 export interface SocialLink {
@@ -22,4 +23,5 @@ export interface ExperienceEntry {
   summary?: string;
   responsibilities: string[];
   highlights: string[];
+  links?: { label: string; href: string }[];
 }

@@ -1,0 +1,82 @@
+{
+  "title": "Prooven Platform",
+  "subtitle": "Last-Mile Delivery Verification & Billing Platform",
+  "category": "Enterprise / Internal platform",
+  "role": "Software Developer",
+  "status": "Production / Internal",
+  "featured": true,
+  "sortOrder": 2,
+  "shortDescription": "Last-mile delivery verification and billing platform for ABC Express distribution programs — offline-first courier PWA, POD evidence, BAST-to-billing pipeline, and an AI operations agent over a Rust graph/simulation core.",
+  "longDescription": "Prooven is the last-mile operations platform used by ABC Express to run government and enterprise distribution programs — IFP, Pusbuk, Kemensos — delivering tens of thousands of shipments to schools and institutions across Indonesia. It closes the loop between the upstream Antero logistics system and physical delivery: couriers scan TTK waybills in an offline-first PWA, capture proof-of-delivery photos and serial-number verification, and backoffice staff process BAST handover documents into billing — all over a Supabase/PostgreSQL data layer with row-level security, a Go edge gateway, a Rust knowledge-graph + Monte Carlo engine, and a DeepAgents.js AI agent for operational decision support.",
+  "problem": "Last-mile delivery for large distribution programs was hard to verify end-to-end: proof of delivery lived on paper, BAST documents drove billing manually, field couriers worked in low-connectivity regions, and clients had no trustworthy read-only view into delivery progress.",
+  "solution": "A centralized verification platform spanning field capture to finance: an offline-first courier PWA that survives dead zones, a backoffice dashboard for SLA monitoring, BAST processing, and billing (Pra-PI → PI → SI → Lunas), client-facing view-only access scoped by RLS, and an external JSON:API for program stakeholders — plus a Rust simulation/graph layer and AI agent for forecasting and analysis.",
+  "responsibilities": [
+    "Built and maintained modules across the delivery lifecycle — scan, POD capture, BAST, billing",
+    "Designed the offline-first PWA sync layer — IndexedDB outbox, compressed photo pipeline, background retry",
+    "Implemented RBAC + client view-only access with Postgres RLS and security-definer RPCs",
+    "Built the AI operations agent — DeepAgents.js/LangGraph with tools over the knowledge graph, Monte Carlo engine, and shipment data",
+    "Integrated with the upstream Antero platform — TTK lookup and last-mile status/POD push",
+    "Kept quality gates green — Vitest, Go/Rust/Bun test suites, migration lint, Trivy/gosec CI scans"
+  ],
+  "features": [
+    "Offline-first field PWA — QR/barcode TTK scanning (html5-qrcode + Zebra SDK), serial number box/body verification, 8-photo POD evidence, GPS geostamps, IndexedDB outbox → auto-sync, packaged via Capacitor for Android",
+    "BAST pipeline — scan intake, OCR assist, revision workflow, promotion to billing",
+    "SLA monitoring — materialized-view dashboards refreshed by pg_cron, per-project/city/kecamatan scoping",
+    "Billing workflow — Pra-PI, PI with batch, SI, Lunas reconciliation for finance",
+    "AI operations agent — LangGraph/DeepAgents.js with subagents, checkpointer memory, MCP tools, task listener",
+    "Rust analytics core — petgraph knowledge graph (warehouses, cities, ports, airports, pathfinding) + parallel Monte Carlo route simulation (rayon, 10K+ iterations, optional C++ FFI)",
+    "Client view-only portal + external Pusbuk API — read-only JSON:API 1.1 with token rotation, rolling quota, and a synthetic-data sandbox environment",
+    "Driver tracking — GPS telemetry, Leaflet maps, anomaly detection, WhatsApp admin routing by region",
+    "WMS microservice suite — serial registry, AI-assisted verification, incident, inventory, webhook ingestion, hash-chained audit log, BAST/government report services"
+  ],
+  "technology": [
+    "React 18 + Vite + TypeScript — dashboard & field PWA",
+    "Tailwind CSS + Radix UI, TanStack Query, Recharts, Leaflet",
+    "PostgreSQL via Supabase — RLS, PL/pgSQL RPCs, materialized views, realtime, storage, Deno edge functions",
+    "Go (Fiber) — API gateway: JWKS auth, adaptive AIMD rate limiting, SSE, OpenTelemetry; agent-server; WMS services",
+    "Rust — Axum API server, petgraph knowledge graph, Monte Carlo engine (rayon), hash-chain audit service",
+    "C++ — simulation core via FFI",
+    "Bun + Hono — client-facing Pusbuk 2026 API (JSON:API 1.1, Swagger)",
+    "DeepAgents.js + LangGraph + LangChain — AI agent with subagents and MCP tools; OpenRouter LLM, LangSmith tracing",
+    "Python — data pipelines, fleet/dataset normalization & validation scripts",
+    "gRPC / ConnectRPC + Protobuf — abc.agent, abc.graph, abc.montecarlo, antero.tasks contracts",
+    "Docker Compose + Caddy on VPS — production topology; Kubernetes manifests + Terraform (EKS/RDS/VPC/IAM) for scale-out",
+    "Sentry + OpenTelemetry — observability across all services; Vitest, go test, cargo, bun test, GitHub Actions CI"
+  ],
+  "decisions": [
+    {
+      "title": "Offline-first over always-online",
+      "rationale": "Couriers deliver to remote kecamatan with unstable connectivity — the PWA treats the network as optional, queueing forms and compressed photos in IndexedDB and syncing on recovery."
+    },
+    {
+      "title": "Postgres as the enforcement layer",
+      "rationale": "Client scoping, role guards (is_client(), client_project_keys()), and project isolation live in RLS policies and security-definer RPCs — not just in the API — so external viewers and internal roles share one enforced model."
+    },
+    {
+      "title": "Polyglot by workload, not by fashion",
+      "rationale": "Rust owns graph/simulation compute, Go owns the edge (auth, rate limiting, proxying), TypeScript owns UI and agent logic — connected through explicit gRPC contracts."
+    },
+    {
+      "title": "AI advises, workflows decide",
+      "rationale": "The agent forecasts routes, queries shipments, and answers operational questions — mutations still flow through auditable RPC and edge-function paths."
+    },
+    {
+      "title": "Scale engineered ahead of volume",
+      "rationale": "Trigram indexes, keyset pagination, thumbnail media pipeline, realtime bulk-op guards, and append-only retention were designed against a measured 80K-shipment / ~1 TB media capacity model, not guessed."
+    }
+  ],
+  "impact": [
+    "Runs last-mile POD verification for ABC Express distribution programs — ~37–48K shipments in the IFP 2025 cycle, engineered for ±80K shipments and ~640K media objects in the 2026 program",
+    "Turns paper proof-of-delivery into a verifiable digital chain — scan → serial verify → photo evidence → BAST → invoice",
+    "Gives external program clients a live, scoped view of their own deliveries",
+    "Brings graph reasoning and Monte Carlo forecasting into real routing and SLA decisions"
+  ],
+  "accent": "purple",
+  "fileExt": "pod",
+  "screenshots": [
+    {
+      "src": "/assets/projects/prooven/dashboard-redacted.webp",
+      "alt": "Sanitized Prooven operations dashboard — operational health KPIs, province performance map, and navigation covering delivery, BAST, billing, tracking, and AI modules; account identity and live figures are redacted."
+    }
+  ]
+}

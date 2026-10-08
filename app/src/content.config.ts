@@ -22,6 +22,9 @@ const projects = defineCollection({
     responsibilities: z.array(z.string()).default([]),
     features: z.array(z.string()).default([]),
     technology: z.array(z.string()).default([]),
+    decisions: z
+      .array(z.object({ title: z.string(), rationale: z.string() }))
+      .default([]),
     impact: z.array(z.string()).default([]),
     screenshots: z
       .array(z.object({ src: z.string(), alt: z.string() }))

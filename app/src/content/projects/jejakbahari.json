@@ -1,26 +1,70 @@
 {
   "title": "JejakBahari",
-  "subtitle": "Open Maritime / RoRo Tracking Project",
-  "category": "Open-source concept",
+  "subtitle": "Open RoRo Vessel Tracking for Indonesia",
+  "category": "Open-source project",
   "role": "Creator / Developer",
-  "status": "Open-source concept",
-  "sortOrder": 2,
-  "shortDescription": "An open-source project exploring vessel, port, route, and AIS data for Indonesian RoRo tracking.",
-  "problem": "Indonesian RoRo and maritime visibility depends on scattered public data sources for vessels, ports, and routes.",
-  "solution": "An open project that researches AIS and public maritime data sources and models port and vessel data around a RoRo-first scope.",
+  "status": "Open source / In development",
+  "featured": false,
+  "sortOrder": 6,
+  "year": "2026",
+  "shortDescription": "A free, open-source web app showing live positions, status, and movement history of Indonesian RoRo vessels from AIS data.",
+  "longDescription": "JejakBahari is a free, open-source web app for tracking Indonesian RoRo vessels — live position, status, and movement history built on AIS data. The platform combines a live map of whitelisted vessels with master data for operators, vessels, ports, and routes, plus geofence-based arrival and departure detection. It is designed to stay lightweight, cheap to run, and easy for a community to maintain.",
+  "problem": "Indonesian RoRo and maritime visibility depends on scattered public data sources for vessels, ports, and routes — AIS data can be delayed, missing, or wrong, and no free public tracker focuses on RoRo.",
+  "solution": "An open platform that joins live AIS positions with vessel, port, and route master data — a live map of whitelisted RoRo vessels with data-freshness indicators, geofence-based arrival/departure detection, and an admin panel for verification.",
+  "responsibilities": [
+    "Authored the documentation set — PRD, MVP scope, tech stack, architecture, sprint plan",
+    "Built the Laravel REST API — master data, position ingestion, whitelist, audit log",
+    "Built the Vue 3 frontend — MapLibre live map, search, vessel detail",
+    "Wrote the Node.js AIS worker — WebSocket client with Zod-validated payloads",
+    "Set up the PostGIS schema, geofence port events, and CI"
+  ],
   "features": [
-    "RoRo-first scope",
-    "AIS/data-source research",
-    "Port and vessel data model",
-    "Open-source documentation"
+    "Live map of whitelisted RoRo vessels",
+    "Vessel and port search with data-freshness indicators",
+    "Limited position history and movement trail",
+    "Geofence-based arrival/departure detection",
+    "Admin panel for master data and verification",
+    "Explicit disclaimer — not a navigation or safety tool"
   ],
   "technology": [
-    "Web frontend",
-    "Geospatial/maps",
-    "Public maritime data",
-    "API/data pipelines"
+    "Vue 3 + Vite + TypeScript",
+    "Tailwind CSS + Pinia",
+    "MapLibre GL JS",
+    "Laravel REST API + Reverb",
+    "Node.js AIS worker + Zod",
+    "PostgreSQL + PostGIS",
+    "Docker",
+    "Cloudflare Pages + VPS"
   ],
-  "impact": ["Designed as a reusable open maritime-data project"],
+  "decisions": [
+    {
+      "title": "Whitelist over full feed",
+      "rationale": "Showing only verified RoRo vessels keeps the map honest and the scope maintainable."
+    },
+    {
+      "title": "Freshness as a feature",
+      "rationale": "AIS data can be late or wrong — the UI surfaces data age instead of pretending precision."
+    },
+    {
+      "title": "Cheap and open",
+      "rationale": "A lightweight Laravel + Vue + PostGIS stack on a single VPS keeps the project community-maintainable."
+    }
+  ],
+  "impact": [
+    "Designed as a reusable open maritime-data foundation for Indonesian RoRo visibility"
+  ],
+  "links": [
+    {
+      "label": "GitHub repository",
+      "href": "https://github.com/rendr17/jejakbahari"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/projects/jejakbahari/hero.png",
+      "alt": "Hero illustration from the JejakBahari frontend — layered panels representing stacked maritime data views."
+    }
+  ],
   "accent": "cyan",
-  "fileExt": "md"
+  "fileExt": "ais"
 }

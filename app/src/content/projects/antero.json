@@ -6,25 +6,72 @@
   "status": "Production / Internal",
   "featured": true,
   "sortOrder": 1,
-  "shortDescription": "A centralized platform for logistics operations covering shipment, pickup, manifest, delivery, POD, finance visibility, and operational integrations.",
+  "shortDescription": "A centralized platform for logistics operations covering shipment, pickup, manifest, delivery, POD, finance visibility, operational integrations — and an AI analyst layer.",
+  "longDescription": "Antero is the internal operations platform used daily by a cargo network handling 17,000+ shipments per month. It consolidates shipment, pickup, manifest, delivery, POD, and finance workflows — previously spread across fragmented processes — into one Next.js platform with a Supabase/PostgreSQL data layer, custom RBAC + MFA auth, integrations into accounting and external services, a PWA surface with push notifications and in-browser scanning, and an Executive Analyst agent built on LangGraph that answers operational questions over real data.",
   "problem": "Logistics operations spanning shipment, pickup, manifest, delivery, POD, and finance were spread across fragmented workflows that needed a shared system.",
-  "solution": "A centralized internal platform that consolidates operational workflows and gives the team visibility into shipment, manifest, delivery, and finance data, with integrations into external systems.",
+  "solution": "A centralized internal platform that consolidates operational workflows and gives the team visibility into shipment, manifest, delivery, and finance data, with integrations into external systems — plus an AI analyst that lets staff query operations in natural language.",
+  "responsibilities": [
+    "Builds and maintains operational modules across the shipment lifecycle",
+    "Designed the custom RBAC + MFA layer on cookie-session/JWT auth",
+    "Built the Executive Analyst — a LangGraph agent answering operational questions over real data",
+    "Integrated external systems — Accurate Online accounting, OBL, MaxMind GeoIP",
+    "Keeps quality gates green — Playwright E2E, Vitest, k6 load tests, Lighthouse CI"
+  ],
   "features": [
-    "Operational workflow digitization",
-    "Shipment and manifest visibility",
-    "External system integrations",
-    "Performance and data-correctness improvements"
+    "Operational workflow digitization — shipment, pickup, manifest, delivery, POD",
+    "Finance visibility via Accurate Online / Accurate.id integration",
+    "Executive Analyst — LangGraph agent over live operational data",
+    "Custom RBAC with MFA and cookie-session auth",
+    "PWA — web-push notifications and in-browser barcode scanning",
+    "Realtime dashboards — Recharts + Mantine charts over operations"
   ],
   "technology": [
-    "Astro/Vue where applicable",
-    "Supabase / PostgreSQL",
+    "Next.js 16 + React 19 (App Router)",
     "TypeScript",
-    "API integrations"
+    "PostgreSQL via Supabase — RLS, migrations, direct pg pool",
+    "Mantine v9 + Tailwind CSS v4",
+    "TanStack Query v5",
+    "Cookie session + JWT — custom RBAC, MFA",
+    "LangChain + LangGraph — Executive Analyst agent",
+    "Claude Agent SDK / OpenAI / Ollama / OpenRouter — multi-provider LLM",
+    "MCP SDK + LangSmith observability",
+    "gRPC / ConnectRPC + Protobuf",
+    "Vercel + Docker + Railway — separate worker",
+    "Playwright + Vitest + k6 + Lighthouse CI"
+  ],
+  "decisions": [
+    {
+      "title": "Visibility over novelty",
+      "rationale": "Operations staff needed a trustworthy shared view of shipments and finance first; optimizations were added where they were safe."
+    },
+    {
+      "title": "AI as analyst, not operator",
+      "rationale": "The Executive Analyst answers questions over operational data — mutations still go through explicit, auditable workflows."
+    },
+    {
+      "title": "Postgres-first access control",
+      "rationale": "Supabase RLS plus a direct pg pool and explicit migrations keep data access enforced at the database, not just the API."
+    },
+    {
+      "title": "Sanitized public material",
+      "rationale": "Screenshots are redacted — the platform handles live operational data that cannot be shown publicly."
+    }
   ],
   "impact": [
-    "Supports high-volume logistics operations",
+    "Runs daily operations for a cargo network handling 17,000+ shipments per month",
+    "Brings AI assistance into real operational workflows via the Executive Analyst",
     "Consolidates operational workflows into a shared system"
   ],
   "accent": "blue",
-  "fileExt": "txt"
+  "fileExt": "txt",
+  "screenshots": [
+    {
+      "src": "/assets/projects/antero/operations-dashboard-redacted.png",
+      "alt": "Sanitized logistics operations dashboard showing shipment, pickup, delivery, and driver workflow summaries; organization identifiers and live values are redacted."
+    },
+    {
+      "src": "/assets/projects/antero/login-redacted.png",
+      "alt": "Sanitized split-screen login experience with company branding and identity details redacted."
+    }
+  ]
 }

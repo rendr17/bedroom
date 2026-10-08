@@ -1,14 +1,17 @@
 ---
-import ContentLayout from "@/layouts/ContentLayout.astro";
+import SceneLayout from "@/layouts/SceneLayout.astro";
 import PhotoFrame from "@/components/content/PhotoFrame.astro";
 import PixelLabel from "@/components/ui/PixelLabel.astro";
 import { profile } from "@/data/profile";
 ---
 
-<ContentLayout
+<SceneLayout
   title="About"
+  windowTitle="ABOUT.EXE"
   description={`About ${profile.name}, a ${profile.role.toLowerCase()} focused on practical web systems, AI integration, and internal tools.`}
 >
+  <h1 class="about-heading">About {profile.name}</h1>
+
   <div class="about-hero">
     <div class="about-photo">
       <PhotoFrame
@@ -26,7 +29,14 @@ import { profile } from "@/data/profile";
         {profile.bio}
       </p>
       <p>
-        Currently exploring: <strong>{profile.currentFocus}</strong>.
+        Right now: <strong>{profile.now}</strong>.
+      </p>
+      <p>
+        Next: <strong>{profile.next}</strong>.
+      </p>
+      <p class="about-links">
+        <a href="/projects">Projects</a> · <a href="/experience">Experience</a> ·
+        <a href="/skills">Skills</a> · <a href="/contact">Contact</a>
       </p>
     </section>
   </div>
@@ -54,14 +64,24 @@ import { profile } from "@/data/profile";
       />
     </section>
   </div>
-</ContentLayout>
+</SceneLayout>
 
 <style>
+  .about-heading {
+    margin-bottom: var(--space-4);
+    font-family: var(--mono-font);
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
   .about-hero {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-6);
     align-items: flex-start;
+    margin-bottom: var(--space-4);
   }
 
   .about-photo {
@@ -130,6 +150,23 @@ import { profile } from "@/data/profile";
 
   .notebook-card :global(a) {
     color: var(--primary);
+  }
+
+  .about-links {
+    font-family: var(--mono-font);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+
+  .about-links a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .about-links a:hover,
+  .about-links a:focus-visible {
+    color: var(--accent);
   }
 
   .notebook-prop {

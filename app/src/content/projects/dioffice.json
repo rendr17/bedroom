@@ -1,0 +1,74 @@
+{
+  "title": "DiOffice",
+  "subtitle": "Virtual Software Company for AI Employees",
+  "category": "AI platform / Side project",
+  "role": "Sole Developer",
+  "status": "Early development (v0.1)",
+  "featured": false,
+  "sortOrder": 4,
+  "year": "2026",
+  "shortDescription": "A virtual software company where an Owner manages permanent AI employees — identity and history persist while agent runtimes stay swappable.",
+  "longDescription": "DiOffice is an experiment in durable AI teamwork: a virtual software company where an Owner manages permanent AI employees. Employee identity and work history are persistent; the runtime — OpenCode first — is a replaceable tool behind a gateway. The v0.1 target is one honest end-to-end flow: task drafts, explicit start, isolated workspace, real repository work, checks and preview evidence bound to a commit SHA, PR review, approval, and merge — with a pixel-office UI driven only by real backend state.",
+  "problem": "Most AI-coding tools show output, not work — there is no persistent employee identity, no auditable event trail, and UI progress is often simulated rather than backed by real state.",
+  "solution": "An event-sourced office: every employee action becomes a normalized durable event, task state machines are explicit (DRAFT → BACKLOG/READY → DONE, with merge as a separate Owner action), and the pixel-office UI renders only real backend state — never simulated progress.",
+  "responsibilities": [
+    "Authored the product spec — state machines, event schema, execution manifest, user flows",
+    "Built the Go API — session/CSRF auth, task and event endpoints, explicit migrations",
+    "Built the React + Vite shell with a Phaser pixel-office layer",
+    "Defined the agent-gateway boundary (Node.js) and the first runtime adapter (OpenCode)",
+    "Specified execution isolation — Docker + git worktree, Temporal for workflow durability"
+  ],
+  "features": [
+    "Persistent AI employees with identity and work history",
+    "Explicit task lifecycle — Owner gates every transition",
+    "Normalized event stream with durable SSE replay cursor",
+    "Evidence-bound reviews — checks and previews tied to the tested commit SHA",
+    "Pixel-office UI rendered from real backend state",
+    "Swappable agent runtimes — OpenCode first"
+  ],
+  "technology": [
+    "React + TypeScript + Vite",
+    "Phaser (pixel office)",
+    "Tailwind CSS + shadcn/ui",
+    "Go API",
+    "PostgreSQL",
+    "Node.js agent gateway",
+    "OpenCode runtime",
+    "Temporal workflows",
+    "SSE realtime",
+    "Docker + git worktree",
+    "Playwright",
+    "S3-compatible storage"
+  ],
+  "decisions": [
+    {
+      "title": "No simulated work",
+      "rationale": "Character animation, monitors, diffs, tests, and progress must come from real task/runtime events — nothing fake."
+    },
+    {
+      "title": "Persistent identity, swappable runtime",
+      "rationale": "Employees keep identity and history; runtimes like OpenCode are replaceable tools behind the gateway."
+    },
+    {
+      "title": "Owner-in-the-loop",
+      "rationale": "Start, approve, and merge are explicit Owner actions — the AI never merges its own work."
+    }
+  ],
+  "impact": [
+    "Working foundation — Go API with auth and task drafts, React shell, agent-gateway health endpoint, executable migrations"
+  ],
+  "links": [
+    {
+      "label": "GitHub repository",
+      "href": "https://github.com/rendr17/DiOffice"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/projects/dioffice/office-scene.webp",
+      "alt": "DiOffice pixel-office scene — the Owner and Deni the Frontend Engineer standing outside the studio, with quest tracker, owner console, and task board panels."
+    }
+  ],
+  "accent": "purple",
+  "fileExt": "sys"
+}

@@ -1,0 +1,73 @@
+{
+  "title": "Singgah",
+  "subtitle": "Transit-First City Exploration Companion",
+  "category": "Full-stack web app / Side project",
+  "role": "Sole Developer",
+  "status": "In active development",
+  "featured": true,
+  "sortOrder": 3,
+  "year": "2026",
+  "shortDescription": "A calm, transit-first companion for exploring the city by public transport — a SvelteKit client backed by a Go API with PostGIS.",
+  "longDescription": "Singgah is a personal product built around a simple idea: exploring the city should feel calm when public transport is the default. It is a pnpm/Turborepo monorepo — a SvelteKit + Svelte 5 client, a Go API (chi router) on PostgreSQL/PostGIS, an OpenAPI contract that generates the TypeScript client, and a custom schematic-map builder tool. The frontend only consumes canonical API models, never provider payloads.",
+  "problem": "Exploring a city by public transport means stitching together routes, modes, and stops from scattered sources — and most map apps optimize for driving or fastest route, not for calmly understanding a transit network.",
+  "solution": "A transit-first web app that puts stations, routes, and journeys at the center — schematic map rendering, a journey timeline, map search, and a transit passport — all served through one API contract shared by the Go backend and the SvelteKit client.",
+  "responsibilities": [
+    "Designed the monorepo layout — pnpm workspaces + Turborepo for the client, go.work for services",
+    "Authored the OpenAPI contract and generated TypeScript client",
+    "Built the Go API — chi router, sqlc-generated queries, goose migrations",
+    "Built the SvelteKit interface — map mode switcher, journey timeline, map search",
+    "Set up the PostGIS schema and local Docker Compose environment",
+    "Maintained a docs-as-blueprint workflow — product and engineering source of truth in docs/"
+  ],
+  "features": [
+    "Schematic transit map rendering via a custom map-builder tool",
+    "Journey timeline and station/route search",
+    "Transit passport — private, anonymous-session progress tracking",
+    "Canonical API contract — OpenAPI generates the client",
+    "PostGIS-backed spatial data",
+    "Strict quality gates — format, lint, typecheck, and tests in CI"
+  ],
+  "technology": [
+    "SvelteKit + Svelte 5",
+    "TypeScript (strict)",
+    "Tailwind CSS",
+    "Vitest",
+    "Go — net/http + chi",
+    "PostgreSQL + PostGIS",
+    "pgx + sqlc",
+    "OpenAPI contract-first",
+    "pnpm workspaces + Turborepo",
+    "Docker Compose"
+  ],
+  "decisions": [
+    {
+      "title": "Contract-first API",
+      "rationale": "The OpenAPI spec is the source of truth — the generated TypeScript client keeps frontend and backend honest."
+    },
+    {
+      "title": "Canonical models only",
+      "rationale": "The frontend never sees provider payloads; the Go backend owns all authoritative logic and normalization."
+    },
+    {
+      "title": "Per-language tooling",
+      "rationale": "pnpm workspaces + Turborepo for the client, go.work for services — each ecosystem keeps its idiomatic workflow."
+    }
+  ],
+  "impact": [
+    "Working end-to-end foundation — API health/readiness, generated client, migrated PostGIS schema, and full CI quality gates"
+  ],
+  "links": [
+    {
+      "label": "GitHub repository",
+      "href": "https://github.com/rendr17/Singgah"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/projects/singgah/landing.webp",
+      "alt": "Singgah landing page — 'Pergi boleh spontan. Rute jangan.' over an illustrated Jakarta transit scene, with steps for picking a destination, finding a route, and exploring."
+    }
+  ],
+  "accent": "cyan",
+  "fileExt": "map"
+}

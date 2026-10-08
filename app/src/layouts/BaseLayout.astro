@@ -6,7 +6,7 @@ import SiteNav from "@/components/navigation/SiteNav.astro";
 interface Props {
   title: string;
   description?: string;
-  chrome?: "default" | "adventure";
+  chrome?: "default" | "adventure" | "scene";
 }
 
 const {
@@ -15,6 +15,13 @@ const {
   chrome = "default",
 } = Astro.props;
 const adventure = chrome === "adventure";
+const scene = chrome === "scene";
+const pageUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : undefined;
+const socialImage = Astro.site
+  ? new URL("/assets/backgrounds/bedroom-night.png", Astro.site).href
+  : undefined;
 ---
 
 <!doctype html>
@@ -23,6 +30,28 @@ const adventure = chrome === "adventure";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta
+      name="twitter:card"
+      content={socialImage ? "summary_large_image" : "summary"}
+    />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {pageUrl && <link rel="canonical" href={pageUrl} />}
+    {pageUrl && <meta property="og:url" content={pageUrl} />}
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    {
+      socialImage && (
+        <meta
+          property="og:image:alt"
+          content="Pixel-art retro bedroom workspace"
+        />
+      )
+    }
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
     <link rel="icon" type="image/png" href="/assets/icons/system/quest.png" />
     <title>{title}</title>
     <script is:inline>
@@ -36,38 +65,48 @@ const adventure = chrome === "adventure";
       }
     </script>
   </head>
-  <body class:list={[adventure && "is-adventure"]}>
+  <body class:list={[adventure && "is-adventure", scene && "is-scene"]}>
     <a class="skip-link" href="#main">Skip to main content</a>
-    <header class="top-chrome">
-      <a class="chrome-window chrome-app" href="/">
-        <img
-          class="chrome-icon"
-          src="/assets/props/avatar-placeholder.png"
-          alt=""
-          width="18"
-          height="18"
-          aria-hidden="true"
-        />
-        <span class="chrome-title">{SITE.name}</span>
-        <span class="chrome-controls" aria-hidden="true">
-          <i>_</i>
-          <i>&#9634;</i>
-          <i>&#10005;</i>
-        </span>
-      </a>
-      <p class="chrome-window chrome-menu">
-        <span class="chrome-motto">Explore • Create • Build • Grow</span>
-        <span class="signal" aria-hidden="true">
-          <i></i><i></i><i></i><i></i>
-        </span>
-      </p>
-    </header>
+    {
+      !scene && (
+        <header class="top-chrome">
+          <a class="chrome-window chrome-app" href="/">
+            <img
+              class="chrome-icon"
+              src="/assets/props/avatar-placeholder.png"
+              alt=""
+              width="18"
+              height="18"
+              aria-hidden="true"
+            />
+            <span class="chrome-title">{SITE.name}</span>
+            <span class="chrome-controls" aria-hidden="true">
+              <i>_</i>
+              <i>&#9634;</i>
+              <i>&#10005;</i>
+            </span>
+          </a>
+          <p class="chrome-window chrome-menu">
+            <span class="chrome-motto">Explore • Create • Build • Grow</span>
+            <span class="signal" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </span>
+          </p>
+        </header>
+      )
+    }
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <slot name="nav"><SiteNav /></slot>
     {
-      !adventure && (
+      !scene && (
+        <slot name="nav">
+          <SiteNav />
+        </slot>
+      )
+    }
+    {
+      chrome === "default" && (
         <footer>
           <p>{SITE.tagline}</p>
         </footer>

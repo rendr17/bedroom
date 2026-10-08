@@ -4,10 +4,17 @@
   "category": "Product prototype",
   "role": "Developer",
   "status": "Prototype / Product project",
-  "sortOrder": 3,
+  "sortOrder": 7,
   "shortDescription": "A QR-based dine-in ordering experience where customers build an order and complete payment validation with a cashier.",
+  "longDescription": "Quick Order is a pay-first dine-in ordering flow: each table gets a QR code, customers build and customize an order from their phone, and the system issues a pending-payment invoice. Nothing reaches the kitchen until the cashier validates payment — keeping the flow fast for customers and verifiable for the business.",
   "problem": "Dine-in ordering needed a flow where customers order from the table while payment stays verifiable by the cashier before serving.",
   "solution": "A QR table-ordering flow: customers build and customize an order, receive a pending payment invoice, and the cashier validates payment before the order proceeds.",
+  "responsibilities": [
+    "Designed the order-to-payment flow end to end",
+    "Built the Vue ordering interface",
+    "Built the Laravel API and invoice workflow",
+    "Modeled the relational schema for orders, items, and payments"
+  ],
   "features": [
     "Table QR flow",
     "Menu customization",
@@ -15,6 +22,16 @@
     "Cashier validation workflow"
   ],
   "technology": ["Vue", "Laravel API", "Relational database", "Responsive web"],
+  "decisions": [
+    {
+      "title": "Payment before kitchen",
+      "rationale": "A pending invoice validated by the cashier prevents unverified orders from reaching the kitchen."
+    },
+    {
+      "title": "QR per table",
+      "rationale": "Table-scoped QR codes remove account friction — customers order immediately without signing up."
+    }
+  ],
   "impact": ["Simplifies order capture and cashier verification flow"],
   "accent": "orange",
   "fileExt": "inv"

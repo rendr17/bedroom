@@ -31,23 +31,38 @@ const posters = [
   title="Extras"
   description="Bonus extras from Rendi's portfolio room — wall posters, site notes, and secrets."
 >
-  <p>
-    You found the extras cabinet — the gamepad on the floor was not just
-    decoration. Bonus art and site notes live here.
+  <p class="extras-intro">
+    A little corner of the room for the art, details, and interactions that sit
+    outside the main portfolio.
   </p>
 
   <RetroWindow title="EXTRAS.EXE" controls={false}>
-    <section class="extras-section">
-      <h2>Wall Posters</h2>
-      <p class="extras-note">
-        Full-resolution versions of the art hanging in the room.
-      </p>
+    <section class="extras-section" aria-labelledby="posters-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Room collection · 04 items</p>
+          <h2 id="posters-heading">Wall Posters</h2>
+        </div>
+        <p class="section-hint">Select a poster to view it at full size.</p>
+      </div>
+
       <ul class="poster-grid">
         {
           posters.map((poster) => (
-            <li>
+            <li class="poster-card">
               <figure>
-                <img src={poster.src} alt={poster.alt} loading="lazy" />
+                <a
+                  class="poster-link"
+                  href={poster.src}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Open full-size poster: ${poster.title} (new tab)`}
+                >
+                  <img src={poster.src} alt={poster.alt} loading="lazy" />
+                  <span class="poster-action" aria-hidden="true">
+                    View full size ↗
+                  </span>
+                </a>
                 <figcaption>{poster.title}</figcaption>
               </figure>
             </li>
@@ -56,18 +71,27 @@ const posters = [
       </ul>
     </section>
 
-    <section class="extras-section">
-      <h2>Site Notes</h2>
-      <p class="extras-note">
-        This portfolio is a hand-built Astro site — semantic HTML, scoped CSS, a
-        sprinkle of client JS, and original pixel art. Quest progress lives in
-        your browser's localStorage; nothing leaves the machine.
-      </p>
-      <p class="extras-note">
-        Secrets in the room: the cat, the floppy disk, and the gamepad that
-        brought you here. That's all of them — probably.
-      </p>
-    </section>
+    <div class="notes-grid">
+      <section class="note-card" aria-labelledby="site-notes-heading">
+        <span class="note-icon" aria-hidden="true">01</span>
+        <h2 id="site-notes-heading">Site Notes</h2>
+        <p>
+          A hand-built Astro site using semantic HTML, scoped CSS, small
+          client-side scripts, and original pixel art. Quest progress is stored
+          in your browser only.
+        </p>
+      </section>
+
+      <section class="note-card note-card-secret" aria-labelledby="room-secrets-heading">
+        <span class="note-icon" aria-hidden="true">02</span>
+        <h2 id="room-secrets-heading">Room Secrets</h2>
+        <p>
+          The cat, floppy disk, and gamepad each hide a small interaction. Head
+          back to the room and see what responds.
+        </p>
+        <a class="room-link" href="/">Return to the room <span aria-hidden="true">↗</span></a>
+      </section>
+    </div>
 
     <div class="extras-status">
       <RetroStatusBar items={["4 POSTERS", "3 SECRETS", "READY"]} />
@@ -76,55 +100,202 @@ const posters = [
 </ContentLayout>
 
 <style>
-  .extras-section + .extras-section {
-    margin-top: var(--space-4);
+  .extras-intro {
+    margin-bottom: var(--space-3);
   }
 
-  .extras-section h2 {
-    margin: 0 0 var(--space-2);
+  .extras-section + .notes-grid {
+    margin-top: var(--space-5);
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px dashed rgb(21 21 21 / 0.35);
+  }
+
+  .section-kicker {
+    margin: 0 0 2px;
     font-family: var(--mono-font);
-    font-size: 0.78rem;
+    font-size: 0.62rem;
     letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(21 21 21 / 0.58);
+  }
+
+  .section-heading h2,
+  .note-card h2 {
+    margin: 0;
+    font-family: var(--mono-font);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--primary);
   }
 
-  .extras-note {
-    margin: 0 0 var(--space-3);
-    font-size: 0.85rem;
-    color: rgb(21 21 21 / 0.85);
+  .section-hint {
+    max-width: 32ch;
+    margin: 0;
+    font-family: var(--mono-font);
+    font-size: 0.65rem;
+    text-align: right;
+    color: rgb(21 21 21 / 0.62);
   }
 
   .poster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
     gap: var(--space-3);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .poster-grid figure {
+  .poster-card {
+    min-width: 0;
     margin: 0;
-  }
-
-  .poster-grid img {
-    display: block;
-    width: 100%;
-    height: auto;
-    image-rendering: pixelated;
+    padding: var(--space-2);
+    background: #fffef5;
     border: 1px solid var(--border-dark);
     box-shadow: var(--shadow-raised);
   }
 
-  .poster-grid figcaption {
-    margin-top: var(--space-1);
+  .poster-card figure {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .poster-link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--window);
+    border: 1px solid var(--border-dark);
+  }
+
+  .poster-link img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .poster-action {
+    position: absolute;
+    right: var(--space-1);
+    bottom: var(--space-1);
+    padding: 2px var(--space-2);
+    font-family: var(--mono-font);
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: rgb(15 23 42 / 0.88);
+    border: 1px solid rgb(255 255 255 / 0.4);
+  }
+
+  .poster-link:hover img,
+  .poster-link:focus-visible img {
+    transform: scale(1.025);
+  }
+
+  .poster-link:focus-visible {
+    outline: var(--focus);
+    outline-offset: 3px;
+  }
+
+  .poster-card figcaption {
+    flex: 1 0 auto;
+    display: grid;
+    min-height: 48px;
+    place-items: center;
+    padding: var(--space-2) var(--space-1) 0;
     font-family: var(--mono-font);
     font-size: 0.62rem;
-    letter-spacing: 0.06em;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
     text-align: center;
     text-transform: uppercase;
-    color: rgb(21 21 21 / 0.6);
+    color: rgb(21 21 21 / 0.72);
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .note-card {
+    position: relative;
+    min-width: 0;
+    padding: var(--space-4);
+    background: #fffef5;
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .note-card h2 {
+    margin-bottom: var(--space-2);
+  }
+
+  .note-card p {
+    max-width: 62ch;
+    margin: 0;
+    font-size: 0.82rem;
+    color: rgb(21 21 21 / 0.82);
+  }
+
+  .note-icon {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    color: rgb(21 21 21 / 0.46);
+  }
+
+  .note-card-secret {
+    border-left: 4px solid var(--accent);
+  }
+
+  .room-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 44px;
+    margin-top: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--mono-font);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: var(--primary);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-raised);
+    text-decoration: none;
+  }
+
+  .room-link:hover,
+  .room-link:focus-visible {
+    color: var(--text-dark);
+    background: var(--accent);
+  }
+
+  .room-link:focus-visible {
+    outline: var(--focus);
+    outline-offset: 2px;
+  }
+
+  .room-link:active {
+    box-shadow: var(--shadow-sunken);
   }
 
   .extras-status {
@@ -134,5 +305,24 @@ const posters = [
   .extras-status :global(.status-cell) {
     color: var(--text-dark);
     background: var(--window);
+  }
+
+  @media (max-width: 640px) {
+    .section-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .section-hint {
+      text-align: left;
+    }
+
+    .notes-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .note-card {
+      padding: var(--space-3);
+    }
   }
 </style>

@@ -1,9 +1,8 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { SITE } from "@/data/site";
+import SceneLayout from "@/layouts/SceneLayout.astro";
 ---
 
-<BaseLayout title={`404 — ${SITE.name}`} description="Page not found.">
+<SceneLayout title="404" windowTitle="404.EXE" description="Page not found.">
   <article class="content-page">
     <h1>404 — Empty corner</h1>
     <p>
@@ -12,4 +11,4 @@ import { SITE } from "@/data/site";
     </p>
     <p><a href="/">← Back to the room</a></p>
   </article>
-</BaseLayout>
+</SceneLayout>

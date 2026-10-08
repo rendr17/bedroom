@@ -1,6 +1,5 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { SITE } from "@/data/site";
+import SceneLayout from "@/layouts/SceneLayout.astro";
 
 interface Props {
   title: string;
@@ -11,9 +10,13 @@ interface Props {
 const { title, heading = title, description } = Astro.props;
 ---
 
-<BaseLayout title={`${title} — ${SITE.name}`} description={description}>
+<SceneLayout
+  title={title}
+  windowTitle={`${title.toUpperCase()}.EXE`}
+  description={description}
+>
   <article class="content-page">
     <h1>{heading}</h1>
     <slot />
   </article>
-</BaseLayout>
+</SceneLayout>

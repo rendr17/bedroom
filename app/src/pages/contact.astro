@@ -27,9 +27,8 @@ const emailAction = email?.href
       aria-hidden="true"
     />
     <p class="contact-intro">
-      The quickest ways to reach me — every channel opens directly, no puzzles
-      required. Public contact details will appear as direct links once
-      confirmed.
+      Reach me by email, GitHub, or LinkedIn. A downloadable CV link will be
+      added soon.
     </p>
   </div>
 
@@ -44,7 +43,7 @@ const emailAction = email?.href
                   &gt;
                 </span>
                 <span class="channel-name">{social.label}</span>
-                <span class="channel-value">{social.href}</span>
+                <span class="channel-value">{social.href.replace(/^mailto:/, "")}</span>
                 <span class="channel-open" aria-hidden="true">
                   »
                 </span>

@@ -1,6 +1,5 @@
 ---
 import { hotspots } from "@/data/hotspots";
-import RetroDialog from "@/components/ui/RetroDialog.astro";
 
 interface Props {
   class?: string;
@@ -8,7 +7,6 @@ interface Props {
 }
 
 const { class: className, cover = false } = Astro.props;
-const primaryHotspots = hotspots.filter((h) => !h.optional);
 const extraHotspots = hotspots.filter((h) => h.optional);
 ---
 
@@ -17,33 +15,14 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     <img
       src="/assets/backgrounds/bedroom-full.jpg"
       alt="Pixel-art bedroom at night: a bed with a sleeping cat, a wooden desk holding a CRT monitor showing a retro desktop, a keyboard, mug and notebook, a bookshelf, posters on the wall, and a window overlooking a city skyline."
-      width="1024"
-      height="768"
+      width="1448"
+      height="1086"
       fetchpriority="high"
     />
   </div>
   <div class="room-overlay">
-    <nav class="room-hotspots" aria-label="Room">
+    <nav class="room-hotspots" aria-label="Room extras">
       <ul>
-        {
-          primaryHotspots.map((h) => (
-            <li
-              style={`--hx:${h.desktop.x};--hy:${h.desktop.y};--o:${h.mobileOrder}`}
-            >
-              <a href={h.href} class="hotspot pin" data-section={h.id}>
-                <img
-                  class="hotspot-marker"
-                  src="/assets/icons/system/hotspot.png"
-                  alt=""
-                  width="115"
-                  height="133"
-                  aria-hidden="true"
-                />
-                <span class="hotspot-label">{h.label}</span>
-              </a>
-            </li>
-          ))
-        }
         {
           extraHotspots.map((h) => (
             <li
@@ -73,34 +52,10 @@ const extraHotspots = hotspots.filter((h) => h.optional);
         style="--hx:7;--hy:62;--o:7"
         aria-label="Pet the cat"
       >
-        <img
-          class="hotspot-marker"
-          src="/assets/icons/system/hotspot.png"
-          alt=""
-          width="115"
-          height="133"
-          aria-hidden="true"
-        />
+        <span class="hotspot-marker hotspot-dot" aria-hidden="true"></span>
         <span class="hotspot-label">Pet the cat</span>
       </button>
-      <button
-        type="button"
-        class="hotspot pin egg"
-        id="egg-floppy"
-        style="--hx:92;--hy:80;--o:8"
-        aria-label="Read the floppy disk"
-        data-cue
-      >
-        <img
-          class="hotspot-marker marker-prop"
-          src="/assets/props/floppy.png"
-          alt=""
-          width="188"
-          height="181"
-          aria-hidden="true"
-        />
-        <span class="hotspot-label">Read the floppy</span>
-      </button>
+
       <span
         class="cat-bubble pin"
         id="cat-bubble"
@@ -111,25 +66,12 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     <slot name="overlay" />
   </div>
   <figcaption class="room-hint sr-only">
-    Click a <b>!</b> marker in the room to explore — or use the navigation below.
+    Use the navigation to explore, or try the room extras.
   </figcaption>
 </figure>
 <p class="sr-only" id="cat-live" aria-live="polite"></p>
 
-<RetroDialog id="readme-dialog" title="README.TXT">
-  <p>
-    <b>ABOUT_THIS_SITE.TXT</b> — recovered from a floppy on the desk:
-  </p>
-  <p>
-    This room is a real website: semantic HTML, Astro, and TypeScript. No
-    framework runtime in the browser, and quest progress is saved in
-    localStorage only.
-  </p>
-  <p>
-    The posters are real. The cat is asleep. You have found one of the three
-    secrets hidden in this room — keep poking around.
-  </p>
-</RetroDialog>
+
 
 <style>
   .room-scene {
@@ -182,6 +124,21 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     display: block;
   }
 
+  @keyframes room-ambient-light {
+    0%, 100% { filter: brightness(1) saturate(1); }
+    50% { filter: brightness(1.035) saturate(1.04); }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .room-scene.cover .room-bg img {
+      animation: room-ambient-light 12s ease-in-out infinite;
+    }
+  }
+
+  :global(html[data-reduced-effects="true"]) .room-scene.cover .room-bg img {
+    animation: none;
+  }
+
   .room-overlay {
     position: absolute;
     inset: 0;
@@ -206,77 +163,77 @@ const extraHotspots = hotspots.filter((h) => h.optional);
   }
 
   .hotspot {
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px var(--space-2) 3px var(--space-1);
-    min-height: 30px;
+    position: absolute;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    place-items: center;
+    padding: 0;
     color: var(--text-dark);
-    background: var(--window);
-    border: 1px solid var(--border-dark);
-    box-shadow:
-      var(--shadow-raised),
-      var(--shadow-panel);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
     text-decoration: none;
-    transition: background-color var(--duration-fast) var(--ease-out);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
   }
 
   .hotspot-marker {
+    position: relative;
+    z-index: 1;
     flex: none;
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
     image-rendering: pixelated;
-    transition: transform var(--duration-fast) var(--ease-out);
+    filter: drop-shadow(0 1px 2px rgb(15 23 42 / 0.8));
+    transition:
+      transform var(--duration-fast) var(--ease-out),
+      filter var(--duration-fast) var(--ease-out);
   }
 
-  @keyframes marker-glow {
-    0%,
-    100% {
-      opacity: 0.55;
-    }
-    50% {
-      opacity: 0.95;
-    }
-  }
-
-  .hotspot-label {
+  .room-hotspots .hotspot-label {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: calc(100% + 5px);
+    padding: 3px var(--space-2);
     font-family: var(--mono-font);
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     font-weight: bold;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
+    color: #f4edd5;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    text-shadow: 1px 1px 0 #101a31, -1px -1px 0 #101a31;
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: none;
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
   }
 
-  .hotspot:hover,
-  .hotspot:focus-visible {
-    background: var(--accent);
+  .room-hotspots .hotspot:focus-visible,
+  .room-eggs .egg:focus-visible {
+    outline: none;
   }
 
-  .hotspot:hover .hotspot-marker,
-  .hotspot:focus-visible .hotspot-marker {
-    transform: scale(1.2);
+  .room-hotspots .hotspot:hover .hotspot-marker,
+  .room-hotspots .hotspot:focus-visible .hotspot-marker {
+    transform: scale(1.14);
+    filter: drop-shadow(0 0 5px rgb(255 209 102 / 0.9));
   }
 
-  .hotspot:active {
-    box-shadow: var(--shadow-sunken);
-  }
-
-  .hotspot[data-visited]::after {
-    content: "✓" / "";
-    position: absolute;
-    top: -7px;
-    right: -7px;
-    font-family: var(--mono-font);
-    font-size: 0.6rem;
-    font-weight: bold;
-    line-height: 1;
-    color: var(--text-dark);
-    background: var(--success);
-    border: 1px solid var(--border-dark);
-    padding: 1px 3px;
+  .room-hotspots .hotspot:hover .hotspot-label,
+  .room-hotspots .hotspot:focus-visible .hotspot-label {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 
   .room-eggs {
@@ -317,11 +274,13 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     bottom: calc(100% + 6px);
     left: 50%;
     padding: 4px 8px;
-    color: var(--text-dark);
-    background: var(--accent);
-    border: 1px solid var(--border-dark);
-    opacity: 0;
-    transform: translateX(-50%) translateY(4px);
+    color: #f4edd5;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    text-shadow: 1px 1px 0 #101a31, -1px -1px 0 #101a31;
+    opacity: 1;
+    transform: translateX(-50%);
     pointer-events: none;
     transition:
       opacity var(--duration-fast) var(--ease-out),
@@ -341,6 +300,25 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+
+  .room-eggs .hotspot-dot {
+    width: 14px;
+    height: 14px;
+    background: rgb(255 209 102 / 0.26);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 8px rgb(255 209 102 / 0.62);
+  }
+
+  #egg-cat .hotspot-label {
+    left: 0;
+    transform: translateY(4px);
+  }
+
+  #egg-cat:hover .hotspot-label,
+  #egg-cat:focus-visible .hotspot-label {
+    transform: translateY(0);
+  }
+
 
   .marker-prop {
     width: auto;
@@ -483,6 +461,17 @@ const extraHotspots = hotspots.filter((h) => h.optional);
       box-shadow: var(--shadow-sunken);
     }
 
+    .room-hotspots .hotspot-label {
+      position: static;
+      padding: 0;
+      background: none;
+      border: 0;
+      box-shadow: none;
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+
     .hotspot-marker,
     .room-eggs .egg .hotspot-marker {
       width: 20px;
@@ -518,23 +507,11 @@ const extraHotspots = hotspots.filter((h) => h.optional);
 </style>
 
 <script>
-  import { playCue } from "@/utils/audio";
-  import { getVisited, type QuestSection } from "@/utils/progress";
   import { storage, STORAGE_KEYS } from "@/utils/storage";
-
-  const visited = new Set<QuestSection>(getVisited());
-  document
-    .querySelectorAll<HTMLElement>(".room-hotspots .hotspot[data-section]")
-    .forEach((el) => {
-      const id = el.getAttribute("data-section") as QuestSection | null;
-      if (id && visited.has(id)) el.setAttribute("data-visited", "true");
-    });
 
   const catBtn = document.getElementById("egg-cat");
   const catBubble = document.getElementById("cat-bubble");
   const catLive = document.getElementById("cat-live");
-  const floppyBtn = document.getElementById("egg-floppy");
-  const readmeDialog = document.getElementById("readme-dialog");
 
   const catLines = [
     "mrrp~",
@@ -562,14 +539,4 @@ const extraHotspots = hotspots.filter((h) => h.optional);
     if (catLive) catLive.textContent = `Cat: ${line}`;
   });
 
-  if (readmeDialog instanceof HTMLDialogElement) {
-    floppyBtn?.addEventListener("click", () => {
-      storage.set(STORAGE_KEYS.eggsFound, "1");
-      playCue("open");
-      readmeDialog.showModal();
-    });
-    readmeDialog.addEventListener("click", (event) => {
-      if (event.target === readmeDialog) readmeDialog.close();
-    });
-  }
 </script>

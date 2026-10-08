@@ -9,8 +9,8 @@ import { experience } from "@/data/experience";
   description="Rendi's professional experience — roles, responsibilities, and selected work."
 >
   <p>
-    A record of roles and responsibilities — the binder is thin for now, but
-    every entry is verified.
+    Selected work across AI digitalization, IT support, Android development, and
+    front-office operations.
   </p>
 
   <RetroWindow title="EXPERIENCE.LOG" controls={false}>
@@ -46,6 +46,15 @@ import { experience } from "@/data/experience";
                   <ul class="highlight-list">
                     {entry.highlights.map((item) => (
                       <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+                {entry.links && entry.links.length > 0 && (
+                  <ul class="record-links">
+                    {entry.links.map((link) => (
+                      <li>
+                        <a href={link.href}>→ {link.label}</a>
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -155,5 +164,26 @@ import { experience } from "@/data/experience";
     margin-right: var(--space-2);
     color: var(--success);
     font-weight: bold;
+  }
+
+  .record-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+
+  .record-links a {
+    color: var(--primary);
+  }
+
+  .record-links a:hover,
+  .record-links a:focus-visible {
+    color: var(--accent);
   }
 </style>

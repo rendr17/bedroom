@@ -3,7 +3,9 @@ import { getCollection } from "astro:content";
 import ContentLayout from "@/layouts/ContentLayout.astro";
 import RetroWindow from "@/components/ui/RetroWindow.astro";
 
-const groups = await getCollection("skills");
+const groups = (await getCollection("skills")).filter(
+  (group) => group.data.items.length > 0,
+);
 ---
 
 <ContentLayout
@@ -18,25 +20,36 @@ const groups = await getCollection("skills");
   <RetroWindow title="TOOLBOX.EXE" controls={false}>
     <div class="drawer-grid">
       {
-        groups.map((group) => (
-          <section class="drawer">
-            <h2 class="drawer-label">{group.data.name}</h2>
-            {group.data.items.length > 0 ? (
-              <ul class="tool-list">
-                {group.data.items.map((item) => (
-                  <li class="tool">
-                    <span class="tool-name">{item.name}</span>
-                    {item.context && (
-                      <span class="tool-context">{item.context}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p class="drawer-empty">— drawer empty, being stocked —</p>
-            )}
-          </section>
-        ))
+        groups.length > 0 ? (
+          groups.map((group) => {
+            const isFocus = group.id === "ai-assisted";
+            return (
+              <section
+                class:list={["drawer", isFocus && "drawer-focus"]}
+                aria-labelledby={`skill-${group.id}`}
+              >
+                <div class="drawer-heading">
+                  {isFocus && <span class="drawer-kicker">Current focus</span>}
+                  <h2 class="drawer-label" id={`skill-${group.id}`}>
+                    {group.data.name}
+                  </h2>
+                </div>
+                <ul class="tool-list">
+                  {group.data.items.map((item) => (
+                    <li class="tool">
+                      <span class="tool-name">{item.name}</span>
+                      {item.context && (
+                        <span class="tool-context">{item.context}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            );
+          })
+        ) : (
+          <p class="skills-empty">No skill details have been added yet.</p>
+        )
       }
     </div>
   </RetroWindow>
@@ -45,12 +58,17 @@ const groups = await getCollection("skills");
 <style>
   .drawer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
     gap: var(--space-3);
   }
 
   .drawer {
     position: relative;
+    display: flex;
+    min-width: 0;
+    height: 100%;
+    flex-direction: column;
     padding: calc(var(--space-3) + 8px) var(--space-3) var(--space-3);
     background: #fffef5;
     border: 1px solid var(--border-dark);
@@ -70,31 +88,53 @@ const groups = await getCollection("skills");
     box-shadow: var(--shadow-sunken);
   }
 
+  .drawer-heading {
+    display: flex;
+    min-height: 54px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: var(--space-2);
+    border-bottom: 1px dashed rgb(21 21 21 / 0.35);
+  }
+
   .drawer-label {
-    margin: 0 0 var(--space-2);
+    display: flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding-bottom: var(--space-2);
     font-family: var(--mono-font);
     font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    line-height: 1.35;
+    letter-spacing: 0.1em;
     text-align: center;
+    text-transform: uppercase;
     color: var(--primary);
-    border-bottom: 1px dashed rgb(21 21 21 / 0.35);
-    padding-bottom: var(--space-2);
   }
 
   .tool-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
     gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
+  .content-page .tool-list > li + li {
+    margin-top: 0;
+  }
+
   .tool {
     display: flex;
+    min-width: 0;
+    min-height: 58px;
     flex-direction: column;
-    padding: 3px var(--space-2);
+    justify-content: center;
+    padding: var(--space-2);
     background: var(--window);
     border: 1px solid var(--border-dark);
     box-shadow: var(--shadow-sunken);
@@ -102,24 +142,91 @@ const groups = await getCollection("skills");
 
   .tool-name {
     font-family: var(--ui-font);
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     font-weight: bold;
+    line-height: 1.3;
     color: var(--text-dark);
+    overflow-wrap: anywhere;
   }
 
   .tool-context {
+    margin-top: 2px;
     font-family: var(--mono-font);
-    font-size: 0.58rem;
-    letter-spacing: 0.04em;
-    color: rgb(21 21 21 / 0.55);
+    font-size: 0.62rem;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    color: rgb(21 21 21 / 0.62);
   }
 
-  .drawer-empty {
+  .drawer-focus {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.7fr);
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 112px;
+    padding-left: var(--space-4);
+    border-left: 4px solid var(--secondary);
+    background: #f4f6f8;
+  }
+
+  .drawer-focus::before {
+    right: var(--space-3);
+    left: auto;
+    transform: none;
+  }
+
+  .drawer-focus .drawer-heading {
+    min-height: 0;
+    align-items: flex-start;
     margin: 0;
+    border: 0;
+  }
+
+  .drawer-kicker {
+    margin-bottom: var(--space-1);
     font-family: var(--mono-font);
-    font-size: 0.68rem;
-    letter-spacing: 0.04em;
-    text-align: center;
-    color: rgb(21 21 21 / 0.45);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(21 21 21 / 0.62);
+  }
+
+  .drawer-focus .drawer-label {
+    min-height: 0;
+    justify-content: flex-start;
+    padding: 0;
+    text-align: left;
+  }
+
+  .drawer-focus .tool-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skills-empty {
+    grid-column: 1 / -1;
+    padding: var(--space-4);
+    font-family: var(--mono-font);
+    color: rgb(21 21 21 / 0.62);
+    background: #fffef5;
+    border: 1px dashed var(--border-dark);
+  }
+
+  @media (max-width: 900px) {
+    .drawer-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .drawer-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .drawer-focus {
+      grid-column: auto;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
+    }
   }
 </style>

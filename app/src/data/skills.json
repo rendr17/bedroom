@@ -3,43 +3,159 @@
     "id": "frontend",
     "name": "Frontend",
     "items": [
-      { "name": "TypeScript", "context": "used in projects" },
-      { "name": "Astro", "context": "used in projects" },
-      { "name": "Vue", "context": "used in projects" },
-      { "name": "Responsive web", "context": "used in projects" }
+      { "name": "TypeScript", "context": "most projects" },
+      {
+        "name": "React — Next.js / Vite",
+        "context": "Antero · Prooven (production) · DiOffice"
+      },
+      { "name": "Vue", "context": "JejakBahari · Quick Order" },
+      { "name": "SvelteKit / Svelte 5", "context": "Singgah" },
+      { "name": "Astro", "context": "this site" },
+      {
+        "name": "Tailwind CSS",
+        "context": "Antero · Prooven · Singgah · DiOffice"
+      },
+      { "name": "Mantine / Radix UI", "context": "Antero · Prooven" },
+      {
+        "name": "PWA — offline sync, push, scanning",
+        "context": "Antero · Prooven"
+      },
+      { "name": "Capacitor", "context": "Prooven Android builds" },
+      { "name": "MapLibre / Leaflet maps", "context": "JejakBahari · Prooven" },
+      { "name": "Phaser", "context": "DiOffice" },
+      { "name": "Kotlin / Android", "context": "Bangkit Academy" }
     ]
   },
   {
     "id": "backend-database",
     "name": "Backend & database",
     "items": [
-      { "name": "Laravel API", "context": "used in projects" },
-      { "name": "Supabase / PostgreSQL", "context": "used in projects" },
-      { "name": "Relational databases", "context": "used in projects" }
+      {
+        "name": "Go — Fiber / chi + sqlc",
+        "context": "Prooven gateway · Singgah · DiOffice"
+      },
+      {
+        "name": "Rust — Axum · petgraph · rayon",
+        "context": "Prooven graph + simulation core"
+      },
+      {
+        "name": "Bun + Hono",
+        "context": "Prooven client-facing API"
+      },
+      {
+        "name": "Node.js services",
+        "context": "DiOffice gateway · JejakBahari worker"
+      },
+      {
+        "name": "PHP — Laravel / CodeIgniter",
+        "context": "JejakBahari · Quick Order · internship"
+      },
+      { "name": "Python — data pipelines", "context": "Prooven" },
+      {
+        "name": "PostgreSQL — RLS, PL/pgSQL, PostGIS",
+        "context": "Prooven · Antero · Singgah · JejakBahari"
+      },
+      {
+        "name": "Supabase — realtime, storage, edge functions",
+        "context": "Antero · Prooven (production)"
+      },
+      {
+        "name": "Auth design — session/JWT, JWKS, RBAC, MFA",
+        "context": "Antero · Prooven"
+      }
     ]
   },
   {
     "id": "integrations-apis",
     "name": "Integration & APIs",
     "items": [
-      { "name": "External API integrations", "context": "used in projects" },
-      { "name": "API/data pipelines", "context": "used in projects" },
-      { "name": "Geospatial/maps", "context": "used in projects" }
+      {
+        "name": "REST / JSON:API design",
+        "context": "Prooven Pusbuk API · most projects"
+      },
+      { "name": "OpenAPI contract-first", "context": "Singgah" },
+      {
+        "name": "gRPC / ConnectRPC + Protobuf",
+        "context": "Antero · Prooven service contracts"
+      },
+      {
+        "name": "External system integrations",
+        "context": "Antero — Accurate, OBL, GeoIP · Prooven — Antero sync, WhatsApp"
+      },
+      {
+        "name": "SSE / realtime events",
+        "context": "Prooven gateway · DiOffice · JejakBahari Reverb"
+      },
+      {
+        "name": "Offline sync / media pipelines",
+        "context": "Prooven — IndexedDB outbox, photo compression"
+      },
+      {
+        "name": "Geospatial & maps",
+        "context": "Singgah · JejakBahari · Prooven"
+      },
+      { "name": "AIS / maritime data pipelines", "context": "JejakBahari" }
     ]
   },
   {
     "id": "ai-assisted",
     "name": "AI-assisted development",
-    "items": [{ "name": "AI integration", "context": "current focus" }]
+    "items": [
+      {
+        "name": "LangChain + LangGraph + DeepAgents.js",
+        "context": "Antero — Executive Analyst · Prooven ops agent"
+      },
+      {
+        "name": "Multi-provider LLM — Claude SDK, OpenAI, Ollama, OpenRouter",
+        "context": "Antero · Prooven"
+      },
+      {
+        "name": "MCP SDK / MCP tools",
+        "context": "Antero · Prooven · DiOffice"
+      },
+      {
+        "name": "Agent runtime orchestration",
+        "context": "DiOffice — OpenCode adapter"
+      }
+    ]
   },
   {
     "id": "dev-tooling",
     "name": "Dev tooling",
-    "items": []
+    "items": [
+      {
+        "name": "Docker + Compose",
+        "context": "Antero · Prooven · Singgah · DiOffice"
+      },
+      {
+        "name": "Kubernetes + Terraform",
+        "context": "Prooven — EKS/RDS scale-out manifests"
+      },
+      { "name": "pnpm workspaces + Turborepo", "context": "Singgah" },
+      { "name": "Git + GitHub Actions", "context": "all projects" },
+      { "name": "ESLint + Prettier + commitlint", "context": "all projects" },
+      {
+        "name": "Vercel / Railway / VPS + Caddy",
+        "context": "Antero · Prooven deploys"
+      }
+    ]
   },
   {
     "id": "qa-observability",
     "name": "QA & observability",
-    "items": []
+    "items": [
+      { "name": "Playwright E2E", "context": "Antero · DiOffice" },
+      {
+        "name": "Vitest · go test · cargo / bun test",
+        "context": "Singgah · DiOffice · Prooven"
+      },
+      { "name": "k6 load testing", "context": "Antero" },
+      { "name": "Lighthouse CI", "context": "Antero" },
+      {
+        "name": "Sentry + LangSmith + OpenTelemetry",
+        "context": "Antero · Prooven"
+      },
+      { "name": "Trivy / gosec security scans", "context": "Prooven CI" }
+    ]
   }
 ]

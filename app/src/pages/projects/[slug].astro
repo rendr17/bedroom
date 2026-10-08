@@ -124,6 +124,20 @@ const project = entry.data;
     }
 
     {
+      project.decisions.length > 0 && (
+        <CaseSection title="Technical Decisions">
+          <ul class="check-list">
+            {project.decisions.map((decision) => (
+              <li>
+                <strong>{decision.title}:</strong> {decision.rationale}
+              </li>
+            ))}
+          </ul>
+        </CaseSection>
+      )
+    }
+
+    {
       project.impact.length > 0 && (
         <CaseSection title="Impact">
           <div class="impact-block">
@@ -166,14 +180,18 @@ const project = entry.data;
     }
   </CaseStudy>
 
-  <nav class="case-nav" aria-label="More projects">
-    <span>
-      {prev && <a href={`/projects/${prev.id}`}>« {prev.data.title}</a>}
-    </span>
-    <a href="/projects">All projects</a>
-    <span>
-      {next && <a href={`/projects/${next.id}`}>{next.data.title} »</a>}
-    </span>
+  <nav class="case-nav" aria-label="Project navigation">
+    {prev && (
+      <a class="case-nav-link" href={`/projects/${prev.id}`}>
+        « {prev.data.title}
+      </a>
+    )}
+    <a class="case-nav-link case-nav-all" href="/projects">All projects</a>
+    {next && (
+      <a class="case-nav-link" href={`/projects/${next.id}`}>
+        {next.data.title} »
+      </a>
+    )}
   </nav>
 </ContentLayout>
 
@@ -311,7 +329,7 @@ const project = entry.data;
 
   .case-screens {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
     margin: 0;
     padding: 0;
@@ -323,7 +341,6 @@ const project = entry.data;
     width: 100%;
     height: auto;
     border: 1px solid var(--border-dark);
-    image-rendering: pixelated;
   }
 
   .case-links {
@@ -344,29 +361,53 @@ const project = entry.data;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2) var(--space-3);
+    justify-content: center;
+    gap: var(--space-2);
     margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border-dark);
     font-family: var(--mono-font);
     font-size: 0.72rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
-  .case-nav > span {
-    flex: 1;
-  }
-
-  .case-nav > span:last-child {
-    text-align: right;
-  }
-
-  .case-nav a {
+  .case-nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: var(--space-2) var(--space-3);
     color: var(--secondary);
+    background: rgb(15 23 42 / 0.72);
+    border: 1px solid var(--border-dark);
+    text-align: center;
+    text-decoration: none;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
   }
 
-  .case-nav a:hover,
-  .case-nav a:focus-visible {
-    color: var(--accent);
+  .case-nav-link:hover,
+  .case-nav-link:focus-visible {
+    color: var(--text-dark);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .case-nav-link:focus-visible {
+    outline: var(--focus);
+    outline-offset: 2px;
+  }
+
+  .case-nav-link:active {
+    background: var(--primary);
+  }
+
+  @media (max-width: 480px) {
+    .case-nav-link {
+      flex: 1 1 100%;
+    }
   }
 </style>

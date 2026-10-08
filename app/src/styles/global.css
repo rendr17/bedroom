@@ -110,6 +110,16 @@ body.is-adventure #main {
   position: relative;
 }
 
+body.is-scene {
+  padding-bottom: 0;
+}
+
+body.is-scene #main {
+  min-height: 100dvh;
+  padding: var(--space-3);
+  position: relative;
+}
+
 @media (max-width: 640px) {
   #main {
     padding: var(--space-4) var(--space-3);
@@ -118,11 +128,25 @@ body.is-adventure #main {
   body.is-adventure #main {
     padding: 0;
   }
+
+  body.is-scene #main {
+    padding: var(--space-2);
+  }
 }
 
 .content-page {
-  max-width: 68ch;
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
   animation: page-in 0.35s var(--ease-out) both;
+}
+
+.content-page p {
+  max-width: 75ch;
+}
+
+.content-page :where(.check-list, .highlight-list, .project-list) > li {
+  max-width: 80ch;
 }
 
 @keyframes page-in {
